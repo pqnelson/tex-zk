@@ -1,0 +1,168 @@
+\ProvidesPackage{iso2145}[2023/25/12 v0.1.0]
+% Provides numbered paragraphs to arbitrary depths.
+% 
+% \M starts a new paragraph, continuing the current sequence
+% 
+% \M[1] starts a subparagraph
+% 
+% \M[-1] stops the current subparagraph, and continues with the next
+% parent paragraph
+%
+% \N{paragraph name} starts a new paragraph, with "paragraph name"
+% printed in bold.
+% 
+% \N[1]{name} starts a new subparagraph, with "name" in bold.
+% 
+% \N[-1]{name} starts the next paragraph ending the parent paragraph,
+% with name in bold.
+%
+% \begin{node}...\end{node} handles nested node environments as
+% subparagraphs automatically
+%
+% \begin{node}[name]...\end{node} will handle nested nodes as
+% subparagraphs, and names the current node.
+%
+% \newtheorem{name}{Printed Name}{bodyfont} creates a custom node with
+% leading "Printed Name" and optional parenthetic arguments.
+% Example:
+% \newtheorem{theorem}{Theorem}{\it}
+% \begin{theorem}[Euclid] There exists infinitely many primes.\end{theorem}
+% is the same as:
+% \begin{node}[Theorem](Euclid)\textbf{.} \it There exists infinitely many primes
+% \end{node}
+\newcounter{chunk}
+
+\def\setSection#1{\setcounter{chunk}{#1}}
+\def\stepSec{\refstepcounter{chunk}}
+
+% technically, sectionDepth is not needed, but it's to avoid popping off
+% "too many sections"
+\newcount\sectionDepth \sectionDepth=0
+
+% \secprefix will be redefined to append the current section number
+% followed by a period
+\def\secprefix{}
+\renewcommand\thechunk{\secprefix\arabic{chunk}.}
+
+% \pushSection simply appends "\arabic{chunk}." to \secprefix's current value
+\def\pushSection{
+  \global\advance\sectionDepth by1
+  \let\sectmp\secprefix
+  \xdef\secprefix{\sectmp\arabic{chunk}.}
+}
+
+% update \secprefix from "a.b.(...).c.d" to "a.b.(...).c"
+% and set \chunk counter to "d" (as a number)
+\def\popSection{
+  \def\newPrefix{}
+  \global\advance\sectionDepth by-1
+  \def\updatePrefix##1.##2\endUpdate{
+    \ifx##2\relax % if we are at the last number
+      % globally set \secprefix to be the leading (n-1) section numbers
+      \xdef\secprefix{\newPrefix}
+      % globally set \chunk to be the last section number from \secprefix
+      \setSection{\number##1}
+    \else
+      \xdef\newPrefix{\newPrefix##1.}
+      \updatePrefix##2\endUpdate
+    \fi}
+  \ifx\secprefix\relax % if \secprefix is empty
+  \else
+    \expandafter\updatePrefix\secprefix\relax\endUpdate
+  \fi
+}
+
+\def\downOne{\pushSection\setSection{0}}
+
+\def\upOne{\popSection}
+
+\newcount\secIter \secIter=0
+
+% \up ascends back to one of the parent sections, ascending #1 levels
+\def\up#1{ % #1 is a negative integer
+  \ifnum\sectionDepth>0%
+    \secIter=#1%
+    % but \sectionDepth is a non-negative integer, so transform it
+    \multiply\secIter by-1
+    \ifnum\secIter>\sectionDepth%
+      \global\secIter=\sectionDepth
+    \fi%
+    \loop
+      \ifnum\secIter>0
+      \upOne
+      \advance\secIter by-1
+    \repeat%
+  \fi%
+}
+
+% down appends #1 subsections to the given section number
+\def\down#1{ % #1 is a positive integer
+  \global\secIter=#1%
+  \loop
+    \ifnum\secIter>0
+    \downOne
+    \advance\secIter by-1
+  \repeat%
+}
+\def\adjustSection#1{\ifnum#1<0\up{#1}\else{\ifnum#1>0\down{#1}\fi}\fi}
+
+\newskip\chunkskipamount
+\chunkskipamount=.5\baselineskip\@plus.7\baselineskip
+\newcommand\chunkskip{\vspace\chunkskipamount}
+\newcommand\chunkbreak{\par \ifdim \lastskip<\chunkskipamount \removelastskip \penalty -100\chunkskip\fi}
+
+
+\@ifundefined{@addpunct}{
+  \def\@addpunct#1{%
+    \relax\ifhmode
+      \ifnum\spacefactor>\@m \else#1\fi
+    \fi}
+}{}
+%% \M is used for unlabeled paragraphs
+\newcommand\M[1][0]{\adjustSection{#1}\medbreak%
+  \stepSec\noindent\ignorespaces%
+  \textbf{\thechunk\ignorespaces}\enspace\ignorespaces}
+
+%% \N is used for labeled paragraphs
+\newcommand\N[2][0]{\adjustSection{#1}\medbreak%
+  \stepSec\noindent\ignorespaces%
+  \textbf{\thechunk\ignorespaces\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
+
+% \begin{node} blah \end{node} === \M blah
+% \begin{node}[3] blah \end{node} === \M[3] blah
+% \begin{node}[Proposition] blah \end{node} === \N{Proposition} blah
+% \begin{node}[3][Proposition] blah \end{node} === \N[3]{Proposition} blah
+\def\node@ii#1[#2]{\N[#1]{#2}\adjustSection{1}\unskip\unskip\ignorespaces}
+
+% Taken from https://texfaq.org/FAQ-isitanum
+\def\IsInteger#1{%
+  TT\fi
+  \begingroup \lccode`\-=`\0 \lccode`+=`\0
+    \lccode`\1=`\0 \lccode`\2=`\0 \lccode`\3=`\0
+    \lccode`\4=`\0 \lccode`\5=`\0 \lccode`\6=`\0
+    \lccode`\7=`\0 \lccode`\8=`\0 \lccode`\9=`\0
+  \lowercase{\endgroup
+    \expandafter\ifx\expandafter\delimiter
+    \romannumeral0\string#1}\delimiter
+}
+
+% I actually don't know if we *should* support arbitrary branching of
+% numbers in the `node` environment, but this is how it'd be done
+\def\node@i[#1]{\@ifnextchar[{\node@ii{#1}}{%
+  }{\if\IsInteger{#1}\M[#1]\else\N{#1}\unskip\ignorespaces\fi\adjustSection{1}\unskip\unskip\unskip\ignorespaces}
+}
+
+% For reasons I do not understand, there are 2 skips being done in a
+% node environment.
+\newenvironment{node}[1][\relax]%
+{\ifx#1\relax\M\else\N{#1}\fi\adjustSection{1}\unskip\unskip\ignorespaces}%
+{\adjustSection{-1}\ignorespacesafterend}
+
+%% newtheorem{command}{printed name}{body font}
+\def\newtheorem#1#2#3{
+  \newenvironment{#1}[1][\relax]{
+\ifx##1\relax\begin{node}[Theorem]\else\begin{node}\textbf{#2} (##1)\textbf{.}\enspace\ignorespaces\fi#3\ignorespaces}%
+{\end{node}}
+}
+
+\endinput
