@@ -1,0 +1,39 @@
+\usepackage[top=1in,bottom=1in,inner=1in,outer=1in]{geometry}
+\usepackage{iso2145}
+
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{hyperref}
+% eTeX uses this color for links, it's better than BrickRed imho
+\definecolor{linkRed}{cmyk}{0.28, 1, 1, 0.35}
+\hypersetup{colorlinks=true,
+    linkcolor=linkRed,
+    citecolor=linkRed,
+    filecolor=linkRed,
+    urlcolor=linkRed
+    %% pdfinfo={
+    %%   Title={Formalizing Finite Groups in Mizar},
+    %%   Author={Alex Nelson},
+    %%   CreationDate={D:20211214152256},
+    %%   ModDate={D:\pdfdate}
+    %% }
+}
+
+
+
+
+% Example of iso2145 theorem environments:
+\newtheorem{theorem}{Theorem}{\it}
+\newtheorem{corollary}{Corollary}{\it}
+\newtheorem{definition}{Definition}{}
+\newtheorem{puzzle}{Puzzle}{}
+\usepackage{lipsum}
+
+
+%%%%%%
+% ArXiV links
+\def\arXiv{\@ifnextchar[{\@arXivWith}{\@arXivWithout}}
+\def\@arXivWith[#1]#2{\texttt{\href{http://arxiv.org/abs/#2}{arXiv:#2} [#1]}}
+\def\@arXivWithout#1{\texttt{\href{http://arxiv.org/abs/#1}{arXiv:#1}}}
+
+
+\endinput

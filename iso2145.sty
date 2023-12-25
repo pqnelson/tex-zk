@@ -42,7 +42,10 @@
 % \secprefix will be redefined to append the current section number
 % followed by a period
 \def\secprefix{}
-\renewcommand\thechunk{\secprefix\arabic{chunk}.}
+\newcommand\nodeprefix{\relax} % This could be changed when chapter,
+                               % section, etc. is called
+\newcommand\nodeseparator{.} % Dieudonne uses \textperiodcentered
+\renewcommand\thechunk{\expandafter\ifx\nodeprefix\relax\else\nodeprefix\nodeseparator\fi\secprefix\arabic{chunk}.}
 
 % \pushSection simply appends "\arabic{chunk}." to \secprefix's current value
 \def\pushSection{
@@ -118,13 +121,21 @@
       \ifnum\spacefactor>\@m \else#1\fi
     \fi}
 }{}
+
+
+\newskip\nodeskipamount
+\nodeskipamount=0.25\baselineskip plus0.5\baselineskip
+
+\newcommand\nodeskip{\vspace\nodeskipamount}
+\newcommand\nodebreak{\par\ifdim\lastskip<\nodeskipamount\removelastskip\penalty-100\nodeskip\fi}
+
 %% \M is used for unlabeled paragraphs
-\newcommand\M[1][0]{\adjustSection{#1}\medbreak%
+\newcommand\M[1][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
   \textbf{\thechunk\ignorespaces}\enspace\ignorespaces}
 
 %% \N is used for labeled paragraphs
-\newcommand\N[2][0]{\adjustSection{#1}\medbreak%
+\newcommand\N[2][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
   \textbf{\thechunk\ignorespaces\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
 
@@ -161,7 +172,7 @@
 %% newtheorem{command}{printed name}{body font}
 \def\newtheorem#1#2#3{
   \newenvironment{#1}[1][\relax]{
-\ifx##1\relax\begin{node}[Theorem]\else\begin{node}\textbf{#2} (##1)\textbf{.}\enspace\ignorespaces\fi#3\ignorespaces}%
+\ifx##1\relax\begin{node}[#2]\else\begin{node}\textbf{#2} (##1)\textbf{.}\enspace\ignorespaces\fi#3\ignorespaces}%
 {\end{node}}
 }
 
