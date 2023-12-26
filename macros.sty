@@ -1,5 +1,6 @@
 \usepackage[top=1in,bottom=1in,inner=1in,outer=1in]{geometry}
 \usepackage{iso2145}
+\usepackage{amsmath,amssymb}
 
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{hyperref}
@@ -29,11 +30,59 @@
 \usepackage{lipsum}
 
 
+%%%%
+% Sectioning commands
+%%%%
+\def\resetParagraphChunks{
+  \gdef\secprefix{}
+  \global\sectionDepth=0
+  \setSection{0}
+}
+\DeclareRobustCommand\chunks@start@subsection{\resetParagraphChunks%
+  \gdef\theHchunk{\thesubsection.\secprefix\arabic{chunk}.}%
+  \gdef\nodeprefix{\thesubsection}}
+\DeclareRobustCommand\chunk@start@section{\resetParagraphChunks%
+  \gdef\theHchunk{\thesection\secprefix\arabic{chunk}.}%
+  \gdef\nodeprefix{\thesection}}
+
+
+\def\partrunhead#1#2#3{%
+  \@ifnotempty{#2}{\uppercase{\ignorespaces#1 #2\unskip}\@ifnotempty{#3}{. }}%
+  \def\@tempa{#3}%
+  \ifx\@empty\@tempa\else
+    \begingroup \def\\{ \ignorespaces}% defend against questionable usage
+    \uppercasenonmath\@tempa\@tempa
+    \endgroup
+  \fi
+}
+\let\chapterrunhead\partrunhead
+\let\sectionrunhead\partrunhead
+\def\partname{Part}
+\def\part{\@startsection{part}{0}%
+  \z@{\baselineskip\@plus\baselineskip}{.5\baselineskip}%
+  {\normalfont\bfseries\raggedright}}
+\def\specialsection{\@startsection{section}{1}%
+  \z@{\baselineskip\@plus\baselineskip}{.5\baselineskip}%
+  {\normalfont\centering}}
+\def\section{\protect\chunk@start@section\@startsection{section}{1}%
+  \z@{.7\baselineskip\@plus\baselineskip}{.5\baselineskip}%
+  {\normalfont\scshape\centering}}
+\def\subsection{\protect\chunks@start@subsection\@startsection{subsection}{2}%
+  \parindent{.5\baselineskip\@plus.7\baselineskip}{.5\baselineskip}%-.5em}%
+  {\normalfont\bfseries}}
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\enspace}
+%% \def\@seccntformat#1{%
+%%   \protect\textup{\protect\@secnumfont
+%%     \csname the#1\endcsname
+%%     \protect\@secnumpunct
+%%   }%
+%% }
+%% \def\@secnumfont{\mdseries}
+
 %%%%%%
 % ArXiV links
 \def\arXiv{\@ifnextchar[{\@arXivWith}{\@arXivWithout}}
 \def\@arXivWith[#1]#2{\texttt{\href{http://arxiv.org/abs/#2}{arXiv:#2} [#1]}}
 \def\@arXivWithout#1{\texttt{\href{http://arxiv.org/abs/#1}{arXiv:#1}}}
-
 
 \endinput

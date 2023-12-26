@@ -109,12 +109,6 @@
 }
 \def\adjustSection#1{\ifnum#1<0\up{#1}\else{\ifnum#1>0\down{#1}\fi}\fi}
 
-\newskip\chunkskipamount
-\chunkskipamount=.5\baselineskip\@plus.7\baselineskip
-\newcommand\chunkskip{\vspace\chunkskipamount}
-\newcommand\chunkbreak{\par \ifdim \lastskip<\chunkskipamount \removelastskip \penalty -100\chunkskip\fi}
-
-
 \@ifundefined{@addpunct}{
   \def\@addpunct#1{%
     \relax\ifhmode
@@ -122,22 +116,23 @@
     \fi}
 }{}
 
-
 \newskip\nodeskipamount
 \nodeskipamount=0.25\baselineskip plus0.5\baselineskip
 
 \newcommand\nodeskip{\vspace\nodeskipamount}
 \newcommand\nodebreak{\par\ifdim\lastskip<\nodeskipamount\removelastskip\penalty-100\nodeskip\fi}
 
+\newcommand\nodenumberformat[1]{\textbf{#1}}
+\newcommand\nodenameformat[1]{\textbf{#1}}
 %% \M is used for unlabeled paragraphs
 \newcommand\M[1][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
-  \textbf{\thechunk\ignorespaces}\enspace\ignorespaces}
+  \nodenumberformat{\thechunk\ignorespaces}\enspace\ignorespaces}
 
 %% \N is used for labeled paragraphs
 \newcommand\N[2][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
-  \textbf{\thechunk\ignorespaces\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
+  \nodenumberformat{\thechunk\ignorespaces}\nodenameformat{\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
 
 % \begin{node} blah \end{node} === \M blah
 % \begin{node}[3] blah \end{node} === \M[3] blah
@@ -169,11 +164,19 @@
 {\ifx#1\relax\M\else\N{#1}\fi\adjustSection{1}\unskip\unskip\ignorespaces}%
 {\adjustSection{-1}\ignorespacesafterend}
 
+\newcommand\theoremnameformat[1]{\nodenameformat{#1}}
+
 %% newtheorem{command}{printed name}{body font}
 \def\newtheorem#1#2#3{
   \newenvironment{#1}[1][\relax]{
-\ifx##1\relax\begin{node}[#2]\else\begin{node}\textbf{#2} (##1)\textbf{.}\enspace\ignorespaces\fi#3\ignorespaces}%
+\ifx##1\relax\begin{node}\theoremnameformat{#2.\enspace\ignorespaces}\else\begin{node}\theoremnameformat{#2} (##1)\nodenameformat{.}\enspace\ignorespaces\fi#3\ignorespaces}%
 {\end{node}}
 }
+
+% Want to customize how node numbers and names are formatted? Redefine
+% these functions.
+\renewcommand\nodenameformat[1]{\textsc{#1}}
+\renewcommand\nodenumberformat[1]{\textsf{#1}}
+%\renewcommand\theoremnameformat[1]{\textsc{#1}}
 
 \endinput
