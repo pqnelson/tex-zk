@@ -116,8 +116,9 @@
     \fi}
 }{}
 
+% AMS classes use this skip amount for subsections
 \newskip\nodeskipamount
-\nodeskipamount=0.25\baselineskip plus0.5\baselineskip
+\nodeskipamount=0.5\baselineskip plus.7\baselineskip
 
 \newcommand\nodeskip{\vspace\nodeskipamount}
 \newcommand\nodebreak{\par\ifdim\lastskip<\nodeskipamount\removelastskip\penalty-100\nodeskip\fi}

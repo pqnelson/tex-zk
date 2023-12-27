@@ -1,8 +1,8 @@
-\usepackage[top=1in,bottom=1in,inner=1in,outer=1in]{geometry}
+%\usepackage[top=1in,bottom=1in,inner=1in,outer=1in]{geometry}
 \usepackage{iso2145}
 \usepackage{amsmath,amssymb}
 
-\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage[dvipsnames,HTML]{xcolor}
 \RequirePackage{hyperref}
 % eTeX uses this color for links, it's better than BrickRed imho
 \definecolor{linkRed}{cmyk}{0.28, 1, 1, 0.35}
@@ -11,24 +11,13 @@
     citecolor=linkRed,
     filecolor=linkRed,
     urlcolor=linkRed
-    %% pdfinfo={
-    %%   Title={Formalizing Finite Groups in Mizar},
-    %%   Author={Alex Nelson},
-    %%   CreationDate={D:20211214152256},
-    %%   ModDate={D:\pdfdate}
-    %% }
 }
-
-
-
 
 % Example of iso2145 theorem environments:
 \newtheorem{theorem}{Theorem}{\it}
 \newtheorem{corollary}{Corollary}{\it}
 \newtheorem{definition}{Definition}{}
 \newtheorem{puzzle}{Puzzle}{}
-\usepackage{lipsum}
-
 
 %%%%
 % Sectioning commands
@@ -38,51 +27,84 @@
   \global\sectionDepth=0
   \setSection{0}
 }
-\DeclareRobustCommand\chunks@start@subsection{\resetParagraphChunks%
-  \gdef\theHchunk{\thesubsection.\secprefix\arabic{chunk}.}%
-  \gdef\nodeprefix{\thesubsection}}
 \DeclareRobustCommand\chunk@start@section{\resetParagraphChunks%
   \gdef\theHchunk{\thesection\secprefix\arabic{chunk}.}%
   \gdef\nodeprefix{\thesection}}
+\DeclareRobustCommand\chunks@start@subsection{\resetParagraphChunks%
+  \gdef\theHchunk{\thesubsection.\secprefix\arabic{chunk}.}%
+  \gdef\nodeprefix{\thesubsection}}
+\DeclareRobustCommand\chunks@start@subsubsection{\resetParagraphChunks%
+  \gdef\theHchunk{\thesubsubsection.\secprefix\arabic{chunk}.}%
+  \gdef\nodeprefix{\thesubsubsection}}
 
+\let\og@section\section
+\let\og@subsection\subsection
+\let\og@subsubsection\subsubsection
+\def\section{\chunk@start@section\og@section}
+\def\subsection{\chunk@start@subsection\og@subsection}
+\def\subsubsection{\chunk@start@subsubsection\og@subsubsection}
 
-\def\partrunhead#1#2#3{%
-  \@ifnotempty{#2}{\uppercase{\ignorespaces#1 #2\unskip}\@ifnotempty{#3}{. }}%
-  \def\@tempa{#3}%
-  \ifx\@empty\@tempa\else
-    \begingroup \def\\{ \ignorespaces}% defend against questionable usage
-    \uppercasenonmath\@tempa\@tempa
-    \endgroup
-  \fi
-}
-\let\chapterrunhead\partrunhead
-\let\sectionrunhead\partrunhead
-\def\partname{Part}
-\def\part{\@startsection{part}{0}%
-  \z@{\baselineskip\@plus\baselineskip}{.5\baselineskip}%
-  {\normalfont\bfseries\raggedright}}
-\def\specialsection{\@startsection{section}{1}%
-  \z@{\baselineskip\@plus\baselineskip}{.5\baselineskip}%
-  {\normalfont\centering}}
-\def\section{\protect\chunk@start@section\@startsection{section}{1}%
-  \z@{.7\baselineskip\@plus\baselineskip}{.5\baselineskip}%
-  {\normalfont\scshape\centering}}
-\def\subsection{\protect\chunks@start@subsection\@startsection{subsection}{2}%
-  \parindent{.5\baselineskip\@plus.7\baselineskip}{.5\baselineskip}%-.5em}%
-  {\normalfont\bfseries}}
-\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\enspace}
-%% \def\@seccntformat#1{%
-%%   \protect\textup{\protect\@secnumfont
-%%     \csname the#1\endcsname
-%%     \protect\@secnumpunct
-%%   }%
-%% }
-%% \def\@secnumfont{\mdseries}
+\@ifclassloaded{amsbook}{\renewcommand\thesection{\thechapter.\arabic{section}}}{}
+
+\ifdefined\chapter
+% If you don't want to have nodes numbered "<chapter>.0.<node>"
+% just change \nodeprefix to:
+% \gdef\nodeprefix{\thechapter}
+\DeclareRobustCommand\chunk@start@chapter{\resetParagraphChunks%
+  \gdef\theHchunk{\thechapter.\secprefix\arabic{chunk}.}%
+  \gdef\nodeprefix{\thechapter.\arabic{section}}}
+\DeclareRobustCommand\chunk@start@chapter@nonumber{\resetParagraphChunks%
+  \gdef\theHchunk{\thechapter.\secprefix\arabic{chunk}.}%
+  \gdef\nodeprefix{\thechapter}}
+\let\og@chapter\@chapter
+\let\og@schapter\@schapter
+\def\@schapter{\chunk@start@chapter@nonumber\og@schapter}
+\def\@chapter{\chunk@start@chapter\og@chapter}
+\fi
+
 
 %%%%%%
 % ArXiV links
 \def\arXiv{\@ifnextchar[{\@arXivWith}{\@arXivWithout}}
 \def\@arXivWith[#1]#2{\texttt{\href{http://arxiv.org/abs/#2}{arXiv:#2} [#1]}}
 \def\@arXivWithout#1{\texttt{\href{http://arxiv.org/abs/#1}{arXiv:#1}}}
+
+% page numbering should never reset
+\def\pagenumbering#1{%
+  \gdef\thepage{\csname @#1\endcsname
+   \c@page}}
+
+\@ifclassloaded{report}{%
+  \if@compatibility
+  \renewenvironment{titlepage}
+    {%
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}
+    }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+    }
+    \else
+  \renewenvironment{titlepage}
+    {%
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}%
+      \setcounter{page}\@ne
+    }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+    }
+  \fi}{%
+}
+
+
+% Transclude % sigh, what a pretentious word
+\def\transclude#1{\unskip\input{\CurrentFilePath/#1}}
 
 \endinput

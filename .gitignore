@@ -4,3 +4,9 @@
 *.toc
 *.aux
 *.log
+# Bibtex detritis
+*.bbl
+*.blg
+
+# Local references
+refs/

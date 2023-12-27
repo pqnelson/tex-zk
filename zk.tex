@@ -1,18 +1,41 @@
-\documentclass{article}
+\documentclass[oneside]{amsbook}%{report}
 \usepackage{macros}
+\usepackage{sml}
 \usepackage{notation}
+\input{logos}
 \title{Random Zettelkasten Test}
 \author{Alex Nelson}
 \date{December 25, 2023}
 \begin{document}
+\frontmatter
 \maketitle
-
+\tableofcontents
+\mainmatter
+\vfill\eject
+\chapter{Taking Notes}
 \input{tex/amn-0000}
+
+\chapter{Standard ML}
+\input{tex/sml-0000}
+\section{Core Language}
+\input{tex/sml-0003}
+
+\chapter{Logic}
+\section{Propositional Logic}
+\input{tex/prop-0000}
+\section{First-Order Logic}
+\input{tex/fol-0000}
+
+\chapter{Set Theory}
 \section{NBG Set Theory}
 \input{tex/nbg-0000}
 \input{tex/nbg-0001}
 \input{tex/nbg-0002}
-\input{tex/example}
 
+
+\backmatter
+\nocite{*}
+\bibliographystyle{elements}%{amsalpha}
+\bibliography{zk}
 \end{document}
 

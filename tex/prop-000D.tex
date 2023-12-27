@@ -1,0 +1,10 @@
+\begin{node}[Precedence]\label{prop-000D}%
+We should note that logical connectives have the following binding
+strength (from weakest to strongest): $\neg$, $\land$, $\lor$,
+$\implies$, $\iff$. These are ``left associative''. We may insert
+parentheses to alter it. Some examples:
+\begin{enumerate}
+\item $A\iff (\neg B)\lor C\implies D$ is parsed as $A\iff(((\neg B)\lor C)\implies D)$.
+\item $A\implies B\implies C$ is parsed as $(A\implies B)\implies C$.
+\end{enumerate}
+\end{node}
