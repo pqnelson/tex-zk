@@ -1,8 +1,9 @@
 %\usepackage[top=1in,bottom=1in,inner=1in,outer=1in]{geometry}
 \usepackage{iso2145}
 \usepackage{amsmath,amssymb}
-
-\RequirePackage[dvipsnames,HTML]{xcolor}
+\usepackage{proof} %lkproof, for \infer
+\usepackage{tikz-cd}
+\RequirePackage{xcolor}
 \RequirePackage{hyperref}
 % eTeX uses this color for links, it's better than BrickRed imho
 \definecolor{linkRed}{cmyk}{0.28, 1, 1, 0.35}
@@ -30,10 +31,10 @@
 \DeclareRobustCommand\chunk@start@section{\resetParagraphChunks%
   \gdef\theHchunk{\thesection\secprefix\arabic{chunk}.}%
   \gdef\nodeprefix{\thesection}}
-\DeclareRobustCommand\chunks@start@subsection{\resetParagraphChunks%
+\DeclareRobustCommand\chunk@start@subsection{\resetParagraphChunks%
   \gdef\theHchunk{\thesubsection.\secprefix\arabic{chunk}.}%
   \gdef\nodeprefix{\thesubsection}}
-\DeclareRobustCommand\chunks@start@subsubsection{\resetParagraphChunks%
+\DeclareRobustCommand\chunk@start@subsubsection{\resetParagraphChunks%
   \gdef\theHchunk{\thesubsubsection.\secprefix\arabic{chunk}.}%
   \gdef\nodeprefix{\thesubsubsection}}
 
@@ -43,6 +44,14 @@
 \def\section{\chunk@start@section\og@section}
 \def\subsection{\chunk@start@subsection\og@subsection}
 \def\subsubsection{\chunk@start@subsubsection\og@subsubsection}
+
+\ifdefined\chapter
+\numberwithin{equation}{chapter}
+\else
+\numberwithin{equation}{section}
+\fi
+
+\@ifclassloaded{amsbook}{\setcounter{tocdepth}{3}}{}
 
 \@ifclassloaded{amsbook}{\renewcommand\thesection{\thechapter.\arabic{section}}}{}
 
@@ -105,6 +114,6 @@
 
 
 % Transclude % sigh, what a pretentious word
-\def\transclude#1{\unskip\input{\CurrentFilePath/#1}}
+\def\transclude#1{\input{\CurrentFilePath/#1}}
 
 \endinput

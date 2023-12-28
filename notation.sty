@@ -1,14 +1,36 @@
-
+\def\inferTabSkip{\qquad}
 \newcommand\define[1]{\textbf{``#1''}}
+
+% sets
 \def\properclass#1{\mathbf{#1}}
 \DeclareMathOperator{\dom}{dom}
 \newcommand\powerset{\mathcal{P}}
 
 
+\def\NN{\mathbb{N}}
+\def\ZZ{\mathbb{Z}}
+
 % from Knuth's TAOCPMAC
 \def\hair{\kern.05em\relax} % teeny tiny space
 \def\Hex#1{\hbox{$^{\scriptscriptstyle\#}\tt#1$\hair}} % hexadecimal constant
-
 \newcommand\verum{\mathtt{T}}
 \newcommand\falsum{\mathtt{F}}
+
+% SML
+\newcommand\Char[1]{$^{\scriptscriptstyle\#}$\texttt{"}#1\texttt{"}\hair}
+\newcommand\Reduces[1]{\ifx#1\relax\Longrightarrow\else\stackrel{#1}{\Longrightarrow}\fi}
+\newcommand\evalto{\hookrightarrow}
+\newcommand\judgement[1]{\mathsf{#1}}
+\newcommand\Value{\judgement{Value}}
+\newcommand\exteq{\cong}
+\newcommand\esti{\mathbin{:}}
+\newcommand\quasiquote[1]{\ulcorner #1\urcorner}
+\newcommand\Rule[1]{\mbox{\textsc{#1}}}
+\newcommand\Raise[1]{\judgement{Raise}~#1}
+\newcommand\appendstr{\wedge}
+
+% category theory
+\newcommand\cat[1]{\mathbf{#1}}
+\DeclareMathOperator\id{id}
+
 \endinput

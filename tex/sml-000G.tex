@@ -1,0 +1,108 @@
+\begin{node}[Booleans]\label{sml-000G}%
+\textbf{Type:} \texttt{bool}
+
+\textbf{Values:} \texttt{true} and \texttt{false}
+
+\textbf{Operations:} $e_{1}\mbox{ \texttt{andalso} }e_{2}$,
+$e_{1}\mbox{ \texttt{orelse} }e_{2}$,
+$\mbox{\texttt{if }}e_{1}\mbox{ \texttt{then} }e_{2}\mbox{ \texttt{else} }e_{3}$,
+$e_{1}\mbox{ \texttt{<} }e_{2}$,
+$e_{1}\mbox{ \texttt{<=} }e_{2}$,
+$e_{1}\mbox{ \texttt{=} }e_{2}$ when $e_{1}$ and $e_{2}$ belong to an ``equality type''.
+We will take $e_{1}>e_{2}$ as a synonym for $e_{2}<e_{1}$,
+and $e_{1}\geq e_{2}$ as a synonym for $e_{2}\leq e_{1}$.
+
+\textbf{Typing Rules:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{T-If}]{\mbox{\texttt{if }}e_{1}\mbox{ \texttt{then} }e_{2}\mbox{ \texttt{else} }e_{3}\esti T}{e_{1}\esti\mathtt{bool} & e_{2}\esti T & e_{3}\esti T}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-And}]{e_{1}\mbox{ \texttt{andalso} }e_{2}}{e_{1}\esti\mathtt{bool}
+& e_{2}\esti\mathtt{bool}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-Or}]{e_{1}\mbox{ \texttt{orelse} }e_{2}}{e_{1}\esti\mathtt{bool}
+& e_{2}\esti\mathtt{bool}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-Lt}]{e_{1}\mbox{ \texttt{<} }e_{2}\esti\mathtt{bool}}{%
+  e_{1}\esti T &
+  e_{2}\esti T &
+  T\in\{\mathtt{string},\mathtt{int},\mathtt{char}\}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-Leq}]{e_{1}\mbox{ \texttt{<=} }e_{2}\esti\mathtt{bool}}{%
+  e_{1}\esti T &
+  e_{2}\esti T &
+  T\in\{\mathtt{string},\mathtt{int},\mathtt{char}\}}
+\end{equation}
+\end{subequations}
+
+\textbf{Evaluation:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-If1}]{{\mbox{\texttt{if }}e_{1}\mbox{ \texttt{then} }e_{2}\mbox{ \texttt{else} }e_{3}}\Reduces{1}{\mbox{\texttt{if }}e_{1}'\mbox{ \texttt{then} }e_{2}\mbox{ \texttt{else} }e_{3}}}{e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-IfTrue}]{\mbox{\texttt{if }}\mathtt{true}\mbox{ \texttt{then} }e_{2}\mbox{ \texttt{else} }e_{3}\Reduces{1}e_{2}}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-IfFalse}]{\mbox{\texttt{if }}\mathtt{false}\mbox{ \texttt{then} }e_{2}\mbox{ \texttt{else} }e_{3}\Reduces{1}e_{3}}{}
+\end{equation}
+\end{subequations}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-And1}]{e_{1}\mbox{ \texttt{andalso} }e_{2}\Reduces{1}e_{1}'\mbox{ \texttt{andalso} }e_{2}}{e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-AndT}]{\mathtt{true}\mbox{ \texttt{andalso} }e_{2}\Reduces{1}e_{2}}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-AndF}]{\mathtt{false}\mbox{ \texttt{andalso} }e_{2}\Reduces{1}\mathtt{false}}{}
+\end{equation}
+\end{subequations}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-Or1}]{e_{1}\mbox{ \texttt{orelse} }e_{2}\Reduces{1}e_{1}'\mbox{ \texttt{orelse} }e_{2}}{e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-OrT}]{\mathtt{true}\mbox{ \texttt{orelse} }e_{2}\Reduces{1}\mathtt{true}}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-OrF}]{\mathtt{false}\mbox{ \texttt{orelse} }e_{2}\Reduces{1}e_{2}}{}
+\end{equation}
+\end{subequations}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-Leq1}]{e_{1}\mbox{ \texttt{<=} }e_{2}\Reduces{1}e_{1}'\mbox{ \texttt{<=} }e_{2}}{%
+e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Leq2}]{n_{1}\mbox{ \texttt{<=} }e_{2}\Reduces{1}n_{1}\mbox{ \texttt{<=} }e_{2}'}{%
+e_{2}\Reduces{1}e_{2}' & n_{1}~\Value}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-LeqT}]{\quasiquote{n_{1}}\mbox{ \texttt{<=} }\quasiquote{n_{2}}\Reduces{1}\mathtt{true}}{n_{1}\leq n_{2}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-LeqF}]{\quasiquote{n_{1}}\mbox{ \texttt{<=} }\quasiquote{n_{2}}\Reduces{1}\mathtt{false}}{n_{1}>n_{2}}
+\end{equation}
+\end{subequations}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-Lt1}]{e_{1}\mbox{ \texttt{<} }e_{2}\Reduces{1}e_{1}'\mbox{ \texttt{<} }e_{2}}{%
+e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Lt2}]{n_{1}\mbox{ \texttt{<} }e_{2}\Reduces{1}n_{1}\mbox{ \texttt{<} }e_{2}'}{%
+e_{2}\Reduces{1}e_{2}' & n_{1}~\Value}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-LtT}]{\quasiquote{n_{1}}\mbox{ \texttt{<} }\quasiquote{n_{2}}\Reduces{1}\mathtt{true}}{n_{1}<n_{2}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-LtF}]{\quasiquote{n_{1}}\mbox{ \texttt{<} }\quasiquote{n_{2}}\Reduces{1}\mathtt{false}}{n_{1}\geq n_{2}}
+\end{equation}
+\end{subequations}
+\end{node}

@@ -1,0 +1,9 @@
+\begin{node}[Remark]\label{sml-000J}%
+Note that the record type is ``more primitive'' than the product type,
+since $T_{1}\mbox{ \texttt{*} }\dots\mbox{ \texttt{*} }T_{n}$ is then
+translated implicitly to
+$\{\quasiquote{1}\esti T_{1},\dots,\quasiquote{n}\esti T_{n}\}$.
+Tuples $(t_{1},\dots,t_{n})$ is translated to records
+$\{\quasiquote{1}=t_{1},\dots,\quasiquote{n}=t_{n}\}$.
+This is stated in Appendix A of the definition~\cite{milner1997definition}.
+\end{node}

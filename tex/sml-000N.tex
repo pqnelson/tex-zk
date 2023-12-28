@@ -1,0 +1,31 @@
+\begin{definition}[{Johnstone~\cite[A2.5.15]{johnstone2002sketches:v1}}]\label{sml-000N}%
+Let $\cat{C}$ be a category with finite products and a terminal object
+$\mathbf{1}$. Let $A\in\cat{C}$ be an object. Then a \define{List Object} over
+$A$ is an object $L_{A}\in\cat{C}$ equipped with
+\begin{enumerate}
+\item a morphism $o_{A}\colon\mathbf{1}\to L_{A}$ called ``nil'', and
+\item a morphism $s_{A}\colon A\times L_{A}\to L_{A}$ called ``cons''
+\end{enumerate}
+such that
+\begin{enumerate}
+\item Universal Property of Lists: for any object $B$ of $\cat{C}$ and morphisms
+  $b\colon\mathbf{1}\to B$ and $t\colon A\times B\to B$, there exists a
+  unique morphism $f\colon L_{A}\to B$ 
+  such that the following diagram commutes:
+\begin{equation}\def\comma{,}
+  \begin{tikzcd}[sep=large]
+\mathbf{1}
+   \arrow[r, "o_{A}"]
+   \arrow[dr, swap, "b"]
+   & L_{A} \arrow[d, dashed, "f"]
+   & A\times L_{A} \arrow[l, swap, "s_{A}"]\arrow[d, dashed, "\langle \id_{A}\comma f\rangle"] \\
+ {}
+ & B
+ & A\times B \arrow[l, "t"]
+\end{tikzcd}
+\end{equation}
+\end{enumerate}
+The universal property says $f(\texttt{[]})=b()$ and $(t\circ\langle\id_{A}, f\rangle)(a\texttt{::}\ell)=t(a,f(\ell))=f(a\texttt{::}\ell)$.
+In \SML\ this says that $f$ is just \verb|foldr t b()| and therefore
+lists in \SML\ satisfy the universal property of lists.
+\end{definition}

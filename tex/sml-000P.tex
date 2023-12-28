@@ -1,0 +1,72 @@
+\begin{node}[Strings]\label{sml-000P}%
+\textbf{Type:} \texttt{string} (which is isomorphic to the type
+\texttt{char list})
+  
+\textbf{Values:} Literal values for strings are given by a sequence,
+between quotes (\texttt{"}), of zero or more printable characters (i.e.,
+numbered 33--126), spaces, or escape characters.
+
+\textbf{Operations:} A \texttt{string} is basically the same as a list
+of characters. We can transform a string instance into a list of its
+characters using $\texttt{explode}~s\esti\texttt{char list}$, and
+convert it back using $\texttt{implose}~\ell\esti\texttt{string}$.
+The primitive operations can be defined using these functions alone.
+
+\textsc{But nice-to-have operations:}
+Given two strings $s_{1}$ and $s_{2}$, we can append one after the other
+using $s_{1}\appendstr s_{2}\esti\texttt{string}$ (Verbatim: \verb#s1 ^ S2#). If we have a list of
+strings $\ell\esti\texttt{string list}$, then we could iteratively
+concatenate them all together using $\texttt{concat}~\ell\esti\texttt{string}$.
+
+The length of a string (i.e., the number of characters it contains) is
+given by $\texttt{size}~s\esti\texttt{int}$.
+
+We can transform any character $c\esti\texttt{char}$ into a single
+letter string using the primitive function $\texttt{str}~c\esti\texttt{string}$.
+
+This is an equality type, so for any two strings $s_{1}$ and $s_{2}$ we
+may obtain the Boolean expression $s_{1}\texttt{ = }s_{2}$ testing for
+equality, and $s_{1}\texttt{ <> }s_{2}$ for the negation of equality. We
+can also use lexicographical ordering to have $s_{1}\texttt{ < }s_{2}$
+as well as $s_{1}\texttt{ <= }s_{2}$.
+
+\textbf{Typing Rules:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{T-StrExp}]{\texttt{explode}~s\esti\texttt{char list}}{s\esti\texttt{string}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-StrImp}]{\texttt{implode}~\ell\esti\texttt{string}}{\ell\esti\texttt{char list}}
+\end{equation}
+\end{subequations}
+
+\textbf{Evaluation:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-StrExp1}]{\texttt{explode}~s\Reduces{1}\texttt{explode}~s'}{s\Reduces{1}s'}
+\end{equation}
+If $\ell$ is the list of character literals appearing in $s$, then:
+\begin{equation}
+\infer[\Rule{E-StrExp2}]{\texttt{explode}~s\Reduces{1}\ell}{s~\Value & \ell~\Value}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-StrImp1}]{\texttt{implode}~\ell\Reduces{1}\texttt{implode}~\ell'}{\ell\Reduces{1}\ell'}
+\end{equation}
+If $s$ is the string consisting of the character literals as they appear
+in the value $\ell$, then:
+\begin{equation}
+\infer[\Rule{E-StrImp2}]{\texttt{implode}~\ell\Reduces{1}s}{\ell~\Value & s~\Value}
+\end{equation}
+\end{subequations}
+As I said, a string is isomorphic to a list of characters, and we see in
+fact for all string values $s$ we have:
+\begin{equation}
+\texttt{implode}(\texttt{explode}~s)=s,
+\end{equation}
+and for all list of characters values $\ell$, we have
+\begin{equation}
+\texttt{explode}(\texttt{implode}~\ell)=\ell.
+\end{equation}
+This gives us our isomorphism claim.
+
+\end{node}

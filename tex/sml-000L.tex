@@ -1,0 +1,50 @@
+\begin{node}[Lists]\label{sml-000L}%
+\textbf{Type:} ``\texttt{T list}'' for any type \texttt{T}
+
+\textbf{Values:} $\texttt{[}v_{1},\dots,v_{n}\texttt{]}$ where
+$v_{j}$ is a value of type $T$ and $n\geq0$. We also have \texttt{[]} be
+a value called ``nil'' or ``the empty list''.
+
+\textbf{Expressions:} The collection of expressions for this type
+includes all values of type \texttt{T list}, and it also includes all
+expressions of the form $e\texttt{::}\ell$ with $e\esti T$ and
+$\ell\esti\texttt{T list}$. Note that $\texttt{[}e_{1},\dots,e_{n}\texttt{]}$
+is syntactic sugar for $e_{1}\texttt{::}\dots\texttt{::}e_{n}\texttt{::}\texttt{[]}$.
+
+The infixed operator ``\texttt{::}'' is right associative. We pronounce
+it as ``cons''.
+
+\textbf{Typing Rules:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{T-Nil}]{\texttt{[]}\esti T~\texttt{list}}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-Cons}]{t\texttt{::}\ell\esti T~\texttt{list}}{t\esti T & \ell\esti T~\texttt{list}}
+\end{equation}
+\end{subequations}
+
+\textbf{Evaluation:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-Nil}]{\texttt{[]}~\Value}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Cons1}]{e_{1}\texttt{::}e_{2}\Reduces{1}e_{1}'\texttt{::}e_{2}}{e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Cons2}]{v_{1}\texttt{::}e_{2}\Reduces{1}v_{1}\texttt{::}e_{2}}{%
+  v_{1}~\Value & e_{2}\Reduces{1}e_{2}'}
+\end{equation}
+\end{subequations}
+
+\textbf{Patterns:} There are two patterns which will match a list
+\begin{enumerate}
+\item \texttt{[]} matches the empty list, and
+\item $p_{h}\texttt{::}p_{\ell}$ will try to match
+  pattern $p_{h}$ against the head of the list and $p_{\ell}$ against
+  the tail of the list.
+\end{enumerate}
+
+\transclude{sml-000N}
+\end{node}
