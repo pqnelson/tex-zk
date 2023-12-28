@@ -1,0 +1,14 @@
+\begin{node}[Organization, IDs]\label{amn-0003}%
+Finding anything is a nightmare in this approach. I have severe doubts
+about this approach of ``writing the ID first, then the notes''. This
+makes no sense at all. I'm following the convention that Jonathan
+Sterling has outlined, that IDs should have the form
+\begin{equation}
+\langle\textit{identifier}\rangle ::= \langle\textit{namespace}\rangle\mbox{-}\langle\textit{number}\rangle,
+\end{equation}
+where the ``number'' is in base-36 and zero-padded to four places (which
+means each namespace can have no more than 1,679,616 entries; adding an
+extra digit allows 60,466,176 entries). Then ``namespace'' is a short
+(usually 3-letter long) string like: ``amn'' (for metanotes), ``set''
+(for set theory), ``fol'' (for first-order logic), etc.
+\end{node}

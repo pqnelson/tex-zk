@@ -1,0 +1,25 @@
+\begin{definition}\label{fol-0002}%
+Let $V$ be a (nonempty, countably infinite) set of variables. We define
+a \define{Term} in first-order logic inductively as
+\begin{enumerate}
+\item variables are terms;
+\item constants are terms;
+\item a ``function'' is a term, i.e., a term parametrized by a fixed
+  number (called its \define{arity}) of terms.
+\end{enumerate}
+We can also specify terms by the following grammar (where
+constants are functions with zero arguments):
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{term}$\rangle$ & ::= & $\langle$\textit{variable}$\rangle$\\
+& $|$ & $\langle$\textit{function symbol}$\rangle$ \verb#(# $\langle$\textit{arguments}$\rangle$ \verb#)#\\
+  & & \\
+$\langle$\textit{arguments}$\rangle$ & ::= & $\langle$\textit{empty}$\rangle$\\
+  & $|$ & $\langle$\textit{argument list}$\rangle$\\
+  & & \\
+$\langle$\textit{argument lists}$\rangle$ & ::= & $\langle$\textit{term}$\rangle$\\
+  & $|$ & $\langle$\textit{term}$\rangle$ \verb#,# $\langle$\textit{argument list}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{definition}
+

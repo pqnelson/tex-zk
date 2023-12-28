@@ -1,0 +1,19 @@
+\begin{definition}\label{fol-0004}%
+In first-order logic, a \define{Formula} may be formed from atomic
+formulas, the usual connectives from propositional logic, and quantified
+formulas. When we replace atomic formulas by propositions, we see we can
+recover propositional logic's grammar \zref{prop-000I}. The BNF grammar
+for formulas in first-order logic is then: 
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{formula}$\rangle$ & ::= & $\langle$\textit{atomic formula}$\rangle$\\
+& $|$ & $\neg\,\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\land\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\lor\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\implies\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\iff\langle$\textit{formula}$\rangle$\\
+& $|$ & $\forall$ $\langle$\textit{variable}$\rangle\langle$\textit{formula}$\rangle$\\
+& $|$ & $\exists$ $\langle$\textit{variable}$\rangle\langle$\textit{formula}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{definition}
