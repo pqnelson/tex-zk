@@ -60,7 +60,7 @@
   \def\newPrefix{}
   \global\advance\sectionDepth by-1
   \def\updatePrefix##1.##2\endUpdate{
-    \ifx##2\relax % if we are at the last number
+    \ifx\relax##2 % if we are at the last number
       % globally set \secprefix to be the leading (n-1) section numbers
       \xdef\secprefix{\newPrefix}
       % globally set \chunk to be the last section number from \secprefix

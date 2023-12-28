@@ -1,0 +1,17 @@
+\begin{node}\label{prop-000I}%
+The BNF grammar for propositional logic may be written down explicitly
+as a half-dozen production rules with variables treated as a
+``primitive''. These rules tell us that variables are propositions,
+so are negations of propositions, conjunction, disjunction, implication,
+and bi-implication of propositions form propositions (respectively).
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{proposition}$\rangle$ & ::= & $\langle$\textit{variable}$\rangle$\\
+& $|$ & $\neg\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\land\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\lor\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\implies\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\iff\langle$\textit{proposition}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{node}
