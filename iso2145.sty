@@ -45,7 +45,7 @@
 \newcommand\nodeprefix{\relax} % This could be changed when chapter,
                                % section, etc. is called
 \newcommand\nodeseparator{.} % Dieudonne uses \textperiodcentered
-\renewcommand\thechunk{\expandafter\ifx\nodeprefix\relax\else\nodeprefix\nodeseparator\fi\secprefix\arabic{chunk}.}
+\renewcommand\thechunk{\expandafter\ifx\nodeprefix\relax\else\nodeprefix\nodeseparator\fi\secprefix\arabic{chunk}}
 
 % \pushSection simply appends "\arabic{chunk}." to \secprefix's current value
 \def\pushSection{
@@ -128,12 +128,12 @@
 %% \M is used for unlabeled paragraphs
 \newcommand\M[1][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
-  \nodenumberformat{\thechunk\ignorespaces}\enspace\ignorespaces}
+  \nodenumberformat{\thechunk\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
 
 %% \N is used for labeled paragraphs
 \newcommand\N[2][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
-  \nodenumberformat{\thechunk\ignorespaces}\nodenameformat{\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
+  \nodenumberformat{\thechunk\@addpunct{.}\ignorespaces}\nodenameformat{\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
 
 % \begin{node} blah \end{node} === \M blah
 % \begin{node}[3] blah \end{node} === \M[3] blah
