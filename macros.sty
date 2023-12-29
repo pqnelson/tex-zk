@@ -55,6 +55,29 @@
 
 \@ifclassloaded{amsbook}{\renewcommand\thesection{\thechapter.\arabic{section}}}{}
 
+% hack the ToC to include itself
+\@ifclassloaded{amsbook}{
+\def\@starttoc#1#2{%
+  \begingroup
+  \setTrue{#1}%
+  \let\secdef\@gobbletwo \chapter
+  \let\@secnumber\@empty % for \@tocwrite and \chaptermark
+  \@tocwrite{chapter}{#2} % DIFF: write to the TOC always
+  \typeout{#2}\@xp\chaptermark\@xp{#2}%
+  \@makeschapterhead{#2}\@afterheading
+  \parskip\z@skip
+  \makeatletter
+  \@input{\jobname.#1}%
+  \if@filesw
+    \@xp\newwrite\csname tf@#1\endcsname
+    \immediate\@xp\openout\csname tf@#1\endcsname \jobname.#1\relax
+  \fi
+  \global\@nobreakfalse \endgroup
+  \newpage
+}
+
+}{}
+
 \ifdefined\chapter
 % If you don't want to have nodes numbered "<chapter>.0.<node>"
 % just change \nodeprefix to:

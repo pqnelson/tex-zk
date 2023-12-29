@@ -70,7 +70,8 @@
   keywordstyle=[3]{\SMLconst},%
   morecomment=[n]{(*}{*)},%
   columns=flexible,%
-  commentstyle={\SMLcomment},%\slshape\defaultCommentStyle},%
+  basewidth={0.5em,0.5em}, % https://tex.stackexchange.com/a/426252
+  commentstyle={\slshape\defaultCommentStyle},%
   stringstyle={\color{stringblue}},%
   morestring=[d]"%
   }
@@ -82,7 +83,7 @@
   innermargin=-1em,
   leftmargin=0pt,
   rightmargin=0pt,
-  innerleftmargin=0em,
+  innerleftmargin=\if@twoside1em\else0pt\fi,
   innerrightmargin=0pt,
   rightline=false,
   leftline=false,

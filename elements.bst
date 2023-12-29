@@ -534,6 +534,16 @@ FUNCTION {format.note}
   if$
 }
 
+FUNCTION {format.title.inbook}
+{ title
+  "title" bibinfo.check
+  duplicate$ empty$ 'skip$
+    {
+      "\enquote{" swap$ * "}" *
+    }
+  if$
+}
+
 FUNCTION {format.title}
 { title
   "title" bibinfo.check
@@ -1044,16 +1054,24 @@ FUNCTION {inbook}
     }
   if$
   new.block
-  format.btitle "title" output.check
+  format.title.inbook "title" output.check
   crossref missing$
-    {
+    { format.in.ed.booktitle "booktitle" output.check
       format.bvolume output
-      format.chapter.pages "chapter and pages" output.check
-      new.block
       format.number.series output
+      format.chapter.pages output
       new.sentence
       format.publisher.address output
+      format.edition output
     }
+    % {
+    %   format.bvolume output
+    %   format.chapter.pages "chapter and pages" output.check
+    %   new.block
+    %   format.number.series output
+    %   new.sentence
+    %   format.publisher.address output
+    % }
     {
       format.chapter.pages "chapter and pages" output.check
       new.block
