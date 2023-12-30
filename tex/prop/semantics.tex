@@ -1,0 +1,175 @@
+% 0
+
+\begin{node}[Semantics]\label{prop-000K}%
+\begin{node}[Connectives]\label{prop-0001}%
+  The usual connectives are enumerated. We begin with negation.
+\begin{enumerate}
+\item If $A$ is
+a proposition, then its \define{negation} is denoted $\neg A$. Its truth table is
+\[\begin{array}{c|c}
+A & \neg A\\ \hline
+\verum & \falsum\\
+\falsum & \verum\\
+\end{array}\]
+where $\verum$ and $\falsum$ are the truth values ``true'' and
+``false'', respectively.
+\item Let $A$ and $B$ be propositions. Their \define{conjunction} is the
+  proposition denoted $A\land B$ with truth table
+\[\begin{array}{cc|c}
+A & B & A\land B\\\hline
+\verum  & \verum  & \verum\\
+\falsum & \verum  & \falsum\\
+\verum  & \falsum & \falsum\\
+\falsum & \falsum & \falsum\\
+\end{array}\]
+We refer to the subpropositions $A$ and $B$ as \define{Conjuncts} of
+$A\land B$.
+\item Let $A$ and $B$ be propositions. Their \define{Disjunction} is the
+  proposition denoted $A\lor B$ and is interpreted as ``Either $A$ or
+  $B$ or both''. Its truth table is
+\[\begin{array}{cc|c}
+A & B & A\lor B\\\hline
+\verum  & \verum  & \verum\\
+\falsum & \verum  & \verum\\
+\verum  & \falsum & \verum\\
+\falsum & \falsum & \falsum\\
+\end{array}\]
+Observe $A\lor B$ is false only when both $A$ and $B$ are false.
+The subpropositions $A$ and $B$ are called the \define{Disjuncts} of
+$A\lor B$.
+\item The conditional ``If $A$, then $B$'' requires some
+  justification. Surely ``If $\verum$, then $\falsum$'' should be
+  false. But what of the other three possible cases? We should hope ``If
+  $\verum$, then $\verum$'' is true. We will adopt the convention that
+  ``If $\falsum$, then $B$'' is always true. The truth table may be
+  written down as
+\[\begin{array}{cc|c}
+A & B & A\implies B\\\hline
+\verum  & \verum  & \verum\\
+\falsum & \verum  & \verum\\
+\verum  & \falsum & \falsum\\
+\falsum & \falsum & \verum\\
+\end{array}\]
+We call the subformula $A$ the \define{Antecedent} and the subformula
+$B$ the \define{Consequent} (or sometimes \textit{Succedent}) of the
+formula $A\implies B$.
+
+\textsc{Caution:} The implication should not be used when considering
+counterfactuals or causal laws. As odd as it sounds, neither
+counterfactuals nor causal laws are needed in mathematics.
+\item Let $A$ and $B$ be propositions. The logical equivalence of $A$
+  and $B$, or \define{Biconditional} of $A$ and $B$, is the proposition
+  denoted $A\iff B$ and is true only when $A$ and $B$ have the same
+  truth values:
+\[\begin{array}{cc|c}
+A & B & A\iff B\\\hline
+\verum  & \verum  & \verum\\
+\falsum & \verum  & \falsum\\
+\verum  & \falsum & \falsum\\
+\falsum & \falsum & \verum\\
+\end{array}\]
+\end{enumerate}
+\end{node}
+
+\begin{node}\label{prop-0004}%
+Let $V$ be our set of variables. A \define{Valuation} (or
+\textit{Truth Function}) is a function $\rho\colon V\to\{\verum,\falsum\}$
+assigning a truth value to each propositional variable. Intuitively,
+this corresponds to a row in the truth table.
+
+We will abuse notation and write $\rho(A)$ for any proposition $A$ over
+the propositional variables $V$, and understand this to mean it is the
+result of looking at the relevant row of the truth table for $A$.
+
+Valuations describe the \emph{semantics} of logic, in the sense
+that we are describing a possible configuration of the ``world''.
+\end{node}
+
+\begin{definition}\label{prop-000L}%
+We call a proposition $A$ a \define{Tautology} (or \textit{Logically Valid})
+if it evaluates to $\verum$ under every valuation $\rho(A)=\verum$.
+That is to say, its truth-table value is ``true'' for \emph{all} rows.
+
+``Validity'' is the term used in first-order logic, but Wittgenstein's
+\textit{Tractatus} popularized the term ``Tautology''.
+\end{definition}
+
+\begin{definition}\label{prop-000M}%
+We will call a proposition $A$ \define{Satisfiable} if there exists at
+least one valuation $\rho$ for which $\rho(A)=\verum$. 
+
+\begin{node}\label{prop-000N}%
+All tautologies are also satisfiable.
+\end{node}
+\end{definition}
+
+\begin{definition}\label{prop-0005}%
+We say a proposition $C$ is a \define{Logical Consequence} of
+proposition $B$ if every valuation $\rho$ for which $\rho(B)$ is true
+also makes $\rho(C)$ true.
+\end{definition}
+
+\begin{definition}\label{prop-0006}%
+Let $B$ and $C$ be propositions. We will say $B$ and $C$ are
+\define{Logically Equivalent} if for every valuation $\rho$ the
+truth value of $\rho(B)$ is identical to the truth value of $\rho(C)$.
+\end{definition}
+
+\begin{node}\label{prop-0007}%
+Let $B$ and $C$ be propositions.
+\begin{enumerate}
+\item $C$ is a logical consequence of $B$ if and only if $B\implies C$
+  is a tautology;
+\item $B$ and $C$ are logically equivalent if and only if $B\iff C$ is a tautology.
+\end{enumerate}
+\end{node}
+
+\begin{definition}\label{prop-0008}%
+We will call a proposition a \define{Contradiction} if there is no
+valuation for which it is true. Equivalently, if a proposition is
+false under every valuation, then it is a contradiction.
+\begin{node}\label{prop-0009}%
+Observe, a proposition $A$ is a contradiction if and only if $\neg A$
+is a tautology.
+\end{node}
+\end{definition}
+
+\begin{node}\label{prop-000A}%
+Let $\tau(x_{1},\dots,x_{n})$ be a tautology involving the $n$
+metavariables $x_{1}$, \dots, $x_{n}$ ranging over propositions. Let
+$A_{1}$, \dots, $A_{n}$ be any $n$ propositions. Then $\tau(A_{1},\dots,
+A_{n})$ is a tautology, which Mendelson calls \textit{Logically True}.
+
+Conversely, given any contradiction $\gamma(x_{1},\dots, x_{m})$
+parametrized by $m$ metavariables $x_{1}$, \dots, $x_{m}$ ranging over
+propositions, and given any $m$ propositions $B_{1}$, \dots, $B_{m}$, we
+see that $\gamma(B_{1},\dots,B_{m})$ is a contradiction (which Mendelson
+calls \textit{Logically False}).
+\end{node}
+
+\begin{node}\label{prop-000B}%
+Let $B$ and $C$ be propositions.
+If both $B$ and $B\implies C$ are tautologies, then so is $C$.
+\end{node}
+
+\begin{node}\label{prop-000C}%
+Let $A(x)$ be a proposition parametrized by a metavariable $x$ ranging
+over propositions.
+Let $B$ and $C$ be propositions. Then $(B\iff C)\implies(A(B)\iff A(C))$
+is a tautology.
+\end{node}
+
+\begin{node}[Adequate sets of connectives]\label{prop-000E}%
+Every proposition is logically equivalent to a proposition involving the
+connectives $\neg$, $\land$, $\lor$. That is to say, the set of
+connectives $\{\neg,\land,\lor\}$ is adequate for propositional logic
+and the others may be expressed in terms of them.
+
+Furthermore, the sets $\{\neg,\land\}$, $\{\neg,\lor\}$, and $\{\neg,\implies\}$
+are adequate for propositional logic (in the sense that any proposition
+is logically equivalent to one involving only these connectives). This
+is because $A\land B$ is logically equivalent to $\neg(\neg A\lor\neg B)$,
+$A\implies B$ is logically equivalent to $(\neg A)\lor B$, and $A\iff B$
+is logically equivalent to $(A\implies B)\land(B\implies A)$.
+\end{node}
+\end{node}

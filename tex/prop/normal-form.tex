@@ -1,0 +1,126 @@
+% 0
+\begin{node}[Normal forms]\label{prop-000P}%
+A common trick in logic is to take some sort of ``normal form'' of
+formulas. That is to say, we restrict attention to a sublanguage of
+propositional logic such that (a) it is constructed using an adequate
+set of connectives~\zref{prop-000E}, and (b) it simplifies proving if a
+proposition is satisfiable or unsatisfiable. (This is far too applied a
+topic for Mendelson~\cite{mendelson2015mathematical}, and I am relying on
+Harrison~\cite{harrison2009handbook} for much of the material here.)
+
+\begin{definition}\label{prop-000Q}%
+In propositional logic, we define a \define{Literal} to be a
+propositional variable or its negation. We say that a literal is
+\define{Negative} if it is of the form $\neg A$; otherwise we say it is
+\define{Positive}. 
+\end{definition}
+
+\begin{definition}\label{prop-000O}%
+We say a proposition is in \define{Negation Normal Form} if it is
+constructed using conjunctions and disjunctions of
+literals. Inductively:
+\begin{enumerate}
+\item A literal~\zref{prop-000Q} is in negation normal form;
+\item If $\varphi$ and $\psi$ are in negation normal form, then so it
+  $\varphi\land\psi$ and $\varphi\lor\psi$;
+\item We nominally accept $\verum$ and $\falsum$ as ``degenerate'' cases
+  of negation normal form.
+\end{enumerate}
+\end{definition}
+
+\begin{node}[Transforming to NNF]\label{prop-000R}%
+We can transform a formula into negation normal form by eliminating
+``$\implies$'' and ``$\iff$'' using
+\begin{subequations}
+\begin{equation}
+(A\implies B) \iff ((\neg A)\lor B),
+\end{equation}
+and
+\begin{equation}
+(A\iff B)\iff((A\lor\neg B)\land((\neg A)\lor B)).
+\end{equation}
+\end{subequations}
+We can use De Morgan laws to simplify negated conjunctions and
+disjunctions, and ``pull negations down to the literals'':
+\begin{subequations}
+  \begin{align}
+    \neg(A\land B) &\iff (\neg A)\lor(\neg B)\\
+    \neg(A\lor B) &\iff (\neg A)\land(\neg B)\\
+    \neg(\neg A) &\iff A
+\end{align}
+\end{subequations}
+In \SML, we could write a function transforming any \verb|Prop|
+instance~\zref{prop-000G} into negation normal form (using some
+optimizations) as something like:
+\begin{sml}
+(* nnf : Prop -> Prop *)
+fun nnf (And(A,B)) = And (nnf A, nnf B)
+  | nnf (Or(A,B)) = Or(nnf A, nnf B)
+  | nnf (Implies(A,B)) = Or(nnf(Not A), nnf B)
+  | nnf (Iff(A,B)) = Or(And(nnf A, nnf B),
+                        And(nnf(Not A), nnf(Not B)))
+  | nnf (Not (Not A)) = nnf A
+  | nnf (Not (And (A, B))) = Or(nnf(Not A),nnf(Not B))
+  | nnf (Not (Implies (A,B))) = And(nnf A, nnf(Not B))
+  | nnf (Not (Iff (A,B))) = Or(And(nnf A, nnf(Not B)),
+                               And(nnf(Not A), nnf B))
+  | nnf (fm as _) = fm;
+\end{sml}
+\end{node}
+
+\begin{definition}\label{prop-000S}%
+A proposition is in \define{Disjunctive Normal Form} if it is the
+disjunction of conjuncts, i.e., when it is of the form
+\begin{subequations}
+\begin{equation}
+\varphi = D_{1}\lor D_{2}\lor\dots\lor D_{m}
+\end{equation}
+where each disjunct $D_{i}$ is of the form
+\begin{equation}
+D_{i} = \ell_{i_{1}}\land\ell_{i_{2}}\land\dots\land\ell_{i_{n_{i}}}
+\end{equation}
+\end{subequations}
+(where each $\ell_{\star}$ is a literal~\zref{prop-000Q}).
+\begin{theorem}\label{prop-000T}%
+If a proposition is in disjunctive normal form, then it is in negation
+normal form.
+\end{theorem}
+\end{definition}
+
+\begin{definition}\label{prop-000U}%
+A proposition is in \define{Conjunctive Normal Form} if it is the
+conjunction of disjunctions of literals, i.e., if it is of the form
+\begin{subequations}
+\begin{equation}
+C_{1}\land C_{2}\land\dots\land C_{m}
+\end{equation}
+where each conjunct $C_{i}$ is of the form
+\begin{equation}
+\ell_{i_{1}}\lor\ell_{i_{2}}\lor\dots\lor\ell_{i_{n_{i}}},
+\end{equation}
+and each $\ell_{i_{j}}$ is a literal~\zref{prop-000Q}.
+\end{subequations}
+\begin{theorem}\label{prop-000V}%
+If a proposition is in conjunctive normal form, then it is in negation
+normal form.
+\end{theorem}
+\end{definition}
+
+\begin{definition}\label{prop-000W}%
+Let $\varphi$ be a proposition.
+We say a proposition $\psi$ is $\varphi$ in \define{Definitional Conjunctive Normal Form}
+(or ``\textit{Definitional CNF}\,'' for short) if
+$\psi$ is equisatisfiable as $\varphi$ (i.e., $\psi$ is satisfiable if
+and only if $\varphi$ is satisfiable) and $\psi$ is obtained by finitely
+many transformations, each of which introduce a ``fresh'' propositional
+variable $X$ which replaces all instances of some subproposition
+$\alpha$, and we conjunct onto it $X\iff\alpha$. There are a great many
+variations of the procedure.
+
+\begin{node}\label{prop-000X}%
+It appears the first time the \emph{phrase} ``definitional CNF'' was
+used may be found in Beckert and Posegga~\cite{beckert1994lean}. The
+idea may be traced back to Tsetin~\cite{Tseitin1983}.
+\end{node}
+\end{definition}
+\end{node}

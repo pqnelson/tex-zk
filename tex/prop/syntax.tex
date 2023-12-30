@@ -1,0 +1,68 @@
+% 0
+\begin{node}[Syntax]\label{prop-000J}%
+\begin{node}\label{prop-000I}%
+The BNF grammar for propositional logic may be written down explicitly
+as a half-dozen production rules with variables treated as a
+``primitive''. These rules tell us that variables are propositions,
+so are negations of propositions, conjunction, disjunction, implication,
+and bi-implication of propositions form propositions (respectively).
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{proposition}$\rangle$ & ::= & $\langle$\textit{variable}$\rangle$\\
+& $|$ & $\neg\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\land\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\lor\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\implies\langle$\textit{proposition}$\rangle$\\
+& $|$ & $\langle$\textit{proposition}$\rangle\iff\langle$\textit{proposition}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{node}
+
+\begin{definition}\label{prop-0002}%
+Let $V$ be a (nonempty, countably infinite) set of propositional variables. Then
+we inductively define a \define{Proposition} according to the following
+rules:
+\begin{enumerate}
+\item Any propositional variable $A\in V$ is a proposition;
+\item If $A$ and $B$ are propositions, then so are $\neg A$, $A\land B$,
+  $A\lor B$, $A\implies B$, and $A\iff B$.
+\end{enumerate}
+Only those expressions constructed by these rules are propositions.
+
+\begin{node}\label{prop-0003}%
+We usually keep the set of variables $V$ implicit throughout. So we will
+not explicitly refer to it unless absolutely necessary. We will
+understand that ``a proposition'' really means ``a proposition over the
+set of propositional variables $V$'', and we keep it in the back of our minds.
+\end{node}
+
+\begin{node}\label{prop-000G}%
+We can encode the syntax of propositional logic using \SML\ as a
+recursive data structure. This reflects the tree-like structure to the
+grammar of well-formed formulas \zref{prop-000I}.
+
+If we were to do this in production, we would probably place this in a
+structure with the various other utility functions.
+
+\begin{sml}
+datatype Prop = Atom of string
+              | Not of Prop
+              | And of Prop * Prop
+              | Or of Prop * Prop
+              | Implies of Prop * Prop
+              | Iff of Prop * Prop;
+\end{sml}
+\end{node}
+\end{definition}
+
+\begin{node}[Precedence]\label{prop-000D}%
+We should note that logical connectives have the following binding
+strength (from weakest to strongest): $\neg$, $\land$, $\lor$,
+$\implies$, $\iff$. These are ``left associative''. We may insert
+parentheses to alter it. Some examples:
+\begin{enumerate}
+\item $A\iff (\neg B)\lor C\implies D$ is parsed as $A\iff(((\neg B)\lor C)\implies D)$.
+\item $A\implies B\implies C$ is parsed as $(A\implies B)\implies C$.
+\end{enumerate}
+\end{node}
+\end{node}
