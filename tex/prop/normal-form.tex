@@ -1,4 +1,4 @@
-% 3
+% 5
 \begin{node}[Normal forms]\label{prop-000P}%
 A common trick in logic is to take some sort of ``normal form'' of
 formulas. That is to say, we restrict attention to a sublanguage of
@@ -26,6 +26,16 @@ literals. Inductively:
 \item We nominally accept $\verum$ and $\falsum$ as ``degenerate'' cases
   of negation normal form.
 \end{enumerate}
+
+\begin{node}[History of term NNF]\label{prop-normal-form-0003}%
+The term ``negation normal form'' appears to have been coined by the
+1960s. It appears in Raymond Smullyan's 1968 book \textit{First-Order Logic}
+in exercise 3 (on page 131), and in John Barwise's 1967 doctoral thesis
+``Infinitary logic and admissible sets''. But it is unclear to me if
+either of these men actually \emph{coined} the term. Certainly, it seems
+safe to speculate that it appears \emph{after} 1928, i.e., when Hilbert
+coined the terms ``disjunctive normal form'' and ``conjunctive normal form''~\zref{prop-normal-form-0004}.
+\end{node}
 \end{definition}
 
 \begin{node}[Transforming to NNF]\label{prop-000R}%
@@ -69,7 +79,7 @@ fun nnf (And(A,B)) = And (nnf A, nnf B)
 \end{node}
 
 \begin{definition}\label{prop-normal-form-0000}%
-A proposition is in \define{Negation Equational Normal Form} (NENF) if
+A proposition is in \define{Negation Equivalence Normal Form} (NENF) if
 it comprises of conjunctions, disjunctions, bi-implications, and literals.
 We give an explicit inductive definition:
 \begin{enumerate}
@@ -84,7 +94,8 @@ We give an explicit inductive definition:
 Harrison~\cite{harrison2009handbook} simply refers to this normal form
 as ``NENF'' without explaining what this acronym means. I am guessing
 based on Barry Watson's notes\footnote{\url{http://barrywatson.se/cl/cl_nenf.html}}
-that it refers to ``negation equational normal form''. I do not know who
+that it refers to ``negation equational normal form'' and on the index
+page to ``negation equivalence normal form''. I do not know who
 first coined the acronym ``NENF'', and I do not honestly know what
 ``NENF'' stands for.
 \end{node}
@@ -147,6 +158,19 @@ where each conjunct $C_{i}$ is of the form
 \end{equation}
 and each $\ell_{i_{j}}$ is a literal~\zref{prop-000Q}.
 \end{subequations}
+\begin{node}[History of terms CNF and DNF]\label{prop-normal-form-0004}%
+Carnap's ``Testability and Meaning'' (\textit{Philosophy of Science}
+\textbf{3} no.4 (1936) 419--471) cites Hilbert (\textit{Logik} [?],
+p.63) and separately Carnap's earlier book \textit{Logical Syntax of Language}
+(calling it  ``conjunctive standard form'') as the source of conjunctive
+normal form. Coincidentally, ``Testability and Meaning'' appears to coin
+the term ``disjunctive normal form'' on page 437, citing page 13 of some work by Hilbert (there is no bibliography for ``Testability and Meaning'').
+The 1950 English translation of Hilbert and Ackermann's
+\textit{Principles of Mathematical Logic} uses the term ``disjunctive
+normal form'' (ch.~1, \S6) and ``conjunctive normal form'' (ch~1, \S7).
+It seems safe to credit David Hilbert for inventing these notions, and
+may be found in this German book published 1928.
+\end{node}
 \begin{theorem}\label{prop-000V}%
 If a proposition is in conjunctive normal form, then it is in negation
 normal form.
