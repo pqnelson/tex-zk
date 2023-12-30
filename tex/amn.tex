@@ -1,0 +1,70 @@
+% 7
+\begin{node}\label{amn-0000}
+Jon Sterling argues that scientific thought requires arbitrary nesting
+of trees and the ability to ``transclude'' trees left and right. We can
+do this using the \verb|node| environment in my \verb|iso2145|
+package. Does it really contribute to productivity? I have my doubts.
+\end{node}
+\begin{node}\label{amn-0001}
+I should probably give an earnest attempt to write some notes, to give a
+fair assessment of how useful this is for writing notes. Towards that
+end, I suppose I should give an earnest effort to write some notes on
+the various topics I am interested in at the moment.
+\end{node}
+\begin{node}\label{amn-0002}%
+I have written up some Emacs macros to expedite writing new nodes
+(simply \verb|Ctrl-c Ctrl-n| will do this for me now) and
+``transcluding'' (shudder) nodes using \verb|Ctrl-c t|. The basic macros
+are reproduced below:
+\lstinputlisting[showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{zk.el}
+\end{node}
+\begin{node}[Organization, IDs]\label{amn-0003}%
+Finding anything is a nightmare in this approach. I have severe doubts
+about this approach of ``writing the ID first, then the notes''. This
+makes no sense at all. I'm following the convention that Jonathan
+Sterling has outlined, that IDs should have the form
+\begin{equation}
+\langle\textit{identifier}\rangle ::= \langle\textit{namespace}\rangle\mbox{-}\langle\textit{number}\rangle,
+\end{equation}
+where the ``number'' is in base-36 and zero-padded to four places (which
+means each namespace can have no more than 1,679,616 entries; adding an
+extra digit allows 60,466,176 entries). Then ``namespace'' is a short
+(usually 3-letter long) string like: ``amn'' (for metanotes), ``set''
+(for set theory), ``fol'' (for first-order logic), etc.
+\end{node}
+\begin{node}[{Pseudo-hierarchies}]\label{amn-0004}%
+Andy Matuschak has argued\footnote{\url{https://notes.andymatuschak.org/Evergreen_notes?stackedNotes=z8SU3r8xyZyvwRhyDdJasJ2&stackedNotes=zPpqLzE6VWKxXF6BpsAfr4C}}
+that ``pseudo-hierarchies'' are the ``correct'' way to organize
+notes using an ``outline note''. But he doesn't really address why an
+``outline note'' is a \emph{pseudo}-hierarchy and not a ``real''
+hierarchy. 
+\end{node}
+\begin{node}\label{amn-0005}%
+The biggest problem is finding things. Linking nodes together is
+insanely difficult, because I can see the node in the PDF, but I cannot
+easily navigate Emacs to the file containing the node. I wonder if the
+``big idea'' is not having ``a lot of files'', but to have the
+``namespaces'' be a single file each, and to have ``lots of nodes'' and
+link among each other? Perhaps I should refactor my notes to try to
+organize these notes along such lines.
+
+The argument that Sterling presents uses the Stacks project as an
+example where immutable ``tags'' are the critical new feature. But the
+Stacks project is organized by huge files for each chapter (or
+section?), according to the Github repository\footnote{\url{https://github.com/stacks/stacks-project/tree/master}} for it.
+This suggests to me that we should use a similar organization, with each
+section (or chapter) being a huge file.
+
+This would require rewriting the \verb|zk.el| file to manage the ``tag''
+(i.e., \LaTeX\ label) for each node\dots somehow\dots
+
+\begin{node}\label{amn-0006}
+I have decided to hack Yasnippets with some custom macros to expand
+things using a comment at the first line of the file keeping track of
+the node number. This will allow me to jump around using the ``search
+within buffer'' Emacs provides. The Yasnippet for a node is reproduced
+below (for \LaTeX-mode):
+\lstinputlisting[breaklines=true,showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{n.yasnippet}
+%\lstinputlisting[showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{~/.emacs.d/snippets/latex-mode/n.yasnippet}
+\end{node}
+\end{node}

@@ -1,0 +1,190 @@
+% 17
+\begin{node}\label{fol-0000}%
+I'm nonplussed with Mendelson's treatment~\cite{mendelson2015mathematical}
+of first-order logic using a Hilbert system, but his treatment of
+semantics (\S2.2) is adequate. I'm also borrowing heavily from the
+notation used by John Harrison~\cite{harrison2009handbook} for explicit
+discussion of the semantics of first-order logic. This is where nonlogical
+objects enter the game. Unlike Mendelson, I'm not interested in
+philosophical word games (``Translate into first-order logic: `Every
+mathematician loves music'\,'' type questions are just inane).
+\end{node}
+
+\begin{node}[Syntax]\label{fol-0001}%
+\begin{definition}\label{fol-0002}%
+Let $V$ be a (nonempty, countably infinite) set of variables. We define
+a \define{Term} in first-order logic inductively as
+\begin{enumerate}
+\item variables are terms;
+\item constants are terms;
+\item a ``function'' is a term, i.e., a term parametrized by a fixed
+  number (called its \define{arity}) of terms.
+\end{enumerate}
+We can also specify terms by the following grammar (where
+constants are functions with zero arguments):
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{term}$\rangle$ & ::= & $\langle$\textit{variable}$\rangle$\\
+& $|$ & $\langle$\textit{function symbol}$\rangle$ \verb#(# $\langle$\textit{arguments}$\rangle$ \verb#)#\\
+  & & \\
+$\langle$\textit{arguments}$\rangle$ & ::= & $\langle$\textit{empty}$\rangle$\\
+  & $|$ & $\langle$\textit{argument list}$\rangle$\\
+  & & \\
+$\langle$\textit{argument lists}$\rangle$ & ::= & $\langle$\textit{term}$\rangle$\\
+  & $|$ & $\langle$\textit{term}$\rangle$ \verb#,# $\langle$\textit{argument list}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{definition}\label{fol-0003}%
+Let $n\in\NN_{0}$ be a non-negative integer. A \define{Predicate} (or
+\emph{Relation}) in first-order logic is a relation symbol followed by a
+list of $n$ terms. This forms an \textit{Atomic Formula} in first-order logic.
+Its BNF grammar is:
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{atomic formula}$\rangle$ & ::= & $\langle$\textit{predicate symbol}$\rangle$ \verb#(# $\langle$\textit{arguments}$\rangle$ \verb#)#\\
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{definition}\label{fol-0004}%
+In first-order logic, a \define{Formula} may be formed from atomic
+formulas, the usual connectives from propositional logic, and quantified
+formulas. When we replace atomic formulas by propositions, we see we can
+recover propositional logic's grammar \zref{prop-000I}. The BNF grammar
+for formulas in first-order logic is then: 
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{formula}$\rangle$ & ::= & $\langle$\textit{atomic formula}$\rangle$\\
+& $|$ & $\neg\,\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\land\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\lor\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\implies\langle$\textit{formula}$\rangle$\\
+& $|$ & $\langle$\textit{formula}$\rangle\iff\langle$\textit{formula}$\rangle$\\
+& $|$ & $\forall$ $\langle$\textit{variable}$\rangle\langle$\textit{formula}$\rangle$\\
+& $|$ & $\exists$ $\langle$\textit{variable}$\rangle\langle$\textit{formula}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{definition}
+\end{node}
+
+\begin{node}[Semantics]\label{fol-0005}%
+\begin{definition}\label{fol-0006}%
+An \define{Interpretation} (or ``\textit{Model}\,'') $M$ specifies the
+interpretation of function and predicate symbols, consisting of:
+\begin{enumerate}
+\item A nonempty set $D$ called the \define{Domain} of the interpretation;
+\item An assignment taking each $n$-ary function symbol $f$ to a mapping
+  $f_{M}\colon D^{n}\to D$;
+\item An assignment taking each $n$-ary relation symbol $P$ to a
+  relation $P_{M}\subset D^{n}$.
+\end{enumerate}
+\begin{node}[Remark: Nonempty domain]\label{fol-000A}\index{Logic!Free}\index{Free Logic}%
+Note this definition precludes empty domains $D\neq\emptyset$. Classical
+logic \emph{requires} nonempty domains of discourse. If we allow empty
+domains, we end up with something called ``free logic''. Within free
+logic, the tautology $(\forall x,P[x])\implies P[y]$ fails to hold.
+More serious of a problem, for us, is that the existence of prenex
+normal forms fail when empty domains are allowed.
+\end{node}
+
+\begin{node}[Remark: finite mechanization]\label{fol-000B}%
+We will implement this in \SML\ using finite domains of discourse.
+Pulgar\'{\i}n and Uribe-Zapata~\cite{pulgarin2023came} wrote a paper
+trying to formalize a finitistic intuitionistic metatheory, which is
+what Kunen~\cite{kunen2009foundations} advocates.
+
+When $D$ is infinite (logicians allow $D$ to be uncountable), our
+strategy we take in \zref{fol-0009} will fail and we cannot realize
+\texttt{holds} as a \SML\ function.
+\end{node}
+
+\begin{node}[Remark: On semantics]\label{fol-000C}%
+Other foundations do not concern themselves too much with
+[model theoretic] semantics. In fact, the only other family of
+foundations which has a notion of models appears to be higher-order
+logic (HOL). This is because Type Theory focuses on more proof theoretic
+concerns. 
+\end{node}
+\end{definition}
+
+\begin{definition}\label{fol-0007}%
+Let $M$ be an interpretation with domain $D$. A \define{Valuation} in
+first-order logic is a mapping from the set of variables to $D$.
+This is consistent with our usage of the term in propositional logic
+\zref{prop-0004} which maps our set of propositional variables to the
+set of truth values.
+\end{definition}
+
+\begin{definition}\label{fol-0008}%
+We define the value of a term in a particular interpretation $M$ and
+valuation $v$ by the mapping $\mathtt{termval}~M~v~t$ by induction on
+the structure of $t$ as:
+\begin{center}
+\begin{tabular}{rcl}
+$\mathtt{termval}~M~v~x$ & $=$ & $v(x)$\\
+$\mathtt{termval}~M~v~(f(t_{1},\dots,t_{n}))$ & $=$ & $f_{M}(\mathtt{termval}~M~v~t_{1},\dots,\mathtt{termval}~M~v~t_{n})$\\
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{definition}\label{fol-0009}%
+The main question for semantics is whether a formula holds (i.e., has
+its value be ``true'' $\verum$) in a particular interpretation $M$ and
+valuation $v$ is defined inductively as the function $\mathtt{holds}~M~v~p$.
+We use the notation
+\begin{equation}
+((x\mapsto c)v)(y) = \begin{cases}c & \mbox{if }x=y\\
+v(y) & \mbox{otherwise}.
+  \end{cases}
+\end{equation}
+Now $\mathtt{holds}~M~v~p$ may be given by the structure of the formula $p$ as:
+\begin{center}
+\begin{tabular}{rcp{0.45\linewidth}}
+$\mathtt{holds}~M~v~\falsum$ & $=$ & false\\
+$\mathtt{holds}~M~v~\verum$ & $=$ & true\\
+$\mathtt{holds}~M~v~(R(t_{1},\dots,t_{n}))$ & $=$ & $R_{M}(\mathtt{termval}~M~v~t_{1},\dots,\mathtt{termval}~M~v~t_{n})$\\
+$\mathtt{holds}~M~v~(\neg p)$ & $=$ & not $(\mathtt{holds}~M~v~p)$\\
+$\mathtt{holds}~M~v~(p\land q)$ & $=$ & $(\mathtt{holds}~M~v~p)$ and $(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(p\lor q)$ & $=$ & $(\mathtt{holds}~M~v~p)$ or $(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(p\implies q)$ & $=$ & either not $(\mathtt{holds}~M~v~p)$ or $(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(p\iff q)$ & $=$ & $(\mathtt{holds}~M~v~p)=(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(\forall x.p)$ & $=$ & for all $c\in D$,
+  $\mathtt{holds}~M~((x\mapsto c)v)~p$\\
+$\mathtt{holds}~M~v~(\exists x.p)$ & $=$ & there is at least one $c\in D$ such that
+  $\mathtt{holds}~M~((x\mapsto c)v)~p$\\
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{definition}\label{fol-000D}%
+We call a first-order formula \define{(Logically) Valid} if it holds in all
+interpretations and all valuations. If $\varphi\iff\psi$ is logically
+valid, then we say $\varphi$ and $\psi$ are \define{Logically Equivalent}.
+Valid formulas are the first-order counterparts to
+tautologies~\zref{prop-000L} in propositional logic.
+\end{definition}
+
+\begin{definition}\label{fol-000E}%
+We say that an interpretation $M$ \define{Satisfies} a first-order
+formula $\varphi$ (or simply that $\varphi$ \textit{holds in} $M$) if
+\textbf{for all valuations} $v$ we have $\mathtt{holds}~M~v~\varphi$
+be true.
+
+We can extend this notion for a set of first-order formulas $S$, saying
+an interpretation $M$ satisfies $S$ if for each $\varphi\in S$ we have
+$M$ satisfy $\varphi$.
+\end{definition}
+
+\begin{definition}\label{fol-000F}%
+We say a first-order formula $\varphi$ (or set of formulas) is
+\define{Satisfiable} if there exists some interpretation which satisfies it.
+That is, there exists an interpretation $M$ such that for all valuations
+$v$ we have $\mathtt{holds}~M~v~\varphi$ evaluate to true.
+
+The valuation plays a role only if there are free variables in $\varphi$.
+\end{definition}
+\end{node}
+
+
