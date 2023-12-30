@@ -1,4 +1,4 @@
-% 7
+% 8
 \begin{node}\label{amn-0000}%
 Jon Sterling argues that scientific thought requires arbitrary nesting
 of trees and the ability to ``transclude'' trees left and right. We can
@@ -67,4 +67,20 @@ label for definitions, theorems, etc.) The Yasnippet for a node is reproduced
 below (for \LaTeX-mode):
 \lstinputlisting[breaklines=true,showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{n.yasnippet}
 \end{node}
+\end{node}
+
+\begin{node}\label{amn-0007}%
+I have added the ability to organize files with subdirectories in the
+\verb|tex/| directory. The namespace for the nodes in files in these
+subdirectories have their relative path prepended to it. For example, in
+\verb|tex/prop/file.tex| the namespace would be \texttt{prop-file-nnnn}.
+This allows me to do things like place all the notes about normal forms
+in propositional logic in one easily identifiable place.
+
+Better, this is more along the lines of Luhmann's philosophy about
+organizing notes. I am creating ``clusters'' of notes, organized around
+subjects as they are needed, and they emerge to clarify the organization
+of thoughts. These are not ``tags'', nor are they ``pre-existing
+categories'' (like the Dewey decimal system or Scott Schepper's
+misunderstanding of Luhmann's system).
 \end{node}
