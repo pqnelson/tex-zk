@@ -1,4 +1,4 @@
-% 0
+% 3
 \begin{node}[Normal forms]\label{prop-000P}%
 A common trick in logic is to take some sort of ``normal form'' of
 formulas. That is to say, we restrict attention to a sublanguage of
@@ -21,7 +21,7 @@ constructed using conjunctions and disjunctions of
 literals. Inductively:
 \begin{enumerate}
 \item A literal~\zref{prop-000Q} is in negation normal form;
-\item If $\varphi$ and $\psi$ are in negation normal form, then so it
+\item If $\varphi$ and $\psi$ are in negation normal form, then so are
   $\varphi\land\psi$ and $\varphi\lor\psi$;
 \item We nominally accept $\verum$ and $\falsum$ as ``degenerate'' cases
   of negation normal form.
@@ -65,6 +65,53 @@ fun nnf (And(A,B)) = And (nnf A, nnf B)
   | nnf (Not (Iff (A,B))) = Or(And(nnf A, nnf(Not B)),
                                And(nnf(Not A), nnf B))
   | nnf (fm as _) = fm;
+\end{sml}
+\end{node}
+
+\begin{definition}\label{prop-normal-form-0000}%
+A proposition is in \define{Negation Equational Normal Form} (NENF) if
+it comprises of conjunctions, disjunctions, bi-implications, and literals.
+We give an explicit inductive definition:
+\begin{enumerate}
+\item A literal~\zref{prop-000Q} is in NENF;
+\item If $\varphi$ and $\psi$ are in NENF, then so are
+  $\varphi\land\psi$, $\varphi\lor\psi$, and $\varphi\iff\psi$;
+\item We nominally accept $\verum$ and $\falsum$ as ``degenerate'' cases
+  of NENF.
+\end{enumerate}
+
+\begin{node}[Remark]\label{prop-normal-form-0001}%
+Harrison~\cite{harrison2009handbook} simply refers to this normal form
+as ``NENF'' without explaining what this acronym means. I am guessing
+based on Barry Watson's notes\footnote{\url{http://barrywatson.se/cl/cl_nenf.html}}
+that it refers to ``negation equational normal form''. I do not know who
+first coined the acronym ``NENF'', and I do not honestly know what
+``NENF'' stands for.
+\end{node}
+\end{definition}
+
+\begin{node}[Transforming to NENF]\label{prop-normal-form-0002}%
+The transformation to NENF more or less follows the rules for
+transformation to NNF, except it preserves biconditionals. Its rules may
+be coded up quickly (with precomposing with a simplification function,
+which will simplify the proposition with various identities):
+\begin{sml}
+local
+  (* nenf1 : Prop -> Prop *)
+  fun nenf1 (And (A,B)) = And (nenf1 A, nenf1 B)
+    | nenf1 (Or (A,B)) = Or (nenf1 A, nenf1 B)
+    | nenf1 (Implies (A, B)) = Or (nenf1 (Not A), nenf1 B)
+    | nenf1 (Iff (A, B)) = Iff (nenf1 A, nenf1 B)
+    | nenf1 (Not (Not A)) = nenf1 A
+    | nenf1 (Not (And (A, B))) = Or (nenf1(Not A), nenf1(Not B))
+    | nenf1 (Not (Or (A, B))) = And (nenf1(Not A), nenf1(Not B))
+    | nenf1 (Not (Implies (A, B))) = And (nenf A, nenf1(Not B))
+    | nenf1 (Not (Iff (A, B))) = Iff (nenf1(Not A), nenf1 B)
+    | nenf1 (fm as _) = fm
+in
+(* nenf : Prop -> Prop *)
+  fun nenf fm = nenf1 (simplify fm)
+end;
 \end{sml}
 \end{node}
 
