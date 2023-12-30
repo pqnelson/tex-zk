@@ -1,10 +1,10 @@
 % 15
-\begin{node}\label{nbg-0000}
+\begin{node}\label{nbg-0000}%
 We can formalize a minimal notion of ``proper classes'' and treat
 sets as a synonym for classes contained in another class.
 \end{node}
 
-\begin{puzzle}\label{nbg-0001}
+\begin{puzzle}\label{nbg-0001}%
 Can we formalize \NBG\ set theory using the Mizar language? Arguably, the
 unique primitive notion would be a ``class'' instead of a ``set'', and
 we could define ``\texttt{mode set} \verb|->| \texttt{class means ex C
@@ -12,73 +12,74 @@ we could define ``\texttt{mode set} \verb|->| \texttt{class means ex C
 predicate taking a mathematical object as its left argument and a class
 as its right argument. We also have a primitive equality predicate.
 
-\begin{node}[References]\label{nbg-0002}
+\begin{node}[References]\label{nbg-0002}%
 There are few good references on \NBG\ set
 theory. Banakh~\cite{banakh2023classical} has some lecture
 notes. Someone has done some heroic work on the English wikipedia page
-for \NBG\ set theory.  Pulgar\'{\i}n and
-Uribe-Zapata~\cite{pulgarin2023came} wrote a paper trying to make
-finitistic metatheory rigorous.
+for \NBG\ set theory. Most texts discussing the \NBG\ axioms follow
+G\"{o}del's treatment~\cite{godel1940consistency}.
+%% Pulgar\'{\i}n and Uribe-Zapata~\cite{pulgarin2023came} wrote a paper
+%% trying to make finitistic metatheory rigorous.
 \end{node}
 
-\begin{node}[NBG is about sets]\label{nbg-0003}
+\begin{node}[NBG is about sets]\label{nbg-0003}%
 Remember, the whole point of \NBG\ set theory is to reason about sets. We
 just get the ability to explicitly make statements concerning proper
 classes as a side effect.
 \end{node}
 \end{puzzle}
 
-\begin{node}[Axioms]\label{nbg-0004}
+\begin{node}[Axioms]\label{nbg-0004}%
 The axioms of \NBG\ set theory have the advantage that it is finitely
 axiomatizable. This lends itself to working with a metatheory which is
 finitistic and recursively enumerable.
 
-\begin{node}[Axiom of extensionality]\label{nbg-0005}
+\begin{node}[Axiom of extensionality]\label{nbg-0005}%
 For all classes $A$ and $B$ such that every object $x$ satisfies $x\in A$
 iff $x\in B$, it holds that $A=B$.
 \end{node}
 
-\begin{node}[Axiom of pair]\label{nbg-0006}
+\begin{node}[Axiom of pair]\label{nbg-0006}%
 For all sets $x$ and $y$ there exists a set $z$ such that for all sets
 $u$, $u\in z$ if and only if $u=x$ or $u=y$.
 \end{node}
 
-\begin{definition}\label{nbg-0007}
+\begin{definition}\label{nbg-0007}%
 Let $x$ and $y$ be mathematical objects. We define the term $\langle x,y\rangle$
 to be the set equal to $\langle x,y\rangle := \{\{x,y\}, \{x\}\}$.
 \end{definition}
 
-\begin{node}[Axiom of membership]\label{nbg-0008}
+\begin{node}[Axiom of membership]\label{nbg-0008}%
 There exists a [proper] class $\properclass{E}$ such that for all sets $z$,
 $z\in\properclass{E}$ if and only if there exists sets $x$ and $y$ such
 that $x\in y$ and $z=\langle x,y\rangle$.
 \end{node}
 
-\begin{node}[Axiom of domain]\label{nbg-0009}
+\begin{node}[Axiom of domain]\label{nbg-0009}%
 For any class $X$ there exists a class $D$ such that for all sets $x$,
 $x\in D$ if and only if there exists a set $y$ such that $\langle x,y\rangle\in X$.
 \end{node}
 
-\begin{definition}\label{nbg-000A}
+\begin{definition}\label{nbg-000A}%
 Let $X$ be a set. We define the term $\dom(X)$ (called the
 \define{Domain} of $X$) to be the class equal to
 $\dom(X):=\{x\mid\exists y,\langle x,y\rangle\in X\}$ where $x$ and $y$
 are variables ranging over sets.
 \end{definition}
 
-\begin{node}\label{nbg-000B}
+\begin{node}\label{nbg-000B}%
 We will denote by $\properclass{U}$ the proper class of the universe of sets.
 In particular, $\dom(\properclass{E})=\properclass{U}$.
 \end{node}
 
-\begin{node}[Axiom of inversion]\label{nbg-000C}
+\begin{node}[Axiom of inversion]\label{nbg-000C}%
 For any class $X$ there exists a class $Y$ such that for all sets $p$ we
 have $p\in Y$ if and only if there exist sets $x$ and $y$ such that
 $\langle x,y\rangle\in X$ and $p=\langle y,x\rangle$.
 \end{node}
 \end{node}
 
-\begin{node}[Jech's axiomatization]\label{nbg-000D}
+\begin{node}[Jech's axiomatization]\label{nbg-000D}%
 Jech offers, at the end of chapter 6 of~\cite{jech2003set},
 the following axiomatization of \NBG\ set theory:
 \begin{enumerate}
@@ -102,7 +103,7 @@ the following axiomatization of \NBG\ set theory:
 \end{enumerate}
 \end{node}
 
-\begin{node}\label{nbg-000E}
+\begin{node}\label{nbg-000E}%
 When it comes to the benefits of finite axiomatizability,
 Hester~\cite{hester2019automated} investigated whether there's any
 benefits. It appears whatever benefits we might have gotten are lost in

@@ -1,11 +1,11 @@
 % 7
-\begin{node}\label{amn-0000}
+\begin{node}\label{amn-0000}%
 Jon Sterling argues that scientific thought requires arbitrary nesting
 of trees and the ability to ``transclude'' trees left and right. We can
 do this using the \verb|node| environment in my \verb|iso2145|
 package. Does it really contribute to productivity? I have my doubts.
 \end{node}
-\begin{node}\label{amn-0001}
+\begin{node}\label{amn-0001}%
 I should probably give an earnest attempt to write some notes, to give a
 fair assessment of how useful this is for writing notes. Towards that
 end, I suppose I should give an earnest effort to write some notes on
@@ -58,11 +58,12 @@ section (or chapter) being a huge file.
 This would require rewriting the \verb|zk.el| file to manage the ``tag''
 (i.e., \LaTeX\ label) for each node\dots somehow\dots
 
-\begin{node}\label{amn-0006}
+\begin{node}\label{amn-0006}%
 I have decided to hack Yasnippets with some custom macros to expand
 things using a comment at the first line of the file keeping track of
 the node number. This will allow me to jump around using the ``search
-within buffer'' Emacs provides. The Yasnippet for a node is reproduced
+within buffer'' Emacs provides. (I should add a YaSnippet to insert a
+label for definitions, theorems, etc.) The Yasnippet for a node is reproduced
 below (for \LaTeX-mode):
 \lstinputlisting[breaklines=true,showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{n.yasnippet}
 %\lstinputlisting[showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{~/.emacs.d/snippets/latex-mode/n.yasnippet}
