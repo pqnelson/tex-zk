@@ -118,13 +118,13 @@
 
 % AMS classes use this skip amount for subsections
 \newskip\nodeskipamount
-\nodeskipamount=0.5\baselineskip plus.7\baselineskip
+\nodeskipamount=0.5\baselineskip plus.2\baselineskip minus.2\baselineskip
 
 \newcommand\nodeskip{\vspace\nodeskipamount}
 \newcommand\nodebreak{\par\ifdim\lastskip<\nodeskipamount\removelastskip\penalty-100\nodeskip\fi}
 
-\newcommand\nodenumberformat[1]{\textbf{#1}}
-\newcommand\nodenameformat[1]{\textbf{#1}}
+\newcommand\nodenumberformat[1]{\upshape\textbf{#1}}
+\newcommand\nodenameformat[1]{\upshape\textbf{#1}}
 %% \M is used for unlabeled paragraphs
 \newcommand\M[1][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
@@ -161,9 +161,11 @@
 
 % For reasons I do not understand, there are 2 skips being done in a
 % node environment.
-\newenvironment{node}[1][\relax]%
-{\ifx#1\relax\M\else\N{#1}\fi\adjustSection{1}\unskip\unskip\ignorespaces}%
+\newenvironment{node*}[2][\relax]%
+{\ifx#1\relax\M\else\N{#1}\fi\adjustSection{1}\unskip\unskip#2\ignorespaces}%
 {\adjustSection{-1}\ignorespacesafterend}
+
+\newenvironment{node}[1][\relax]{\begin{node*}[#1]{\normalfont}}{\end{node*}}
 
 \newcommand\theoremnameformat[1]{\nodenameformat{#1}}
 
@@ -176,8 +178,8 @@
 
 % Want to customize how node numbers and names are formatted? Redefine
 % these functions.
-\renewcommand\nodenameformat[1]{\textsc{#1}}
-\renewcommand\nodenumberformat[1]{\textsf{#1}}
+\renewcommand\nodenameformat[1]{\upshape\textsc{#1}}
+\renewcommand\nodenumberformat[1]{\upshape\textsf{#1}}
 %\renewcommand\theoremnameformat[1]{\textsc{#1}}
 
 \endinput

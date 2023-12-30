@@ -38,7 +38,7 @@ $\langle$\textit{proposition}$\rangle$ & ::= & $\langle$\textit{variable}$\rangl
 \end{center}
 \end{node}
 
-\begin{node}[Definition]\label{prop-0002}%
+\begin{definition}\label{prop-0002}%
 Let $V$ be a (nonempty, countably infinite) set of propositional variables. Then
 we inductively define a \define{Proposition} according to the following
 rules:
@@ -73,7 +73,7 @@ datatype Prop = Atom of string
               | Iff of Prop * Prop;
 \end{sml}
 \end{node}
-\end{node}
+\end{definition}
 
 \begin{node}[Precedence]\label{prop-000D}%
 We should note that logical connectives have the following binding

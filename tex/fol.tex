@@ -1,4 +1,4 @@
-% 17
+% 18
 \begin{node}\label{fol-0000}%
 I'm nonplussed with Mendelson's treatment~\cite{mendelson2015mathematical}
 of first-order logic using a Hilbert system, but his treatment of
@@ -105,7 +105,26 @@ Other foundations do not concern themselves too much with
 [model theoretic] semantics. In fact, the only other family of
 foundations which has a notion of models appears to be higher-order
 logic (HOL). This is because Type Theory focuses on more proof theoretic
-concerns. 
+concerns.
+
+\begin{node}[Cynical perspective]\label{fol-000H}%
+After thinking about this further, I think what is happening ``really''
+(from a cynic's perspective) is that we have a theory of sets $S$
+(presumably one which generalizes the \ZF\ axioms suitably), and then we
+take our theory $\mathfrak{T}=(D,\mathfrak{R},\mathfrak{F})$ and form an ``interpretation''
+$\iota$ which consists of an assignment of $D$ to a ``set'' $\iota(D)$,
+and each relation $R\in\mathfrak{R}$ of arity $n$ to a ``set''
+$\iota(R)\subset\iota(D)^{n}$, and each function $f\in\mathfrak{F}$ of
+arity $k$ to the ``function'' $\iota(f)\colon\iota(D)^{k}\to\iota(D)$.
+As a cynic, these are all working at the level of syntax.
+
+If we stipulate this cynical perspective is ``true enough'', then
+semantics of a theory (first-order or otherwise) in a type theory is a
+similar assignment at the level of syntax. There are no ``real models'':
+it's symbol manipulation all the way down. We just pick some foundations
+for being ``real'', then assert ``mathematical objects exist if they can
+be encoded in our foundations''.
+\end{node}
 \end{node}
 \end{definition}
 
