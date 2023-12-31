@@ -4,7 +4,7 @@
 \begin{node}[Axioms]\label{tg-0003}%
 The axioms to Tarski--Grothendieck set theory, besides the ontological
 axiom ``For all objects $x$, we have $x$ is a set'', boil down to the
-four axioms plus one axiom schema:
+four axioms plus one axiom schema (and the axiom of universe):
 
 \begin{node}[Axiom of extensionality]\label{tg-0004}%
 For any sets $X$ and $Y$, if every object $x$ satisfies $x\in X$ iff
@@ -64,11 +64,17 @@ A \define{Tarski Universe} is a set $U$ such that
 \item for any set $x$, if $x\subset U$ and $x\not\equipotent U$ are not equipotent, then $x\in U$.
 \end{enumerate}
 \begin{node}[Remarks]\label{tg-0002}%
-It is not hard to prove that Grothendieck universes are Tarski universes.
-Conversely, if we have a Tarski universe containing a given set $x$,
-then it is contained in a Grothendieck universe containing $x$. This has
-been formalized in Mizar articles \texttt{CLASSES1}, \texttt{CLASSES2},
-and \texttt{CLASSES3}.
+It is not hard to prove that Grothendieck universes are Tarski
+universes.  Conversely, if we have a Tarski universe containing a given
+set $x$, then it is contained in a Grothendieck universe containing
+$x$. This has been formalized in Mizar articles \texttt{CLASSES1},
+\texttt{CLASSES2}, and \texttt{CLASSES3}. One consequence of the
+definition for a Tarski universe $U$ is that if $x\subset U$ and the
+cardinality of $x$ is a member of the cardinality of $U$, then $x\in U$
+(which suffices to prove transitivity for most sensible Tarski
+universes); this is the first theorem proven in the Mizar article
+\texttt{CLASSES1}. Arguably since $\emptyset\in U$ and $\emptyset$ is
+transitive, then $U$ is transitive by Theorem~47 of \texttt{CLASSES2}.
 
 If we consider the ``smallest'' (as ordered by inclusion) transitive
 Tarski universe containing $\emptyset$, then we can view this as
@@ -80,6 +86,15 @@ models of ``classes'', ``conglomerates'', and so on. Everything we said
 also works for the ``smallest'' Grothendieck universes satisfying the
 given conditions. In particular, the smallest Grothendieck containing $\union\properclass{U}_{sets}$
 is a model of \MK\ set theory (and thereby \NBG\ set theory).
+
+The modern terminological convention is that any set in
+Tarski--Grothendieck set theory corresponds to a ``conglomerate'',
+subsets of $\properclass{U}_{sets}$ are called
+$\properclass{U}_{sets}$-classes (or just ``classes'' --- and I suppose
+we could add ``proper'' for the situations when the subsets are not
+elements of the universe), and elements of
+$\properclass{U}_{sets}$ are called $\properclass{U}_{sets}$-sets (or
+just ``sets'').
 \end{node}
 \end{definition}
 \end{node}
