@@ -1,5 +1,45 @@
-% 3
+% 11
 \section{Tarski--Grothendieck Axioms}
+
+\begin{node}[Axioms]\label{tg-0003}%
+The axioms to Tarski--Grothendieck set theory, besides the ontological
+axiom ``For all objects $x$, we have $x$ is a set'', boil down to the
+four axioms plus one axiom schema:
+
+\begin{node}[Axiom of extensionality]\label{tg-0004}%
+For any sets $X$ and $Y$, if every object $x$ satisfies $x\in X$ iff
+$x\in Y$, then $X=Y$.
+\end{node}
+
+\begin{node}[Axiom of Pair]\label{tg-0005}%
+For any objects $x$ and $y$, there exists a set $z$ such that for all
+objects $a$ we have $a\in z$ if and only if $a=x$ or $a=y$.
+\end{node}
+
+\begin{node}[Axiom of union]\label{tg-0006}%
+For any set $X$ there exists a set $Z$ such that for all objects $x$ we
+have $x\in Z$ if and only if there exists a set $Y$ such that $x\in Y$
+and $Y\in X$.
+\end{node}
+
+\begin{node}[Axiom of regularity]\label{tg-0007}%
+For all objects $x$, for all sets $X$, if $x\in X$, then there exists a
+set $Y$ such that $Y\in X$ and for all objects $z$ either $z\notin X$ or
+$z\notin Y$.
+\end{node}
+
+\begin{node}[Fraenkel's scheme]\label{tg-0008}%
+Let $\mathcal{A}$ be a set, let $\mathcal{P}[-,-]$ be a binary predicate
+of objects. Suppose for all objects $x$, $y$, $z$ if $\mathcal{P}[x,y]$ and
+$\mathcal{P}[x,z]$, then $y=z$.
+Then there exists a set $X$ such that for all objects $x$ we have $x\in X$
+if and only if there exists an object $y\in\mathcal{A}$ such that $\mathcal{P}[y,x]$.
+\end{node}
+
+\begin{node}[Axiom of universe]\label{tg-0009}%
+For any set $x$, there exists a Tarski universe containing it.
+\end{node}
+\end{node}
 
 \begin{node}\label{tg-0001}%
 There are various different definitions for a Grothendieck universe.
@@ -9,7 +49,7 @@ December 30, 2023 \url{https://ncatlab.org/nlab/revision/Grothendieck+universe/5
 \begin{enumerate}
 \item $U$ is transitive: for all $u\in U$ and $t\in u$, we have $t\in U$;
 \item for all $u\in U$, we have $\powerset(u)\in U$;
-\item $\emptyset\in U$;
+\item $\emptyset\in U$ (some authors demand $\NN\in U$ instead);
 \item for all $I\in U$ and functions $u\colon I\to U$, we have
   $\union_{i\in I}u_{i}\in U$.
 \end{enumerate}
@@ -26,7 +66,9 @@ A \define{Tarski Universe} is a set $U$ such that
 \begin{node}[Remarks]\label{tg-0002}%
 It is not hard to prove that Grothendieck universes are Tarski universes.
 Conversely, if we have a Tarski universe containing a given set $x$,
-then it is contained in a Grothendieck universe containing $x$.
+then it is contained in a Grothendieck universe containing $x$. This has
+been formalized in Mizar articles \texttt{CLASSES1}, \texttt{CLASSES2},
+and \texttt{CLASSES3}.
 
 If we consider the ``smallest'' (as ordered by inclusion) transitive
 Tarski universe containing $\emptyset$, then we can view this as
@@ -34,7 +76,16 @@ $\properclass{U}_{fin}$ the collection of finite sets. The ``smallest''
 transitive Tarski universe containing $\properclass{U}_{fin}$ may be
 viewed as the collection of all sets $\properclass{U}_{sets}$. We can
 continue iterating this procedure, giving us a way to construct
-models of ``classes'', ``conglomerates'', and so on.
+models of ``classes'', ``conglomerates'', and so on. Everything we said
+also works for the ``smallest'' Grothendieck universes satisfying the
+given conditions. In particular, the smallest Grothendieck containing $\union\properclass{U}_{sets}$
+is a model of \MK\ set theory (and thereby \NBG\ set theory).
 \end{node}
 \end{definition}
+\end{node}
+
+\begin{node}\label{tg-000A}%
+The development of set theory using these axioms may be found in the
+first 30 articles (or so) of the Mizar mathematical library. We will not
+reproduce the work here.
 \end{node}
