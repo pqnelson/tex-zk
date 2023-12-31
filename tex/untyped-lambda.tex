@@ -1,0 +1,553 @@
+% 38
+
+\begin{node}\label{untyped-lambda-0003}%
+Lambda calculus studies a formal language which captures the basic
+properties of variables and substitution we learn in primary
+school. This is so basic that it underlies all type theoretic
+foundations for mathematics, and so it is worth studying in its own
+right. We can partition the study of lambda calculus into two segments:
+\emph{syntax} studies how we form ``words'' and ``sentences'' in lambda
+calculus (which strings are grammatically well-formed), and
+\emph{semantics} which vaguely refers to how we understand the meaning
+and usage of the syntactic parts of the language.
+
+In other words, the \emph{syntax} studies the formal language underlying
+the $\lambda$-calculus, the \emph{semantics} studies its ``meaning''
+(how we manipulate these strings to ``compute'' things).
+\end{node}
+
+\begin{node}[Syntax]\label{untyped-lambda-0002}%
+
+\begin{definition}\label{untyped-lambda-0000}%
+Let $V$ be a (nonempty, countably infinite) set of variables. We define
+the \define{$\lambda$-Terms} (or ``\textit{$\lambda$-Expressions}'', or
+just ``terms'' and ``expressions'' if the context is clear) to be
+inductively defined as:
+\begin{enumerate}
+\item Any variable $x\in V$ is a $\lambda$-expression;
+\item Abstraction terms: If $x\in V$ and $e$ is a $\lambda$-expression,
+  then we may form the expression ``$\lambda x.e$'';
+\item Application terms: if $e_{1}$ and $e_{2}$ are
+  $\lambda$-expressions (called ``rator'' and ``rand'' expressions,
+  respectively, short for ``operator'' and ``operand''),
+  then so is ``$e_{1}~e_{2}$''.
+\end{enumerate}
+In abstraction terms $\lambda x.e$, we call $e$ the ``body'' of the
+abstraction, and the $\lambda x$ the ``head'' of the abstraction. The
+``$\lambda$'' appearing in $\lambda x.e$ is called a ``binder'' or
+``binding operator'' since it \emph{binds} a variable in the sense
+discussed below \zref{untyped-lambda-0007}.
+
+\begin{node}\label{untyped-lambda-0001}%
+We can form the BNF grammar for lambda expressions as (allowing
+arbitrary parentheses to clarify expressions, and variables ranging over
+the allowed set):
+\begin{center}  
+\begin{tabular}{rcl}
+$\langle$\textit{expression}$\rangle$ & ::= & $\langle$\textit{variable}$\rangle$\\
+& $|$ & $\lambda$ $\langle$\textit{variable}$\rangle$ $.$ $\langle$\textit{expression}$\rangle$\\
+& $|$ & $\langle$\textit{expression}$\rangle$ $\langle$\textit{expression}$\rangle$\\
+& $|$ & \texttt{(}$\langle$\textit{expression}$\rangle$\texttt{)}
+\end{tabular}
+\end{center}
+\end{node}
+
+\begin{node}\label{untyped-lambda-0004}%
+We could also define the set of $\lambda$-expressions using the
+following sequence $\{S_{n}\}_{n\in\NN_{0}}$ of sets:
+\begin{enumerate}
+\item $S_{0}:=V$ is precisely the set of variables;
+\item $S_{n+1}:=S_{n}\cup\{\lambda x.e\mid x\in V,e\in S_{n}\}\cup\{e_{1}~e_{2}\mid e_{1},e_{2}\in S_{n}\}$.
+\end{enumerate}
+Then the set $S$ of $\lambda$-expressions is
+\begin{equation}
+S = \bigcup^{\infty}_{n=0}S_{n}.
+\end{equation}
+This is equivalent to the previous presentations.
+\end{node}
+\end{definition}
+
+\begin{node}[Precedence, associativity]\label{untyped-lambda-000T}%
+We will interpret application as left associative, so
+$e_{1}~e_{2}~e_{3}$ is read as $(e_{1}~e_{2})~e_{3}$. We will also take
+abstract extending as far as possible, so we read ``$\lambda x.e_{1}~e_{2}~e_{3}$''
+as ``$\lambda x.(e_{1}~e_{2}~e_{3})$''.
+It is also common to ``collapse'' the $\lambda$ binder when multiple
+appear together, writing $\lambda x.\lambda y.e$ as $\lambda x, y. e$.
+\end{node}
+
+\begin{node}[Structural Recursion and Induction]\label{untyped-lambda-0009}%
+Given an inductive definition like this, we may use its inductive nature
+to form for any $\lambda$-expression $e$ a set $f(e)$ (or any other
+mathematical object $f(e)$) using a technique
+called \define{Structural Recursion} by the following rules:
+\begin{enumerate}
+\item We have some way to form a set $f_{\text{var}}(x)$ from variables
+  $x\in V$, and have $f(x):=f_{\text{var}}(x)$;
+\item For an abstraction term $\lambda x.e$, the inductive hypothesis
+  assumes we have some way to form the set $f(e)$, then we need some way
+  to form $f(\lambda x.e)$ using $f_{\text{var}}(x)$ and $f(e)$;
+\item For an application term $e_{1}~e_{2}$, the inductive hypothesis
+  assumes we have formed sets $f(e_{1})$ and $f(e_{2})$, then we need
+  some way to construct a set for $f(e_{1}~e_{2})$ using them.
+\end{enumerate}
+This suffices for constructing a set $f(e)$ for any $\lambda$-expression $e$.
+
+If we want to prove a property $\mathcal{P}[-]$ for any
+$\lambda$-expression $e$, we may use an analogous technique called
+\define{Structural Induction} by the following steps:
+\begin{enumerate}
+\item Base cases: for any variable $x\in V$, we need to prove $\mathcal{P}[x]$;
+\item Abstraction: for any abstraction expression $\lambda x.e$, the
+  inductive hypothesis assumes $\mathcal{P}[e]$ has been proven, and we
+  need to prove $\mathcal{P}[\lambda x.e]$ holds;
+\item Application: for any application term $e_{1}~e_{2}$, the inductive
+  hypotheses assumes both $\mathcal{P}[e_{1}]$ and $\mathcal{P}[e_{2}]$,
+  then requires us to prove $\mathcal{P}[e_{1}~e_{2}]$.
+\end{enumerate}
+If we consider the construction \zref{untyped-lambda-0004}, this amounts
+to proving $\mathcal{P}[-]$ holds for $S_{0}$ and then proving if it
+holds for $S_{n}$ then it holds for $S_{n+1}$. In this manner, we see
+how it relates to ``ordinary'' mathematical induction if we define
+$\mathcal{Q}[n]:=\forall e\in S_{n},\mathcal{P}[e]$, then structural
+induction amounts to ordinary induction applied to
+$\mathcal{Q}[-]$.\footnote{This is accidentally true for untyped lambda
+calculus, the reality is that this is a generalization known as Noetherian induction.}
+\end{node}
+
+\begin{definition}\label{untyped-lambda-0008}%
+We can define the set of \define{Subexpressions} of a $\lambda$-expression
+$e$ to be the set $\Sub(e)$ defined recursively as:
+\begin{enumerate}
+\item $\Sub(x)=\{x\}$;
+\item $\Sub(\lambda x.e)=\{\lambda x.e\}\cup\{x\}\cup\Sub(e)$;
+\item $\Sub(e_{1}~e_{2})=\{e_{1}~e_{2}\}\cup\Sub(e_{1})\cup\Sub(e_{2})$.
+\end{enumerate}
+We shall call a $\lambda$-expression $e'$ a \define{Subexpression} of
+$e$ if $e'\in\Sub(e)$. Furthermore, if $e'\neq e$, we shall call it a
+\define{Proper} subexpression.
+\end{definition}
+
+\begin{definition}\label{untyped-lambda-000F}%
+Let $e$ be any $\lambda$-expression. We will call a variable $x$
+\define{Fresh} in $e$ if it does not appear in the expression $x\notin\Sub(e)$.
+We can extend this notion, saying a variable $x$ to be free in a
+family of $\lambda$-expressions iff it is free in each $\lambda$-expression.
+
+If we want to take a fresh variable relative to an expression $e$ (or
+several expressions), then we will adopt the convention of writing
+$\fresh{x}$ for the fresh variable. (This is taken from the Clojure
+language's conventions.)
+\end{definition}
+
+\begin{node}[Free and bound variables]\label{untyped-lambda-0007}%
+The variable appearing in the head of an abstraction term (i.e., the
+``$x$'' appearing in ``$\lambda x.e$'') plays the role of keeping track
+of a ``parameter'' to a function expression which will be substituted
+for an expression upon application. The appearance of such variables in
+the body of its abstraction (i.e., the appearances of $x$ in the
+subexpression $e$ of $\lambda x.e$) are \emph{bound} to the $\lambda$
+``binder''. Compare this to variables which do not have a ``binding
+$\lambda$'', which are considered \emph{free}.
+
+In general, in almost all formal systems where ``free'' and ``bound''
+variables can be distinguished, free and bound variables are
+distinguished by if their values affect the value of the overall
+expression. Free variables are distinguished by the property that the
+value of the expression depends on the value of free variables. Bound
+variables are shorthand ``stage instructions'' for the semantical
+meaning of expressions.
+
+\begin{definition}\label{untyped-lambda-0005}%
+We inductively define the set of \define{Free Variables} in a
+$\lambda$-expression $e$ as the set $FV(e)$ formed by the following rules:
+\begin{enumerate}
+\item $FV(x)=\{x\}$;
+\item $FV(\lambda x.e)=FV(e)\setminus\{x\}$ --- all the free variables
+  in the body $e$, except for $x$;
+\item $FV(e_{1}~e_{2})=FV(e_{1})\cup FV(e_{2})$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}\label{untyped-lambda-0006}%
+We inductively define the set of \define{Bound Variables} in a
+$\lambda$-expression as the set $BV(e)$ formed by the following rules:
+\begin{enumerate}
+\item $BV(x)=\emptyset$;
+\item $BV(\lambda x.e)=\{x\}\cup BV(e)$;
+\item $BV(e_{1}~e_{2})=BV(e_{1})\cup BV(e_{2})$.
+\end{enumerate}
+\end{definition}
+
+\begin{node}[Example]\label{untyped-lambda-000A}%
+Consider the expression $\lambda x.(x~y~z)$. There is one bound
+variable, $x$, and two free variables $y$ and $z$.
+\end{node}
+
+\begin{node}[Example]\label{untyped-lambda-000B}%
+Consider the expression $(x~\lambda y.z)(\lambda x.y)$. We can compute
+the set of free variables:
+\begin{subequations}
+\begin{align}
+FV((x~\lambda y.z)(\lambda x.y))
+&=FV(x~\lambda y.z)\cup FV(\lambda x.y)\\
+&=\bigl(FV(x)\cup FV(\lambda y.z)\bigr)\cup FV(\lambda x.y)\\
+\intertext{then applying the rule for determining the $FV$ of abstraction terms}
+&=\bigl(FV(x)\cup\bigl(FV(z)\setminus\{y\}\bigr)\bigr)\cup\bigl(FV(y)\setminus\{x\}\bigr)\\
+\intertext{and the rule for $FV$ of free variables}
+&=\bigl(\{x\}\cup\bigl(\{z\}\setminus\{y\})\bigr)\bigr)\cup\{y\}\\
+&=\bigl(\{x\}\cup(\{z\})\bigr)\cup\{y\}\\
+&=\bigl(\{x, z\})\bigr)\bigr)\cup\{y\}\\
+&=\{x, z, y\}.
+\end{align}
+\end{subequations}
+Similarly, the set of bound variables:
+\begin{subequations}
+\begin{align}
+BV((x~\lambda y.z)(\lambda x.y))
+&=BV(x~\lambda y.z)\cup BV(\lambda x.y)\\
+&=\bigl(BV(x)\cup BV(\lambda y.z)\bigr)\cup\bigl(BV(\lambda x.y)\bigr)\\
+&=\bigl(BV(x)\cup\bigl(\{y\}\cup BV(z)\bigr)\bigr)\cup\bigl(\{x\}\cup BV(y)\bigr)\\
+\intertext{then applying the rule that $BV$ of free variables is the
+  empty set:}
+&=\bigl(\emptyset\cup\bigl(\{y\}\cup\emptyset\bigr)\bigr)\cup\bigl(\{x\}\cup\emptyset\bigr)\\
+&=\{y\}\cup\{x\}=\{x,y\}.
+\end{align}
+\end{subequations}
+Observe, then, that $x$ and $y$ are both free \emph{and} bound variables.
+\end{node}
+\end{node}
+
+\begin{definition}\label{untyped-lambda-000E}%
+Let $x$ be a variable, let $e$ and $e_{0}$ be $\lambda$-expressions. We
+define \define{Capture-free substitution} replacing $x$ by $e_{0}$ in $e$
+to be the $\lambda$-expression denoted $e[e_{0}/x]$ or $e[x:=e_{0}]$ by
+structural recursion
+\begin{enumerate}
+\item For variables: $\displaystyle y[e_{0}/x]=\begin{cases}e_{0} & \mbox{if }x=y\\ y & \mbox{if }x\neq y \end{cases}$
+\item Abstraction: $(\lambda y.e)[e_{0}/x]$ boils down to several cases
+\begin{enumerate}
+\item If $x=y$: $(\lambda x.e)[e_{0}/x]=\lambda x.e$ does nothing;
+\item If $x\neq y$ and $y\notin FV(e_{0})$: $(\lambda y.e)[e_{0}/x]=\lambda y.(e[e_{0}/x])$;
+\item If $x\neq y$ and $y\in FV(e_{0})$: take a fresh variable \zref{untyped-lambda-0005} $\fresh{y}$
+  such that $\fresh{y}\notin\Sub(e_{0})$, then we replace the bound $y$
+  in $e$ by $\fresh{y}$ and use the previous rule, i.e.,
+  $(\lambda y.e)[e_{0}/x]=(\lambda \fresh{y}.(e[\fresh{y}/y]))[e_{0}/x]$
+  (i.e., use $\alpha$-congruent~\zref{untyped-lambda-000V} rator
+  expressions to avoid accidentally binding any free variable in the
+  rand expression)
+\end{enumerate}
+\item Application: $(e_{1}~e_{2})[e_{0}/x] = (e_{1}[e_{0}/x])~(e_{2}[e_{0}/x])$
+  we just perform capture-free substitution on the rator and rand subexpressions.
+\end{enumerate}
+\end{definition}
+
+\begin{node}[Example]\label{untyped-lambda-000M}%
+The difficulty with abstraction terms may be seen easily with the
+attempt to make sense of $(\lambda y.x)[y/x]$. If we just ``naively''
+try to replace $x$ by $y$, then we get the incorrect result $\lambda y.y$
+instead of the correct solution $\lambda z.y$ where $z$ is the fresh
+variable chosen to avoid ``capturing'' $y$ as a newly bound variable.
+\end{node}
+
+\begin{definition}\label{untyped-lambda-000V}%
+Let $e$ be a $\lambda$-expression. We define
+\define{$\alpha$-Congruence} to be the smallest equivalence relation
+generated by, for all variables $x$ and all ``fresh''
+variables~\zref{untyped-lambda-0005} $\fresh{y}$, $\lambda x.e
+\cong_{\alpha}\lambda\fresh{y}.(e[\fresh{y}/x])$.
+
+\begin{node}\label{untyped-lambda-000G}%
+Alpha congruence amounts to saying terms with renamed bound variables
+are equivalent to each other. This is keeping with our earlier
+remarks~\zref{untyped-lambda-0007} about bound variables being used for
+book-keeping purposes.
+\end{node}
+
+\begin{node}[Convention]\label{untyped-lambda-000H}%
+We will take the convention that $\alpha$-congruent expressions may be
+identified as equivalent, and freely replaced by each other wherever
+they appear as subexpressions \emph{provided there are no captured variables}. 
+That is to say, we do not accidentally bind variables by the replacement
+of $\alpha$-congruent subexpressions.
+\end{node}
+\end{definition}
+
+
+\end{node}
+
+\begin{node}[Semantics]\label{untyped-lambda-000C}%
+
+\begin{node}\label{untyped-lambda-000D}%
+There are various ways to study ``semantics'' of a formal system. If we
+wish to view it as a \emph{mathematical theory} in its own right, then
+we can rely on the familiar classical model theory (as found in, e.g.,
+Chang and Keisler~\cite{chang2012model}). If we wish to use it \emph{as}
+a deductive system (e.g., as a foundations for mathematics, or as an
+example of a programming language), then we should prefer to examine its
+so-called \emph{operational semantics}.
+
+The models of untyped $\lambda$-calculus are really intriguing, because
+it requires a field of mathematics called ``domain theory'' which allows
+constructing mathematical gadgets $D$ which look like $D=D^{D}$. (This
+clearly cannot be a set, but if we consider topological spaces or
+posets, then we may have a chance for a model --- this was Dana Scott's
+\textit{coup d'\oe{}il}.)
+We are not interested in $\lambda$-calculus as ``just another mathematical theory''.
+Readers wishing to learn more about this, Barendregt~\cite{barendregt2012lambda}
+remains the invaluable reference.
+\end{node}
+
+\begin{definition}\label{untyped-lambda-000I}%
+We define \define{Beta Reduction} to be the relation generated by (for
+any variable $x$ and $\lambda$-expressions $e$ and $e'$)
+\[(\lambda x.e)e'\betareduce e[e'/x]. \]
+This is the heart of semantics for untyped $\lambda$-calculus. It tells
+us that $\lambda x.e$ acts like a function $f(x)=e$, and application
+$(\lambda x.e)~e'$ results in an expression analogous to substitution $f(e')$.
+Specifically, it results in the \emph{capture-free substitution}~\zref{untyped-lambda-000E}
+replacing $x$ by $e'$ in $e$.
+\end{definition}
+
+\begin{node}[Inference rules]\label{untyped-lambda-000J}%
+We can specify the behaviour of beta reduction by treating $e\betareduce e'$
+as a judgement, then the inference rules tell us how to use it. The
+difficulty is that there are multiple different choices for inference
+rules describing $\beta$-reduction. We have three representative
+different ``operational semantics'', or inference rules defining the
+behaviour of $\beta$-reduction.
+
+\begin{node}[Full $\beta$-reduction]\label{untyped-lambda-000K}%
+Full $\beta$-reduction (or ``full semantics'') allows us to apply
+$\beta$ reduction to any subexpression. This is the most generous
+strategy, defined by the following inference rules:
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-App1}]{e_{1}~e_{2}\betareduce e_{1}'~e_{2}}{e_{1}\betareduce e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-App2}]{e_{1}~e_{2}\betareduce e_{1}~e_{2}'}{e_{2}\betareduce e_{2}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Beta}]{(\lambda x.e_{1})~e_{2}\betareduce e_{1}[e_{2}/x]}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Body}]{\lambda x.e\betareduce \lambda x.e'}{e\betareduce e'}
+\end{equation}
+\end{subequations}
+Note that \Rule{E-Body} is sometimes called the $\xi$-rule.
+\end{node}
+
+\begin{node}[Call-by-value rules]\label{untyped-lambda-000L}%
+We may alternatively use rules resembling ``eager evaluation'' where we
+do not $\beta$-reduce the bodies of abstractions, and only
+$\beta$-reduce the rand subexpression in an application when the rator
+is an abstraction term. Here, ``values'' means any abstraction term
+(since they are not reduced any further). This is the ``call-by value
+semantics''. Formally, this is defined by the rules
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-Cbv-App1}]{e_{1}~e_{2}\betareduce e_{1}'~e_{2}}{e_{1}\betareduce e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Cbv-App2}]{(\lambda x.e_{1})~e_{2}\betareduce (\lambda x.e_{1})~e_{2}'}{e_{2}\betareduce e_{2}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Cbv-Beta}]{(\lambda x.e_{1})~v_{2}\betareduce e_{1}[v_{2}/x]}{}
+\end{equation}
+where $v_{2}$ is a value (i.e., an abstraction term).
+\end{subequations}
+\end{node}
+
+\begin{node}[Call-by-name rules]\label{untyped-lambda-000N}%
+We can formalize a ``lazy'' semantics for $\beta$-reduction. That is to
+say, when doing $\beta$-reduction, we transform rator expressions until
+they are abstractions, then substitute the rand expression freely. The
+rand is not evaluated (or, more precisely, it is only evaluated when
+needed, i.e., \emph{lazily}), unlike the call-by-value semantics.
+This is the ``call-by-name semantics'', consisting of the rules: 
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-Cbn-App1}]{e_{1}~e_{2}\betareduce e_{1}'~e_{2}}{e_{1}\betareduce e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Cbn-Beta}]{(\lambda x.e_{1})~e_{2}\betareduce e_{1}[e_{2}/x]}{}
+\end{equation}
+\end{subequations}
+\end{node}
+
+\begin{node}[Does it ``stop''?]\label{untyped-lambda-000R}%
+We see that full $\beta$-reduction is nondeterministic (we have multiple
+different possible choices of which rule we could apply). Are there
+instances where it will ``settle down'' and we have no more rules we
+could apply? Or will it always be possible to apply one or more
+inference rule to expressions?
+\end{node}
+\end{node}
+
+\begin{node}[Example]\label{untyped-lambda-000S}%
+Consider the $\lambda$-expression $\Omega:=\lambda x.(x~x~x)$.
+Evaluate $\Omega~\Omega$ using full $\beta$-reduction.
+
+We see that $\Omega$ is a value, and that all three semantic strategies
+apply to $\Omega~\Omega$. But we see that, after one step by any of the
+strategies,
+\begin{equation}
+\Omega~\Omega\betareduce\Omega~\Omega~\Omega.
+\end{equation}
+If we keep applying $\beta$-reduction, and write
+$\Omega^{n+1}=\Omega^{n}~\Omega$ with $\Omega^{2}=\Omega~\Omega$, we get
+the divergent sequence of expressions
+$\Omega^{2}\betareduce\Omega^{3}\betareduce\dots\betareduce\Omega^{n}\betareduce\dots$.
+\end{node}
+
+\begin{definition}\label{untyped-lambda-000Q}%
+We define the \define{Multistep $\beta$ Reduction} in zero or more steps
+to be the relation $\multistep\betareduce$ such that
+\begin{enumerate}
+\item For any expression $e$, we have $e\multistep\betareduce e$;
+\item If $e\betareduce e'$, then $e\multistep\betareduce e'$;
+\item If $e\multistep\betareduce e'$ and $e'\betareduce e''$,
+  then $e\multistep\betareduce e''$.
+\end{enumerate}
+That is to say, $\multistep\betareduce$ is the reflexive, transitive closure
+of $\beta$-reduction. If we just want the transitive closure of
+$\beta$-reduction, we refer to it by $\betareduce^{+}$.
+\end{definition}
+
+\begin{definition}\label{untyped-lambda-000O}%
+We say a $\lambda$-expression $e$ is in \define{Normal Form} if there is
+no $\lambda$-expression $e'$ such that $e\betareduce e'$. We can
+generically refer to \emph{normal forms} as expressions in normal form.
+
+Note: the notion of a ``normal form'' depends on our choice of semantics
+for $\beta$-reduction.
+\end{definition}
+
+\begin{node}[Exercise]\label{untyped-lambda-000U}%
+Prove or find a counter-example: in call-by-value semantics, normal
+forms are values (i.e., abstraction expressions).
+\end{node}
+
+\begin{theorem}[Church--Rosser Confluence]\label{untyped-lambda-000P}%
+When working with $\lambda$-expressions modulo $\alpha$-congruence
+(i.e., treating $\alpha$-congruent expressions as equivalent), 
+if $e\multistep\betareduce e_{1}$ and $e\multistep\betareduce e_{2}$,
+then there exists an expression $e'$ such that
+$e_{1}\multistep\betareduce e'$ and $e_{2}\multistep\betareduce e'$.
+\end{theorem}
+
+\begin{node}\label{untyped-lambda-000W}%
+As an immediate consequence, if an expression has a normal form, then it
+is unique and will eventually be reached by finitely many steps of
+$\beta$-reduction.
+\end{node}
+
+\end{node}
+
+\begin{node}[Church Encodings]\label{untyped-lambda-000X}%
+We can use clever encodings of datatypes to do some programming with
+untyped $\lambda$-calculus.
+
+\begin{node}[Booleans]\label{untyped-lambda-000Y}%
+We can define the terms
+\begin{subequations}
+\begin{align}
+\mathtt{true} &:= \lambda x,y.x\\
+\mathtt{false} &:= \lambda x,y.y
+\end{align}
+The boolean connectives may be formed, e.g., conjunction
+\begin{equation}
+\mathtt{and} := \lambda a,b.a~b~\mathtt{false}.
+\end{equation}
+This satisfies the usual rules
+\begin{equation}
+\mathtt{and}~\mathtt{true}~\mathtt{true}\multistep\betareduce\mathtt{true}
+\end{equation}
+\begin{equation}
+\mathtt{and}~\mathtt{true}~\mathtt{false}\multistep\betareduce\mathtt{false}
+\end{equation}
+\begin{equation}
+\mathtt{and}~\mathtt{false}~\mathtt{true}\multistep\betareduce\mathtt{false}
+\end{equation}
+\begin{equation}
+\mathtt{and}~\mathtt{false}~\mathtt{false}\multistep\betareduce\mathtt{false}
+\end{equation}
+\end{subequations}
+Similarly, we can define $\mathtt{if}~b~\mathtt{then}~e_{1}~\mathtt{else}~e_{2}$
+to be an abbreviation of $b~e_{1}~e_{2}$.
+\end{node}
+
+\begin{node}[Arithmetic]\label{untyped-lambda-000Z}%
+Recall Peano arithmetic introduces a ``number'' $Z$ (for ``zero'') and
+an operation $S(n)$ for any number $n$ ($S$ stands for
+``successor''). We can encode this using $\lambda$-calculus as:
+\begin{subequations}
+\begin{equation}
+0 := \lambda s.\lambda z.z
+\end{equation}
+\begin{equation}
+1 := \lambda s.\lambda z.s~z
+\end{equation}
+\begin{equation}
+2 := \lambda s.\lambda z.s~(s~z)
+\end{equation}
+\begin{equation}
+3 := \lambda s.\lambda z.s~(s~(s~z))
+\end{equation}
+and so on. A number that tells us how many times to add the successor to
+zero, just as Peano axiomatized. Then adding two numbers together may be
+formed by 
+\begin{equation}
+\mathtt{PLUS} := \lambda m.\lambda n.\lambda s.\lambda z.m~s~(n~s~z).
+\end{equation}
+Intuitively this takes two numbers $m$ and $n$, their sum is obtained by
+taking $m$ successors of $n$ (since $n~s~z$ applies $n$ successor
+operations $s$ to the zero constant $z$, and $m~s$ takes a number and
+applies $m$ successor operations $s$ to it). Multiplication may be taken
+as
+\begin{equation}
+\mathtt{MULT} :=\lambda m.\lambda n.m~(\mathtt{PLUS}~n)~0,
+\end{equation}
+which instead of working one successor at a time, works $n$ successors
+at a time, and takes $m$ of these operations applied to the zero constant.
+\end{subequations}
+\end{node}
+
+\begin{node}[Lists]\label{untyped-lambda-0010}%
+We can encode lists using $\lambda$-expressions. We would have the
+following setup:
+\begin{subequations}
+\begin{equation}
+\mathtt{PAIR} := \lambda x.\lambda y.\lambda f.f~x~y
+\end{equation}
+\begin{equation}
+\mathtt{FIRST} := \lambda p.p~\mathtt{true}
+\end{equation}
+\begin{equation}
+\mathtt{SECOND} := \lambda p.p~\mathtt{false}
+\end{equation}
+\begin{equation}
+\mathtt{NIL} := \lambda x.\mathtt{true}
+\end{equation}
+\begin{equation}
+\mathtt{NULL} := \lambda p.p~(\lambda x.\lambda y.\mathtt{false}).
+\end{equation}
+Then a linked list is either \texttt{NIL} for the empty list, or a
+``node'' (``cons'') \texttt{PAIR} of an element and a tail sublist. The
+predicate \texttt{NULL} tests for the value \texttt{NIL}.
+\end{subequations}
+\end{node}
+
+\begin{node}[Problem]\label{untyped-lambda-0011}%
+A difficulty arises that $\lambda$-calculus allows us to concatenate
+expressions together which should be illegal, but attempts to evaluate
+it regardless. For example $\mathtt{PLUS}~\mathtt{NIL}~\mathtt{false}$
+makes no sense, since we expect $\mathtt{PLUS}$ to add two numbers
+together, but it is supplied with a list (\texttt{NIL}) and a Boolean
+value (\texttt{false}). An error should be raised. But $\lambda$-calculus
+cheerfully tries to evaluate this. This leads to introducing a notion of
+types to avoid this problem.
+\end{node}
+  
+\end{node}

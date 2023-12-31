@@ -1,0 +1,226 @@
+% 20
+\begin{node}\label{stlc-0000}%
+The basic idea to simply-typed $\lambda$ calculus is to introduce a
+``label'' we affix to expressions and [bound] variables which tracks the
+``type'' of the expression. We restrict application to situations when
+then rator ``accepts'' the label of the rand expression. As before, we
+partition our study of simply-typed $\lambda$-calculus into two
+concerns: its syntax and semantics.
+\end{node}
+
+\begin{node}[Syntax]\label{stlc-0001}%
+\begin{definition}\label{stlc-0002}%
+Let $\mathbb{V}$ be a (nonempty, countably infinite) set of
+variables. We define the set of \define{Types} for simply-typed
+$\lambda$-calculus inductively using the rules:
+\begin{enumerate}
+\item For all variables $\alpha\in\mathbb{V}$, we have $\alpha$ be a type;
+\item If $T_{1}$ and $T_{2}$ are types, then the arrow type $T_{1}\to T_{2}$
+  is a type.
+\end{enumerate}
+And that's all!
+
+\begin{node}[Remark: type variables]\label{stlc-0004}%
+Note that ``type variables'' are disjoint from ``term variables'', so
+the set $\mathbb{V}$ of type variables is completely different than the
+set of variables $V$ we use with terms. We adopt the informal convention
+that lowercase Greek variables are type variables, lowercase Latin
+variables are term variables.
+\end{node}
+
+\begin{node}[BNF Grammar]\label{stlc-0003}%
+The BNF grammar for types may be written down rather quickly as:
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{type}$\rangle$ & ::= & $\langle$\textit{type variable}$\rangle$\\
+& $|$ & $\langle$\textit{type}$\rangle\to\langle$\textit{type}$\rangle$
+\end{tabular}
+\end{center}
+\end{node}
+
+\begin{node}[Base types]\label{stlc-0005}%
+Usually we have some base types in simply-typed lambda calculus (like
+the type of Booleans, or the type of natural numbers), because we want
+to do some computation with them. If we have base types, the grammar for
+types is extended to be:
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{type}$\rangle$ & ::= & $\langle$\textit{type variable}$\rangle$\\
+& $|$ & $\langle$\textit{base type}$\rangle$\\
+& $|$ & $\langle$\textit{type}$\rangle\to\langle$\textit{type}$\rangle$
+\end{tabular}
+\end{center}
+\end{node}
+\end{definition}
+
+\begin{node}\label{stlc-0008}%
+Provisionally, we have a type declaration convey the intuition that a
+term or expression may be labelled as having a certain type. This is
+written down as ``$e\esti T$'' to assert ``Expression $e$ has type
+$T$''. The colon (``$\esti$'') is called ``\textit{esti}'' but people
+usually read it as ``has type''.
+\end{node}
+
+\begin{definition}\label{stlc-0006}%
+Let $V$ be a (nonempty countably-infinite) set of variables, let $\mathbb{V}$ be a (nonempty countably-infinite)
+set of type variables disjoint from $V$. We define the
+\define{Simply-Typed Terms} in the Simplify-Typed $\lambda$-calculus inductively by
+the rules
+\begin{enumerate}
+\item For any variable $x\in V$, we have $x$ be a simply-typed term;
+\item For any type $T$, variable $x\in V$, and simply-typed term $e$, we
+  have $\lambda x\esti T.e$ be a simply-typed term;
+\item For any simply-typed terms $e_{1}$ and $e_{2}$, we have
+  $e_{1}~e_{2}$ be a simply-typed term.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}\label{stlc-0009}%
+A \define{Typing Context} is a finite ordered list of type declarations,
+which we may inductively define by the rules:
+\begin{enumerate}
+\item The empty list $\emptylist$ is a typing context;
+\item For any variable $x\in V$ and any type $T$ and any typing context
+  $\Gamma$ which does not contain $x\notin\Gamma$,
+  we have ``$x\esti T,\Gamma$'' be a typing context.
+\end{enumerate}
+Note that it is important to keep in mind $\Gamma$ is an \emph{ordered}
+finite list without duplicate variables. In future type theories, this
+will be a critical assumption.
+
+\begin{node}\label{stlc-000E}%
+We will write $\dom(\Gamma)$ for the set of variables. Inductively, this
+is defined by $\dom(\emptylist)=\emptyset$ and $\dom(x\esti T,\Gamma)=\{x\}\cup\dom(\Gamma)$.
+\end{node}
+
+\begin{node}\label{stlc-000F}%
+Let $\Gamma$, $\Gamma'$ be two typing contexts. We will write
+$\Gamma\subset\Gamma'$ to define the predicate defined inductively by:
+\begin{enumerate}
+\item $x\esti T,\Gamma\subset \Gamma'$ if $\Gamma'=\Gamma_{0}',x\esti T,\Gamma_{1}'$
+  and $\Gamma\subset\Gamma_{1}'$;
+\item $\emptylist\subset\Gamma'$ for any typing context $\Gamma'$.
+\end{enumerate}
+\end{node}
+
+\begin{node}[Exercise]\label{stlc-000G}%
+Prove or find a counter-example: $\Gamma\subset\Gamma'$ and
+$\Gamma'\subset\Gamma$ if and only if $\Gamma=\Gamma'$. In other words,
+the familiar criteria of extensionality works for typing contexts.
+\end{node}
+\end{definition}
+
+\begin{node}[Typing Judgement]\label{stlc-0007}%
+We have a judgement to assert that an expression belongs to a type,
+relative to a typing context telling us how to interpret the free
+variables appearing in the expression. This is written as
+$\Gamma\vdash e\esti T$ where $\Gamma$ is a typing context, $e$ is a
+simply-typed expression, and $T$ is a type. We now need to introduce
+inference rules to derive typing judgements. When $\Gamma=\emptyset$, we
+just write $\vdash e\esti T$.
+
+\begin{node}\label{stlc-000A}%
+We would have, if $x\esti T$ appears somewhere in a typing context
+$\Gamma$, then $\Gamma\vdash x\esti T$ be well-typed. This is a
+tautology, like ``$A$ is $A$''.
+\end{node}
+
+\begin{node}\label{stlc-000B}%
+The abstraction rule tells us, if we have established that
+$\Gamma,x\esti T_{1}\vdash e\esti T_{2}$, then the expression $e$ is
+parametrized by a variable of type $T_{1}$. Whenever a value $v_{1}$ of type
+$T_{1}$ is substituted into $e[v_{1}/x]$, we should obtain an expression
+of type $T_{2}$. This means we can form the abstraction $\lambda x\esti T_{1}.e$
+to be a term of a function type $T_{1}\to T_{2}$ relative to the context
+$\Gamma$. As an inference rule,
+\begin{equation}
+\infer[\Rule{T-Abs}]{\Gamma\vdash(\lambda x\esti T_{1}.e)\esti T_{1}\to T_{2}}{%
+\Gamma,x\esti T_{1}\vdash e\esti T_{2}}
+\end{equation}
+\end{node}
+
+\begin{node}\label{stlc-000C}%
+The application rule tells us, if we have a function $f\esti T_{1}\to T_{2}$
+and an argument $e\esti T_{1}$, then we should expect the application
+$f~e\esti T_{2}$. This has become so commonplace in modern mathematics,
+it hardly deserves justification.
+\end{node}
+
+\begin{node}[Inference rules]\label{stlc-000D}%
+The inference rules for type judgements takes the form
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{T-Var}]{\Gamma\vdash x\esti T}{x\esti T\in\Gamma}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-Abs}]{\Gamma\vdash(\lambda x\esti T_{1}.e)\esti T_{1}\to T_{2}}{%
+\Gamma,x\esti T_{1}\vdash e\esti T_{2}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-App}]{\Gamma\vdash e_{1}~e_{2}\esti T_{2}}{\Gamma\vdash e_{1}\esti T_{1}\to T_{2}
+& \Gamma e_{2}\esti T_{2}}
+\end{equation}
+%% We can also add arbitrary bindings of free variables without changing
+%% the typing judgement:
+%% \begin{equation}
+%% \infer[\Rule{T-Weak}]{\Gamma'\vdash e\esti T}{\Gamma\subset\Gamma' & \Gamma\vdash e\esti T}
+%% \end{equation}
+\end{subequations}
+\end{node}
+\end{node}
+
+\begin{node}\label{stlc-000H}%
+Observe that typing judgements are \emph{syntactic} in concern and
+nature. It is telling us that some string (some word or phrase) may be,
+in some coherent way, attached with a ``label''. In practice, this is
+how programming languages track context-sensitive information (like
+we're adding two numbers together, as opposed to concatenating lists).
+\end{node}
+
+\begin{theorem}[Uniqueness of type]
+For any typing context $\Gamma$, any simply-typed expression $e$ has at
+most one type $T$; i.e., there is at most one $T$ such that
+$\Gamma\vdash e\esti T$ is derivable, if any derivation exists at all.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Either there is a derivation of $\Gamma\vdash e\esti T$ or not. If not,
+then there are zero types $T$ describing $e$, and that proves the claim
+in one case.
+
+The other case, assume that there is a derivation of $\Gamma\vdash e\esti T$.
+Then we can prove by induction on derivations that there is at most one
+type $T$ such that $\Gamma\vdash e\esti T$ is derivable.
+\end{proof}
+
+\begin{theorem}[Weakening]
+If $\Gamma\vdash e\esti T$ is derivable and $x\notin\Gamma$, then
+for any type $T'$ we have $\Gamma,x\esti T'\vdash e\esti T$ be derivable too.
+\end{theorem}
+
+\end{node}
+
+\begin{node}[Semantics]\label{stlc-000I}%
+
+\begin{node}\label{stlc-000J}%
+The semantics of a simply-typed $\lambda$-calculus amounts to the same
+semantics of $\lambda$-calculus (using $\beta$-reduction to give meaning
+to the language), except we typecheck expressions \emph{before}
+evaluating them. That is to say, we need to make sure that terms are
+well-typed, and then we can perform $\beta$-reduction. So, in
+particular, the interesting thing is how typing judgements behave under
+$\beta$-reduction. 
+\end{node}
+
+\begin{theorem}[Progress]
+If $t$ is a closed, well-typed term (i.e., $\vdash t\esti T$ for some
+type $T$), then either $t$ is a value or there is some term $t'$ such
+that $t\betareduce t'$.
+\end{theorem}
+
+\begin{theorem}[Preservation]
+If $\Gamma\vdash e\esti T$ and $e\betareduce e'$, then we have
+$\beta$-reduction preserve the typing judgement, i.e., $\Gamma\vdash e'\esti T$.
+\end{theorem}
+  
+\end{node}

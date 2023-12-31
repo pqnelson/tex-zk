@@ -121,7 +121,13 @@
 \nodeskipamount=0.5\baselineskip plus.2\baselineskip minus.2\baselineskip
 
 \newcommand\nodeskip{\vspace\nodeskipamount}
-\newcommand\nodebreak{\par\ifdim\lastskip<\nodeskipamount\removelastskip\penalty-100\nodeskip\fi}
+\newcommand\nodebreak{\par\ifdim\lastskip<\nodeskipamount
+  \removelastskip\penalty-100\nodeskip\fi}
+\newskip\post@thm@skipamount
+\post@thm@skipamount=\nodeskipamount
+\newcommand\post@thm@skip{\vspace\post@thm@skipamount}
+\newcommand\post@thm@break{\par\ifdim\lastskip<\post@thm@skipamount
+  \removelastskip\penalty-100\post@thm@skip\fi}
 
 \newcommand\nodenumberformat[1]{\upshape\textbf{#1}}
 \newcommand\nodenameformat[1]{\upshape\textbf{#1}}
@@ -174,7 +180,7 @@
 \def\newtheorem#1#2#3{
   \newenvironment{#1}[1][\relax]{
 \ifx##1\relax\begin{node}\theoremnameformat{#2.\enspace\ignorespaces}\else\begin{node}\theoremnameformat{#2} (##1)\nodenameformat{.}\enspace\ignorespaces\fi#3\ignorespaces}%
-{\end{node}}
+{\end{node}\ignorespacesafterend}
 }
 
 % Want to customize how node numbers and names are formatted? Redefine
