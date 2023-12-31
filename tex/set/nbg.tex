@@ -1,4 +1,4 @@
-% 15
+% 26
 \begin{node}\label{nbg-0000}%
 We can formalize a minimal notion of ``proper classes'' and treat
 sets as a synonym for classes contained in another class.
@@ -29,8 +29,34 @@ classes as a side effect.
 \end{node}
 \end{puzzle}
 
+\begin{node}[Conventions]\label{nbg-000F}%
+We will use lowercase variables $x$, $y$, $z$, \dots, for sets;
+uppercase variables $X$, $Y$, $Z$, \dots, for classes; and bold
+uppercase variables $\properclass{X}$, $\properclass{Y}$, \dots, for proper classes.
+G\"{o}del is credited with inventing this convention.
+\end{node}
+
+\begin{definition}\label{nbg-0007}%
+Let $x$ and $y$ be mathematical objects. We define the term $\langle x,y\rangle$
+to be the set equal to $\langle x,y\rangle := \{\{x,y\}, \{x\}\}$.
+\end{definition}
+
+\begin{definition}\label{nbg-000A}%
+Let $X$ be a set. We define the term $\dom(X)$ (called the
+\define{Domain} of $X$) to be the class equal to
+$\dom(X):=\{x\mid\exists y,\langle x,y\rangle\in X\}$ where $x$ and $y$
+are variables ranging over sets.
+\end{definition}
+
+\begin{node}[Notation]\label{nbg-000B}%
+We will denote by $\properclass{U}$ the proper class of the universe of sets.
+Also, we will denote by $\properclass{E}$ the proper class of the
+membership relation.
+In particular, $\dom(\properclass{E})=\properclass{U}$.
+\end{node}
+
 \begin{node}[Axioms]\label{nbg-0004}%
-The axioms of \NBG\ set theory have the advantage that it is finitely
+The 14 axioms of \NBG\ set theory have the advantage that it is finitely
 axiomatizable. This lends itself to working with a metatheory which is
 finitistic and recursively enumerable.
 
@@ -44,11 +70,6 @@ For all sets $x$ and $y$ there exists a set $z$ such that for all sets
 $u$, $u\in z$ if and only if $u=x$ or $u=y$.
 \end{node}
 
-\begin{definition}\label{nbg-0007}%
-Let $x$ and $y$ be mathematical objects. We define the term $\langle x,y\rangle$
-to be the set equal to $\langle x,y\rangle := \{\{x,y\}, \{x\}\}$.
-\end{definition}
-
 \begin{node}[Axiom of membership]\label{nbg-0008}%
 There exists a [proper] class $\properclass{E}$ such that for all sets $z$,
 $z\in\properclass{E}$ if and only if there exists sets $x$ and $y$ such
@@ -60,22 +81,56 @@ For any class $X$ there exists a class $D$ such that for all sets $x$,
 $x\in D$ if and only if there exists a set $y$ such that $\langle x,y\rangle\in X$.
 \end{node}
 
-\begin{definition}\label{nbg-000A}%
-Let $X$ be a set. We define the term $\dom(X)$ (called the
-\define{Domain} of $X$) to be the class equal to
-$\dom(X):=\{x\mid\exists y,\langle x,y\rangle\in X\}$ where $x$ and $y$
-are variables ranging over sets.
-\end{definition}
+\begin{node}[Axiom of difference]\label{nbg-000G}%
+For any classes $X$ and $Y$, there exists a class $Z$ such that for all
+sets $u$ we have $u\in Z$ if and only if $u\in X$ and $u\notin Y$.
+\end{node}
 
-\begin{node}\label{nbg-000B}%
-We will denote by $\properclass{U}$ the proper class of the universe of sets.
-In particular, $\dom(\properclass{E})=\properclass{U}$.
+\begin{node}[Axiom of product]\label{nbg-000H}%
+For any classes $X$ and $Y$ there exists a class $Z$ such that every set
+$z$ satisfies $z\in Z$ if and only if there exists sets $x\in X$ and
+$y\in Y$ such that $z=\langle x,y\rangle$.
 \end{node}
 
 \begin{node}[Axiom of inversion]\label{nbg-000C}%
 For any class $X$ there exists a class $Y$ such that for all sets $p$ we
 have $p\in Y$ if and only if there exist sets $x$ and $y$ such that
 $\langle x,y\rangle\in X$ and $p=\langle y,x\rangle$.
+\end{node}
+
+\begin{node}[Axiom of cycle]\label{nbg-000I}%
+For all classes $X$ there exists a class $Y$ such that every set $t$
+satisfies $t\in Y$ if and only if there exists sets $x$, $y$, $z$ such
+that $\langle x,y,z\rangle\in X$ and $t=\langle z,x,y\rangle$.
+\end{node}
+
+\begin{node}[Axiom of replacement]\label{nbg-000J}%
+For all functions $F$ and sets $x$, the class $F(x)$ is a set.
+\end{node}
+
+\begin{node}[Axiom of Union]\label{nbg-000K}%
+For any set $x$, the class $\union x=\{z\mid\exists y\in x,z\in y\}$
+is a set.
+\end{node}
+
+\begin{node}[Axiom of powerset]\label{nbg-000L}%
+For any set $x$, the class $\powerset(x)=\{y\mid y\subset x\}$ is a set.
+\end{node}
+
+\begin{node}[Axiom of infinity]\label{nbg-000M}%
+There exists a set $x\in\properclass{U}$ such that $\emptyset\in x$
+and for all sets $n$, if $n\in x$ then $n\cup\{n\}\in x$.
+\end{node}
+
+\begin{node}[Axiom of foundation]\label{nbg-000N}%
+For all sets $x\in\properclass{U}$, if $x\neq\emptyset$, then there exists a
+set $y\in x$ such that every set $z\in y$ satisfies $z\notin x$.
+\end{node}
+
+\begin{node}[Axiom of global choice]\label{nbg-000O}%
+There exists a class $F$ such that $F$ is a function and for every set
+$x\in\properclass{U}$, if $x\neq\emptyset$, then there exists a set $y\in x$
+such that $\langle x,y\rangle\in F$.
 \end{node}
 \end{node}
 
@@ -103,10 +158,20 @@ the following axiomatization of \NBG\ set theory:
 \end{enumerate}
 \end{node}
 
-\begin{node}\label{nbg-000E}%
+\begin{node}[In proof assistants]\label{nbg-000E}%
 When it comes to the benefits of finite axiomatizability,
 Hester~\cite{hester2019automated} investigated whether there's any
 benefits. It appears whatever benefits we might have gotten are lost in
 the naive implementation, since we need to include extra predicates for
 quantifiers over sets.
+\end{node}
+
+\begin{node}[Uselessness in Category Theory]\label{nbg-000P}%
+We might think that \NBG\ set theory would be useful when formalizing
+category theory. And we would be wrong. If $\cat{C}$ is a large
+category, then we cannot prove the $n$-fold product category
+$\cat{C}^{n}$ exists using \NBG\ set theory. If $\cat{C}$ and $\cat{D}$
+are large categories, we cannot define the category of functors
+$\cat{D}^{\cat{C}}$ even using \MK\ axioms. This usually leads us to
+Tarski--Grothendieck set theory.
 \end{node}

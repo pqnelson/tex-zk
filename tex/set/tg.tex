@@ -1,0 +1,40 @@
+% 3
+\section{Tarski--Grothendieck Axioms}
+
+\begin{node}\label{tg-0001}%
+There are various different definitions for a Grothendieck universe.
+\begin{definition}\label{set:tg-0000}%
+A \define{Grothendieck universe}\footnote{Nlab definition accessed
+December 30, 2023 \url{https://ncatlab.org/nlab/revision/Grothendieck+universe/57}} is a set $U$ such that
+\begin{enumerate}
+\item $U$ is transitive: for all $u\in U$ and $t\in u$, we have $t\in U$;
+\item for all $u\in U$, we have $\powerset(u)\in U$;
+\item $\emptyset\in U$;
+\item for all $I\in U$ and functions $u\colon I\to U$, we have
+  $\union_{i\in I}u_{i}\in U$.
+\end{enumerate}
+\end{definition}
+\begin{definition}
+A \define{Tarski Universe} is a set $U$ such that
+\begin{enumerate}
+\item for all sets $x$ and $y$, if $x\in U$ and $y\subset x$, then $y\in U$;
+\item for any set $x\in U$, we have $\powerset(x)\in U$;
+%% \item $U$ is transitive: for any set $x\in U$, every subset $y\subset x$
+%%   is a member $y\in U$;
+\item for any set $x$, if $x\subset U$ and $x\not\equipotent U$ are not equipotent, then $x\in U$.
+\end{enumerate}
+\begin{node}[Remarks]\label{tg-0002}%
+It is not hard to prove that Grothendieck universes are Tarski universes.
+Conversely, if we have a Tarski universe containing a given set $x$,
+then it is contained in a Grothendieck universe containing $x$.
+
+If we consider the ``smallest'' (as ordered by inclusion) transitive
+Tarski universe containing $\emptyset$, then we can view this as
+$\properclass{U}_{fin}$ the collection of finite sets. The ``smallest''
+transitive Tarski universe containing $\properclass{U}_{fin}$ may be
+viewed as the collection of all sets $\properclass{U}_{sets}$. We can
+continue iterating this procedure, giving us a way to construct
+models of ``classes'', ``conglomerates'', and so on.
+\end{node}
+\end{definition}
+\end{node}

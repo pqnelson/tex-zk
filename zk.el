@@ -51,7 +51,7 @@
 (defun zk-generate-tag-name ()
   (let ((number (zk-get-node-number)))
     (format "%s-%s"
-            (file-name-base (replace-regexp-in-string "/" "-" (file-relative-name buffer-file-name zk-tex-dir)))
+            (file-name-base (replace-regexp-in-string ":" "-" (file-relative-name buffer-file-name zk-tex-dir)))
             (let ((calc-number-radix 36))
               (pad-zeroes (math-format-radix number) 4)))))
 
