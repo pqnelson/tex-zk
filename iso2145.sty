@@ -125,15 +125,16 @@
 
 \newcommand\nodenumberformat[1]{\upshape\textbf{#1}}
 \newcommand\nodenameformat[1]{\upshape\textbf{#1}}
+\newif\ifaddperiod\addperiodfalse
 %% \M is used for unlabeled paragraphs
 \newcommand\M[1][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
-  \nodenumberformat{\thechunk\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
+  \nodenumberformat{\thechunk\ifaddperiod\@addpunct{.}\fi\ignorespaces}\enspace\ignorespaces}
 
 %% \N is used for labeled paragraphs
 \newcommand\N[2][0]{\adjustSection{#1}\nodebreak%
   \stepSec\noindent\ignorespaces%
-  \nodenumberformat{\thechunk\@addpunct{.}\ignorespaces}\nodenameformat{\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
+  \nodenumberformat{\thechunk\ifaddperiod\@addpunct{.}\fi\ignorespaces}\nodenameformat{\enspace#2\@addpunct{.}\ignorespaces}\enspace\ignorespaces}
 
 % \begin{node} blah \end{node} === \M blah
 % \begin{node}[3] blah \end{node} === \M[3] blah
@@ -179,7 +180,7 @@
 % Want to customize how node numbers and names are formatted? Redefine
 % these functions.
 \renewcommand\nodenameformat[1]{\upshape\textsc{#1}}
-\renewcommand\nodenumberformat[1]{\upshape\textsf{#1}}
+\renewcommand\nodenumberformat[1]{\upshape\textbf{(#1)}}
 %\renewcommand\theoremnameformat[1]{\textsc{#1}}
 
 \endinput
