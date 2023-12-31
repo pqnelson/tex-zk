@@ -1,4 +1,4 @@
-% 20
+% 23
 \begin{node}\label{stlc-0000}%
 The basic idea to simply-typed $\lambda$ calculus is to introduce a
 ``label'' we affix to expressions and [bound] variables which tracks the
@@ -75,6 +75,18 @@ the rules
 \end{enumerate}
 \end{definition}
 
+\begin{node}\label{stlc-000M}%
+We can carry over notions from untyped $\lambda$-calculus, like the set
+of free variables $FV(e)$ for a simply-typed
+term~\zref{untyped-lambda-0005}, the set of bound variables
+$BV(e)$~\zref{untyped-lambda-0006}, the notion of a closed simply-typed
+term~\zref{untyped-lambda-0012} being where $FV(e)=\emptyset$.  Since
+the syntax of simply-typed terms does not change significantly
+(abstraction expressions have their variables involve a type declaration
+which does not impact these notions), the definitions carry over as
+expected.
+\end{node}
+
 \begin{definition}\label{stlc-0009}%
 A \define{Typing Context} is a finite ordered list of type declarations,
 which we may inductively define by the rules:
@@ -88,9 +100,19 @@ Note that it is important to keep in mind $\Gamma$ is an \emph{ordered}
 finite list without duplicate variables. In future type theories, this
 will be a critical assumption.
 
+\begin{node}\label{stlc-000K}%
+We will write $x\in\Gamma$ if there are typing contexts $\Gamma_{0}$,
+$\Gamma_{1}$ and some type $T$ such that $\Gamma=\Gamma_{0},x\esti T,\Gamma_{1}$.
+Furthermore, we will write $x\esti T\in\Gamma$ if there are $\Gamma_{0}$,
+$\Gamma_{1}$ such that $\Gamma=\Gamma_{0},x\esti T,\Gamma_{1}$.
+If there is a type $T'\neq T$ such that $\Gamma=\Gamma_{0},x\esti T',\Gamma_{1}$
+then we will write $x\esti T\notin\Gamma$.
+\end{node}
+
 \begin{node}\label{stlc-000E}%
 We will write $\dom(\Gamma)$ for the set of variables. Inductively, this
 is defined by $\dom(\emptylist)=\emptyset$ and $\dom(x\esti T,\Gamma)=\{x\}\cup\dom(\Gamma)$.
+Observe $x\in\Gamma$ if and only if $x\in\dom(\Gamma)$.
 \end{node}
 
 \begin{node}\label{stlc-000F}%
@@ -210,6 +232,18 @@ evaluating them. That is to say, we need to make sure that terms are
 well-typed, and then we can perform $\beta$-reduction. So, in
 particular, the interesting thing is how typing judgements behave under
 $\beta$-reduction. 
+\end{node}
+
+\begin{node}[Beta reduction]\label{stlc-000L}%
+The inference rules for $\beta$-reduction are the same for simply-typed
+$\lambda$-calculus as they are for untyped $\lambda$-calculus \zref{untyped-lambda-000J},
+with one minor syntactic exception:
+\begin{equation}
+\infer[\Rule{E-Beta}]{(\lambda x\esti T.e_{1})~e_{2}\betareduce e_{1}[e_{2}/x]}{}
+\end{equation}
+That is to say, we add the type declaration to the variable $x\esti T$
+in the head of the abstraction expression. Other than that, the rules
+are identical. Call-by-value semantics requires $e_{2}$ be a value.
 \end{node}
 
 \begin{theorem}[Progress]

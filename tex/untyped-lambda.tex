@@ -1,4 +1,4 @@
-% 38
+% 39
 
 \begin{node}\label{untyped-lambda-0003}%
 Lambda calculus studies a formal language which captures the basic
@@ -167,6 +167,11 @@ $\lambda$-expression $e$ as the set $FV(e)$ formed by the following rules:
   in the body $e$, except for $x$;
 \item $FV(e_{1}~e_{2})=FV(e_{1})\cup FV(e_{2})$.
 \end{enumerate}
+\end{definition}
+
+\begin{definition}\label{untyped-lambda-0012}%
+When a $\lambda$-expression $e$ has no free variables $FV(e)=\emptyset$,
+then we say $e$ is a \define{Closed} term.
 \end{definition}
 
 \begin{definition}\label{untyped-lambda-0006}%
