@@ -1,0 +1,155 @@
+% 12
+\begin{node}\label{epsilon-calc-0000}%
+Hilbert invented this logical calculus, which basically is first-order
+logic without quantifiers, and has instead an operator $\varepsilon$
+with a signature
+\[\varepsilon\colon\langle\textit{variable}\rangle\to\langle\textit{predicate}\rangle\to\langle\textit{formula}\rangle\]
+We informally interpret $\varepsilon x.P[x]$ as ``The term which
+satisfies predicate $P[x]$ if one exists, otherwise an arbitrary object''.
+
+We probably would not remember it, but for its appearance in Bourbaki's
+\textit{Theory of Sets}~\cite{bourbaki1968theory} as $\tau$.
+
+\begin{node}[References]\label{epsilon-calc-0001}%
+Zach~\cite{zach2001practice,zach2016semantics} has written about proof theory related to
+it, Wirth~\cite{Wirth2008epsilon,wirth2017simplified} reviews attempts to relate
+$\varepsilon$ to indefinite committed choice operators. Claus-Peter Wirth
+and Richard Zach have both written a bit about this subject, and I defer
+to them on this subject. In particular, Wirth~\cite{wirth2017simplified}
+has reviewed the different formalizations of the $\varepsilon$ (and
+related) operators by Hilbert and friends.
+I am relying on material from Wirth's 2015 talk ``The Descriptive
+Operators iota, tau, and epsilon'' for the history~\zref{epsilon-calc-0002},
+which is reviewed in the companion paper~\cite[\S4]{wirth2017simplified}.
+Wirth offers a formalization using ``variables'' (as we normally think
+of them), ``free atoms'' (also called ``eigenvariables'' or
+``parameters'' in the literature), and ``bound atoms''.
+\end{node}
+\end{node}
+
+\begin{node}[History]\label{epsilon-calc-0002}%
+
+\begin{node}[Peano's iota]\label{epsilon-calc-0003}%
+Frege (1893) used a bold backslash in front of a [unary] predicate to
+refer to \emph{the} term satisfying the predicate, if one exists, and an
+arbitrary-but-fixed object otherwise. Peano writes either
+``$\overline{\iota}$'' (1896) or an inverted ``$\iota$'' (1899). Russell
+and Whitehead's \textit{Principia} uses an inverted ``$\iota$''. Hilbert
+and Bernays (1934) requires a proof of $\exists!x.P[x]$ before we can
+form $\iota x.P[x]$.
+\end{node}
+
+\begin{node}[Hilbert's tau]\label{epsilon-calc-0004}%
+Hilbert's \textit{Die Logischen Grundlagen der Mathematik} (talk dated
+September 1922) introduces a \emph{transfinite  function} denoted $\tau$.
+Its ``type signature'' $\tau\colon(i\to o)\to o$ takes a predicate and
+returns an ``individual'' [i.e., a term]. If we let $P\colon i\to o$
+be a predicate, Hilbert's transfinite axiom 11 gives us
+$A[\tau A]\implies A[a]$.
+In a footnote, Hilbert acknowledges Bernays for showing Hilbert that
+this axiom suffices for everything he needs.
+
+\begin{node}[Caution]\label{epsilon-calc-0005}%
+\begin{enumerate}
+\item This is a \emph{different} $\tau$ than the one appearing in
+  Kneser's private notes to Hilbert's 1921--1922 lectures
+  \textit{Grundlagen der Mathematik}.
+\item An ``$\varepsilon$'' is written for the $\tau$ in Kneser's
+  private notes to Hilbert's 1922--1923 lectures
+  \textit{Grundlagen der Mathematik}.
+\item Nicholas Bourbaki~\cite{bourbaki1968theory} uses a ``$\tau$'', but
+  it really refers to Hilbert's ``$\varepsilon$''.
+\end{enumerate}
+\end{node}
+\end{node}
+
+\begin{node}[Hilbert' epsilon]\label{epsilon-calc-0006}%
+Ackermann's 1924 PhD thesis seems to have introduced the $\varepsilon$
+notation. The name for the axiom $A[a]\implies A[\varepsilon A]$, or in
+Wirth's reading $\exists x.A[x]\implies A[\varepsilon A]$, has
+changed variously (Ackermann in his thesis calls it ``transfinite axiom 1'' and
+treated $\varepsilon$ as a binder, Hilbert calls it the axiom of choice
+in a \textit{\"{U}ber das Unendliche} lecture in June 1925,
+the logical $\varepsilon$-axiom in a
+\textit{Die Grundlagen der Mathematik} lecture dated July 1927, and Hilbert and
+Bernays's \textit{Grundlagen der Mathematik} [vol 2] calls it the ``$\varepsilon$-formula'' in 1939 and treats it as
+a binder). In the case when $\exists!x.P[x]$, the Peano's iota and
+Hilbert's epsilon picks out the same object.
+\end{node}
+\end{node}
+
+\begin{node}\label{epsilon-calc-0007}%
+Ackermann's (II,4), Bourbaki's S7 axiom~\cite[I~\S5.1]{bourbaki1968theory}, Leisenring's (E2)
+offers the axiom
+\[\forall x(P[x]\iff Q[x])\implies \varepsilon x.P[x] = \varepsilon x.Q[x]\]
+There are two difficulties Wirth identifies with this axiom:
+\begin{enumerate}
+\item All classical theorems become intuitionistic ones (which doesn't
+  seem too terrible to me).
+\item Committed choice should be an option, not a must. What does this mean?
+
+  For example, ``The Holy Ghost is a father of Jesus'' and ``Joseph is a
+  father of Jesus'' should not \emph{commit} us to conclude that Joseph is the
+  Holy Ghost.
+
+  For a more mathematical example, there is no solution to
+  $x\neq x$, so $\varepsilon x.(x\neq x)$ can be replaced by anything,
+  so in the equation
+\begin{equation*}
+\varepsilon x.(x\neq x)\neq\varepsilon x.(x\neq x)
+\end{equation*}
+we can independently replace the left-hand side by anything, independent
+of what we choose for the right-hand side, thus enabling the following
+chain of reasoning:
+\begin{align*}
+\varepsilon x.(x\neq x)&\neq\varepsilon x.(x\neq x)\\
+0&\neq\varepsilon x.(x\neq x)\\
+0&\neq1
+\end{align*}
+which gives us a contradiction. What went wrong? When we chose 0 for the
+left-hand side, we should have committed to this choice, and it should
+have forced our hand to pick 0 for the right-hand side as well.
+\end{enumerate}
+\end{node}
+
+\begin{node}[Quantifiers]\label{epsilon-calc-0008}%
+From the axiom
+\begin{equation*}\tag{$\varepsilon_{0}$}
+\exists x.P[x] \implies P\bigl[\varepsilon x.P[x]\bigr]
+\end{equation*}
+we can define quantifiers in terms of $\varepsilon$ using the tautologies
+\begin{equation*}\tag{$\varepsilon_{1}$}
+\exists x.P[x]\iff P\bigl[\varepsilon x.P[x]\bigr],
+\end{equation*}
+and then using this and $\forall x.P[x]\iff\neg(\exists x.\neg P[x])$,
+\begin{equation*}\tag{$\varepsilon_{2}$}
+\forall x.P[x]\iff P\bigl[\varepsilon x.\neg P[x]\bigr]
+\end{equation*}
+Really? Well, let $Q[x]=\neg P[x]$ for simplicity,
+then $\neg(\exists x.\neg P[x])=\neg(\exists x.Q[x])$ and using $(\varepsilon_{1})$
+gives us
+$\neg(\exists x.Q[x])=\neg(Q\bigl[\varepsilon x.Q[x]\bigr])$. When we
+substitute in $Q[x]=\neg P[x]$ back into this, we obtain
+$\neg(Q\bigl[\varepsilon x.Q[x]\bigr])=\neg(\neg P\bigl[\varepsilon x.\neg P[x]\bigr])$.
+The law of double negation gives us the result $(\varepsilon_{2})$.
+\end{node}
+
+\begin{node}[Epsilon Theorems]\label{epsilon-calc-0009}%
+Hilbert and Bernays's \textit{Grundlagen der Mathematik}, vol 2 (1939)
+relates deductions made by the $\varepsilon$ calculus to those made in
+the ``usual'' logic.
+
+\begin{theorem}[First epsilon]\label{epsilon-calc-000A}%
+Suppose $\Gamma\cup\{A\}$ is a set of quantifier-free formulas not
+involving the $\varepsilon$ symbol. If $A$ is derivable from $\Gamma$ in
+the $\varepsilon$ calculus, then $A$ is derivable from $\Gamma$ in
+quantifier-free predicate logic.
+\end{theorem}
+
+\begin{theorem}[Second epsilon]\label{epsilon-calc-000B}%
+Suppose $\Gamma\cup\{A\}$ is a set of formulas not involving the
+$\varepsilon$ symbol. If $A$ is derivable from $\Gamma$ in the
+$\varepsilon$ calculus, then $A$ is derivable from $\Gamma$ in predicate
+logic.
+\end{theorem}
+\end{node}
