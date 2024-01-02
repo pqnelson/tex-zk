@@ -1,0 +1,164 @@
+% 12
+\begin{node}\label{bourbaki-0000}%
+The Bourbaki group has long since been intriguing to me. Everything about it: the organization, writing style, content of their books, etc.
+\end{node}
+
+\begin{node}[Writing style]\label{bourbaki-0001}%
+Bourbaki's early work appeared to organize results into ``sections'' and
+``subsections''. The exact words vary, sometimes calling ``subsections"
+variously ``numbers'' or ``paragraphs''. For the sake of consistency, I
+will use \LaTeX\ terminology (sections contain subsections).
+
+It is unclear to me how Bourbaki's books were sold. At times, it sounds
+like each individual chapter was bound and published as a separate
+book. But other times, it sounds like \emph{eventually} the chapters
+were collected and bound as we find them in the English translation.
+
+\begin{node}[Subsections]\label{bourbaki-0006}%
+Let me see, for the first three chapters of their \textit{Lie Groups and Lie Algebras} (English translation):
+
+
+% 
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline\multicolumn{2}{|c|}{Ch.1}
+& \multicolumn{2}{c|}{Ch.2} & \multicolumn{2}{c|}{Ch.3} \\\hline
+Subsec. & Pages & Subsec. & Pages & Subsec. & Pages\\
+      9 &   11  &      6  &    8  &     11  &    24\\
+      9 &   13  &     11  &   14  &      3  &     5\\
+      8 &   13  &      3  &    4  &     18  &    41\\
+      5 &    5  &      6  &    7  &      7  &    18\\
+      6 &    7  &      5  &    6  &      4  &     7\\
+     10 &   18  &      5  &    9  &     10  &    22\\
+      3 &    5  &      3  &    6  &      6  &    11\\
+        &       &      4  &    6  &      2  &     5\\
+        &       &         &       &      8  &    17\\
+        &       &         &       &      3  &     9\\
+      \hline
+     50 &   72  &     43  &   60  &     72  &   159\\
+      \hline
+\end{tabular}
+\end{center}
+
+This is an average of 97 pages per chapter, $8.3333$ sections per chapter;
+$11.64$ pages per section, $6.6$ subsections per section; 55 subsections per
+chapter, and $1.76364$ pages per subsection.
+
+(If memory serves, in the first volume of \textit{General Topology},
+there was something on the order of magnitude of $1.5$ pages per
+subsection. So this informal survey suggests an approximate size to the
+subsections.)
+
+This seems to be consistent with their early drafts\footnote{E.g., on
+point-set topology
+(\url{http://sites.mathdoc.fr/archives-bourbaki/PDF/144_nbr_046.pdf})
+and the rest of the
+archives (\url{http://archives-bourbaki.ahp-numerique.fr/items}).}.
+\end{node}
+
+\begin{node}[Theorem numbering]\label{bourbaki-0002}%
+In \textit{Lie Groups and Lie Algebras}, lemmas, propositions, theorems,
+and definitions are numbered independently and by section.
+Examples are numbered independently, and by subsection. Corollaries are
+sequentially numbered \emph{if there are more than one corollary}, and are
+numbered after each lemma, proposition, theorem.
+
+This is probably the worst ``design decision'' made, both for the reader
+(how to locate a reference?) and the writer (keeping track of a half
+dozen ``counters'' when writing a chapter).
+\end{node}
+
+\begin{node}[No ``proofs'']\label{bourbaki-0007}%
+There are no explicit ``proof environments'' in Bourbaki's books.
+\end{node}
+\end{node}
+
+\begin{node}[Choice of foundations]\label{bourbaki-0003}%
+Bourbaki's foundations is Hilbert's epsilon
+calculus~\zref{sec:epsilon-calc}, i.e., first-order calculus without
+quantifiers but with a (global) ``choice operator''. The quantifiers are
+defined using this choice operator, thus extendeding beyond first-order
+logic. Hilbert denoted this operator by $\varepsilon$, Bourbaki used a
+convoluted $\tau$ and system of linkages to avoid introducing bound
+variables. Then, for any predicate $P[x]$, we would have
+$\varepsilon_{x}P[x]$ represent some object which satisfies the
+predicate (if one exists, otherwise it's an arbitrary object).
+
+If memory serves, Bourbaki used a Hilbert system for its proof calculus,
+and then never touches the subject again. Instead (after much irrelevant
+work), Bourbaki relies on familiar natural deduction proofs.
+
+Bourbaki's axioms for their set theory amounted to Zermelo set
+theory. It wasn't until Grothendieck joined the group and added the
+axiom that, to any set $X$ there exists a Grothendieck Universe~\zref{set:tg-0000} $U$
+containing $X$. This made it far stronger than \ZFC\ set theory.
+
+The difficulty is that the various constructs in set theory --- von
+Neumann's stages $V_{\alpha}$, Godel's constructible $L_{\alpha}$,
+hereditarily finite sets $H_{\alpha}$, and so on --- are not closed
+under the choice operator $\tau$ in general.
+
+A good reference on Bourbaki's \textit{Theory of Sets} is \textsc{Wayne Aitkens}'s commentary on the first chapter of Bourbaki's book.\footnote{\url{https://public.csusm.edu/aitken_html/Essays/Bourbaki/BourbakiSetTheory1.pdf}}
+\end{node}
+
+\begin{node}[Model Theory]\label{bourbaki-0004}%
+Bourbaki does not consider model theory at all. Instead, they are purely
+formalists: a formula is \emph{true} if it is provable. The idea of a
+``true but unprovable'' proposition is meaningless to them.
+
+However, they \textit{do} discuss notions of ``models'' and
+``interpretations'' in the history section of chapter 4 of their
+\textit{Theory of Sets} book. So they apparently are aware of the notion
+of model theory.
+
+I \emph{think} that Bourbaki did this deliberately, as a way of saying
+we ``live'' in the world of sets, and ultimately work there, too. But I
+have no proof to support this other than it appears to be in line with
+their underlying philosophical views. If memory serves, \textsc{Rodin}'s
+``One Mathematic(s) or Many?''~\cite{Rodin_2021} argues a similar perspective.
+\end{node}
+
+\begin{node}[Puzzle]\label{bourbaki-0005}%
+If you were to form a ``modern Bourbaki group'', what exactly would be
+the premise or gimmick to it?
+
+Presumably the ``mission statement'' is the same (i.e., to provide a
+coherent, uniform presentation of modern mathematics). But then what's
+unique about it? I could hazard a few speculative guesses.
+
+\begin{node}[Formal proofs]\label{bourbaki-0009}%
+If I had to hazard a guess, I suppose it might be something along the
+lines of something analogous to Java emerging in the 1990s as a way to
+handle the myriad CPU architectures and difficulties porting software
+from one CPU architecture to another. Now, in math, we have many
+different possible foundations and different proof assistants, which are
+incompatible with each other. A ``Bourbaki 2.0'' might try to formulate
+a controlled subset of the English language [think: Mizar or ForTheL]
+which ``compiles'' to different proof assistants, which is independent
+of foundations. This would make the work readable on its own (as it is
+written in a controlled subset of English) and verifiable (since it can
+``compile'' to any proof assistant, and be checked for correctness).
+\end{node}
+
+\begin{node}[Template for definitions]\label{bourbaki-0008}%
+We could also consider following John Baez's ``stuff, structure,
+properties'' template\footnote{See \url{https://ncatlab.org/nlab/show/stuff,+structure,+property}} for definition. This can be made ``canonical'' by
+referring to internal definitions\footnote{See \url{https://ncatlab.org/nlab/show/internalization}},
+e.g., ``A group object in a category $\cat{C}$ consists of an object
+$G\in\cat{C}$ equipped with morphisms\dots such that the following
+diagrams commute: \dots''. This has the advantage that when we consider
+a ``gadget'' internal to $\cat{Cat}$, we get one version of a strictly
+categorified ``2-gadget'' (hence giving us one possible categorified
+version of concepts).
+
+\begin{node}[Grothendieck invented internalization]\label{bourbaki-000A}%
+Note that internalization seems to be traced back to Grothendieck's
+comments in \textit{FGA} \S4.2\footnote{English translation \url{https://thosgood.com/fga/FGA-3-II.html\#fga-3-ii-section-A.1}}
+and groups with operators given in \S5.3\footnote{English translation \url{https://thosgood.com/fga/FGA-3-III.html\#fga-3-iii-section-3}}.
+\end{node}
+
+\begin{node}\label{bourbaki-000B}%
+For a review of internal group objects and categories, see Forrester-Barker~\cite{forresterbarker2002group}.
+\end{node}
+\end{node}
+\end{node}

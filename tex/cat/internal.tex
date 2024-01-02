@@ -1,0 +1,80 @@
+% 7
+
+\begin{node}[Internal Category Theory]\label{internal-0004}%
+\begin{definition}\label{internal-0000}%
+Let $\cat{C}$ be a category. We define a \define{Category Object}
+$X$ internal to $\cat{C}$ to consist of
+\begin{enumerate}
+\item an \textsc{object of objects} $X_{0}\in\cat{C}$
+\item an \textsc{object of morphisms} $X_{1}\in\cat{C}$
+\end{enumerate}
+equipped with
+\begin{enumerate}
+\item source and target morphisms $s,t\colon X_{1}\to X_{0}$;
+\item an identity-assignment $e\colon X_{0}\to X_{1}$;
+\item a composition operator $c\colon X_{1}\times_{X_{0}}X_{1}\to X_{1}$;
+\end{enumerate}
+such that the usual laws of categories hold:
+\begin{enumerate}
+\item laws specifying the target and source of the identity morphisms
+\[ \xymatrix{X_{0} \ar[dr]_{\id} \ar[r]^{e} & X_{1} \ar[d]^{s}\\
+& X_{0}}\qquad\xymatrix{X_{0} \ar[dr]_{\id} \ar[r]^{e} & X_{1} \ar[d]^{t}\\
+& X_{0}}\]
+\item laws specifying the source and target of composite morphisms
+  \[\xymatrixcolsep{4pc} \xymatrix{X_{1}\times_{X_{0}}X_{1}\ar[d]^{p_{1}} \ar[r]^{c} & X_{1}\ar[d]^{s}\\
+    X_{1} \ar[r]^{s}& X_{0}}\quad
+  \xymatrix{X_{1}\times_{X_{0}}X_{1}\ar[d]^{p_{2}} \ar[r]^{c} & X_{1}\ar[d]^{t}\\
+    X_{1} \ar[r]^{t}& X_{0}}\]
+\item associativity for composition
+\[\xymatrixcolsep{5pc} \xymatrix{X_{1}\times_{X_{0}}X_{1}\times_{X_{0}}X_{1}\ar[r]^{c\times_{X_{0}}\id}\ar[d]^{\id\times_{X_{0}}c}&X_{1}\times_{X_{0}}X_{1}\ar[d]^{c}\\
+  X_{1}\times_{X_{0}}X_{1}\ar[r]^{c} & X_{1}}\]
+\item the left and right unit laws for composition of morphisms:
+\[\xymatrix{ X_{0}\times_{X_{0}} X_{1}\ar[r]^{e\times\id}\ar[dr]_{p_{2}} & X_{1}\times_{X_{0}} X_{1}\ar[d]^{c} & \ar[l]_{\id\times e} X_{1}\times_{X_{0}}X_{0}\ar[dl]^{p_{1}}\\
+& X_{1} & }\]
+\end{enumerate}
+
+\begin{node}[Examples]\label{internal-0001}%
+A category object internal to $\Set$ is just the usual notion of a category.
+\end{node}
+\end{definition}
+
+\begin{definition}\label{internal-0002}%
+Let $\cat{C}$ be a category. A \define{Groupoid object} internal to
+$\cat{C}$ consists of a category object $X$ internal to $\cat{C}$
+equipped with
+\begin{enumerate}
+\item a morphism $\iota\colon X_{1}\to X_{1}$
+\end{enumerate}
+such that
+\begin{enumerate}
+\item $t=\iota\circ s$ and $s=\iota\circ t$;
+\item left invertibility for internal morphisms: if $\Delta\colon X_{1}\to X_{1}\times X_{1}$ is the diagonal
+  morphism, then
+\[\xymatrixcolsep{5pc} \xymatrix{
+  X_{1} \ar[d]^{s} \ar[r]^{\Delta} & X_{1}{}_{t}\times_{X_{0},t}X_{1} \ar[r]^{\id\times\iota}&\ar[d]^{c}{}_{t}X_{1}\times_{X_{0},s}X_{1}\\
+X_{0} \ar[rr]^{e} & & X_{1}} \]
+\item right invertibility for internal morphisms:
+\[\xymatrixcolsep{5pc} \xymatrix{
+  X_{1} \ar[d]^{t} \ar[r]^{\Delta} & X_{1}{}_{s}\times_{X_{0},s}X_{1} \ar[r]^{\iota\times\id}&\ar[d]^{c}{}_{t}X_{1}\times_{X_{0},s}X_{1}\\
+X_{0} \ar[rr]^{e} & & X_{1}} \]
+\end{enumerate}
+
+\begin{node}[Example]\label{internal-0005}%
+A groupoid object internal to $\Set$ is just a groupoid as we know and
+love it.
+\end{node}
+\begin{node}[Example]\label{internal-0006}%
+Lie groupoids~\zref{hda-0009} are groupoids internal to the category of
+smooth manifolds.
+\end{node}
+\end{definition}
+
+\begin{node}[References]\label{internal-0003}%
+I haven't found a suitable reference for this definition. Internal
+categories may be found in Baez and Crans~\cite[\S2]{baez2010higherdimensional},
+the note of Forrester-Barker~\cite{forresterbarker2002group}, and elsewhere.
+P\^{e}gas~\cite{pegas2013groupoids} and
+Martins-Ferreira~\cite{martinsferreira2022internal} provide definitions
+for internal groupoids.
+\end{node}
+\end{node}

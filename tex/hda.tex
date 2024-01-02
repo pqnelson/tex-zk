@@ -1,0 +1,85 @@
+% 10
+
+\begin{node}\label{hda-0000}%
+The basic idea of ``higher-dimensional algebra'' appears to be to
+consider ways to define ``$n$-gadgets'' where $1$-gadgets are the
+familiar things we learn in undergraduate abstract algebra (groups,
+rings, vector spaces, etc.), $2$-gadgets are the internalized versions
+in $\cat{Cat}$. This leads to consider different ways to categorify
+these notions, and considerations of different ways to form
+$n$-categories and internalization in there. This can also lead to
+intriguing notions (like a topological category, being a category object
+internal to $\Top$ the category of topological spaces).
+\end{node}
+
+\begin{node}[Lie 2-algebras]\label{hda-0001}%
+Baez and Crans~\cite{baez2010higherdimensional} are a good reference for
+Lie 2-algebras with an eye towards working analogously towards Lie
+2-groups in previous work~\cite{baez2004higherdimensional}. Pradines'
+review~\cite{pradines2007ehresmanns} may be worth perusing as well.
+\end{node}
+
+\begin{definition}\label{hda-0002}%
+Let $K$ be a commutative ring.
+A \define{$K$-Linear Category} (or \define{$K$-Algebroid}) is a category
+enriched over $\Vect{K}$, i.e., whose
+$\hom$-sets are vector spaces and whose composition operator is bilinear.
+(This is a horizontal categorification of the notion of an associative
+algebra; therefore, a Lie algebroid does not fit into this definition.) 
+\end{definition}
+
+\begin{node}[Lie Algebra objects]\label{hda-0005}%
+\begin{definition}\label{hda-0004}%
+Let $K$ be a commutative unital ring, let us consider a symmetric monoidal
+$K$-linear category $(\cat{C},\otimes,\mathbf{1})$ with braiding $\tau$.
+We define a \define{Lie algebra object} in $(\cat{C},\otimes,\mathbf{1},\tau)$
+to consist of an object $L\in\cat{C}$ equipped with the Lie bracket
+morphism $[-,-]\colon L\otimes L\to L$ such that
+\begin{enumerate}
+\item the Jacobi identity holds: $\left[-,\left[-,-\right]\right]
++ \left[-,\left[-,-\right]\right]\circ(\id_{L}\otimes\tau_{L,L})\circ(\tau\otimes \id_{L})
++ \left[-,\left[-,-\right]\right] \circ (\tau_{L,L}\otimes \id_{L})\circ (\id_{L}\otimes\tau_{L,L}) = 0$;
+and
+\item Antisymmetry: $[-,-]+[-,-]\circ \tau_{L,L}=0$.
+\end{enumerate}
+\end{definition}
+\begin{node}[Example: recover usual notion]\label{hda-0006}%
+We can recover the usual notion of a Lie algebra by taking $K$ to be a
+field, $\cat{C}=\Vect{K}$ the category of vector spaces over $K$
+equipped with the usual notion of the tensor product of vector
+spaces. Then a Lie algebra object in $\cat{C}$ is just the usual notion
+of a Lie algebra.
+\end{node}
+\begin{node}[Example: Super Lie algebras]\label{hda-0007}%
+Let $K$ be a field and $\cat{C}=\sVect{K}$ be the category of super
+vector spaces over $K$ equipped with the super-tensor product. Then a
+Lie algebra object in $\cat{C}$ is just a super Lie algebra as we know
+and love.
+\end{node}
+\begin{node}[Generalizations]\label{hda-0008}%
+We can think of $L_{\infty}$-algebras as Lie algebras whose identities
+hold up to homotopic equivalence. From this perspective,
+$L_{\infty}$-algebras are a (vertical) categorification of Lie algebras.
+\end{node}
+\end{node}
+
+\begin{definition}\label{hda-0009}%
+A \define{Lie groupoid} is a groupoid internal~\zref{internal-0002} to the
+category of smooth manifolds $\Mfld$. The ``infinitesimal
+approximation'' to a Lie groupoid is precisely a Lie
+algebroid~\zref{hda-0003}.
+\end{definition}
+
+\begin{definition}\label{hda-0003}%
+Let $X$ be a manifold. A \define{Lie Algebroid} over $X$ consists of
+a vector bundle $E\to X$ equipped with
+\begin{enumerate}
+\item a Lie bracket $[-,-]\colon\Gamma(E)\otimes\Gamma(E)\to\Gamma(E)$
+  on the space of sections;
+\item a morphism of vector bundles $\rho\colon E\to TX$ whose tangent
+  map preserves the bracket: $\D\rho([\xi,\zeta]_{\Gamma E})=[\D\rho(\xi),\D\rho(\zeta)]_{\Gamma TX}$
+\end{enumerate}
+such that the Leibniz rule holds: for all $X$, $Y\in\Gamma(E)$, and for
+all $f\in C^{\infty}(E)$, we have $[X,f\cdot Y]=f\cdot[X,Y]+\rho(X)(f)\cdot Y$.
+\end{definition}
+
