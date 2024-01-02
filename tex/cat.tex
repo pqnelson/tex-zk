@@ -1,2 +1,233 @@
+% 26
+\section{Basic Definitions}
+
+\begin{node}[Size issues]\label{cat-0002}%
+Depending on our choice of set theory, we have different notions of
+``small'' and ``large'' collections. In \NBG\ set theory~\zref{sec:set:nbg}
+``large'' collections are proper classes, and ``small'' collections are
+sets. In Tarski--Grothendieck set theory~\zref{sec:set:tarski-grothendieck},
+we usually pick some ``smallest'' Grothendieck universe $\mathcal{U}$
+containing $\NN$, which would also contain $\RR$, $\CC$, and all other
+sets we use in classical mathematics, then consider elements of
+$\mathcal{U}$ as small collections. Since there's possibly more than one
+choice of universe, we speak of ``$\mathcal{U}$-small'' and
+``$\mathcal{U}$-large'' sets depending on if they are elements of
+$\mathcal{U}$ or not. Further, subsets of $\mathcal{U}$ are sometimes
+called ``$\mathcal{U}$-moderate''. For a review of the different notions
+of ``small'' and ``large'' collections germane to category theory, see
+Shulman~\cite{shulman2008set}.
+
+For various constructions in Category theory, \NBG\ will prove not
+enough. We could try \MK\ axioms, but it will still not be enough. Some
+authors invent a notion of ``conglomerates'' for forming the collection
+of all proper classes. But this will turn out to still not be enough. This
+is why we turn to Tarski--Grothendieck set theory.
+\end{node}
+
+\begin{node}[Category]\label{cat-0001}%
+\begin{definition}[Version 1]
+A \define{Category} $\cat{C}$ consists of
+\begin{enumerate}
+\item a collection of objects $\ob(\cat{C})$;
+\item for any objects $X,Y\in\ob(\cat{C})$, there is a (possibly empty)
+  collection of morphisms $\hom(X,Y)$;
+\item for each object $X\in\ob(\cat{C})$, an identity morphism $\id_{X}\in\hom(X,X)$;
+\item for objects $X,Y,Z\in\ob(\cat{C})$ and morphisms $f\in\hom(X,Y)$,
+  $g\in\hom(Y,Z)$, there exists a morphism $g\circ f\in\hom(X,Z)$
+\end{enumerate}
+such that
+\begin{enumerate}
+\item composition is associative: for any $W,X,Y,Z\in\ob(\cat{C})$, if
+  $f\in\hom(W,X)$, $g\in\hom(X,Y)$, $h\in\hom(Y,Z)$, then $(h\circ g)\circ f=h\circ(g\circ f)$;
+\item unit laws for composition: for any objects $X,Y\in\ob(\cat{C})$,
+  if $f\in\hom(X,Y)$, then $\id_{Y}\circ f=f$ and $f\circ\id_{X}=f$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Version 2]\label{cat-0000}%
+A \define{Category} $\cat{C}$ consists of
+\begin{enumerate}
+\item a collection of objects $\ob(\cat{C})$;
+\item a collection of morphisms $\hom(\cat{C})$
+\end{enumerate}
+equipped with
+\begin{enumerate}
+\item a mapping $\id\colon\ob(\cat{C})\to\hom(\cat{C})$ assigning to
+  each object its identity morphism;
+\item a mapping $\circ\colon\hom(\cat{C})\times\hom(\cat{C})\to\hom(\cat{C})$;
+\item a source and target mapping $s,t\colon\hom(\cat{C})\to\ob(\cat{C})$;
+\end{enumerate}
+such that
+\begin{enumerate}
+\item source and target are respected by composition: $s(g\circ f)=s(f)$
+  and $t(g\circ f)=t(g)$;
+\item source and target are respected by identities: $s(\id_{X})=X$ and $t(\id_{X})=X$;
+\item composition is associative: $(h\circ g)\circ f=h\circ(g\circ f)$
+  whenever $t(f)=s(g)$ and $t(g)=s(h)$;
+\item composition satisfies the unit laws: if $s(f)=X$ and $t(f)=Y$,
+  then $\id_{Y}\circ f=f$ and $f\circ\id_{X}=f$.
+\end{enumerate}
+\end{definition}
+
+\begin{node}[Examples]\label{cat-0007}%
+\begin{node}\label{cat-0004}%
+The large category $\Set$ of sets\dots depends greatly on your choice of
+foundations. ``Morally'', $\ob(\Set)$ consists of all [``small''] sets, and its
+morphisms are [``small''] functions between those sets. But the exact
+details varies depending on whether our foundations is predicative or
+impredicative, classical or intuitionistic, admit or negate the axiom of
+choice, and so on.
+\end{node}
+
+\begin{node}\label{cat-000A}%
+If $\mathcal{U}$ is a Grothendieck universe~\zref{tg-0001}, then we can
+form $\mathcal{U}\mbox{-}\Set$ whose collection of objects is precisely
+$\mathcal{U}$ and whose collection of morphisms is precisely the
+functions which are elements of $\mathcal{U}$.
+\end{node}
+
+\begin{node}\label{cat-0005}%
+The large category $\cat{Ens}$ or $\cat{SET}$ is the category whose object is
+the proper class of all sets $\ob(\cat{SET})=\ob(\cat{Ens})=V$ and whose
+morphisms is all functions. This is a large category.
+\end{node}
+
+\begin{node}\label{cat-0003}%
+The large category $\Grp$ of groups consists of $\ob(\Grp)$ the collection of all
+``small'' groups [i.e., whose underlying set belongs to the universe of
+sets], and the morphisms are all group morphisms.
+\end{node}
+
+\begin{node}\label{cat-0006}%
+The large category $\Top$ of topological spaces consists of the collection of
+all ``small'' topological spaces and morphisms are continuous maps
+between them.
+\end{node}
+
+\begin{node}\label{cat-0008}%
+Let $\FF$ be a field. The large category $\Vect{\FF}$ has its objects be
+[``small''] vector spaces over $\FF$, and morphisms are $\FF$-linear
+mappings between them.
+\end{node}
+
+\begin{node}\label{cat-000F}%
+The category $\Mfld$ of $C^{\infty}$ manifolds is a category whose
+objects are smooth manifolds, and morphisms are smooth mappings between
+them. 
+\end{node}
+
+\begin{node}\label{cat-000M}%
+Let $\cat{C}$ be a category consisting of a single object. This encodes
+a monoid in the collection of morphisms.
+\end{node}
+\end{node} % examples
+
+\begin{definition}\label{cat-000O}%
+Let $\cat{C}$ be a category. We may form the \define{Opposite} category
+of $\cat{C}$, denoted $\cat{C}^{op}$, which consists of the same objects
+but a morphism $f\colon X\to Y$ in $\cat{C}^{op}$ is precisely the same
+as a morphism $f\colon Y\to X$ in $\cat{C}$, and composition of
+morphisms in the opposite category $g\circ f$ is precisely the reverse
+of composition in the original category $(f\circ g)_{orig}$.
+
+\begin{node}[Duality principle]\label{cat-000P}%
+Every construction we can do in a category $\cat{C}$ has a dual
+construction in the opposite category $\cat{C}^{op}$ which is usually
+prefixed by ``co-''.
+\end{node}
+\end{definition}
+
+\begin{definition}\label{cat-000G}%
+Let $\cat{C}$ be a category. We define a \define{Subcategory} of $\cat{C}$
+to consist of a category $\cat{D}$ such that $\ob(\cat{D})\subset\ob(\cat{C})$
+and for all objects $X,Y\in\ob(\cat{D})$,
+$\hom_{\cat{D}}(X,Y)\subset\hom_{\cat{C}}(X,Y)$. The composition of
+morphisms in $\cat{D}$ is given by restricting the composition operator
+from $\cat{C}$. The identity morphisms in $\cat{D}$ are precisely the
+identity morphisms of $\cat{C}$ restricted to the objects of $\cat{D}$.
+
+\begin{definition}\label{cat-000H}%
+Let $\cat{D}$ be a subcategory of $\cat{C}$. We say $\cat{D}$ is a
+\define{Full} subcategory if for all objects $X,Y\in\ob(\cat{D})$, we
+have $\hom_{\cat{D}}(X,Y)=\hom_{\cat{C}}(X,Y)$.
+\end{definition}
+\end{definition}
+\end{node} % category
+
+\begin{node}[Groupoids]\label{cat-000B}%
+\begin{definition}\label{cat-000C}%
+A \define{Groupoid} is a category whose morphisms are all isomorphisms.
+\end{definition}
+\begin{node}[Examples]\label{cat-000D}%
+\begin{node}\label{cat-000I}%
+Let $G$ be a group. Then we can form a groupoid whose set of objects is
+just a singleton set, and collection of morphisms is $G$, and
+composition operator is the law of composition from the group structure
+on $G$. We can reverse this intuition, and assert \emph{all} groups are
+``just'' one-object groupoids.
+\end{node}
+
+\begin{node}[Fundamental groupoid]\label{cat-000E}%
+For any topological space $X$, we may form the fundamental groupoid
+$\Pi_{1}(X)$ whose objects are the set of underlying points of $X$ and
+morphisms $f\colon A\to B$ are homotopy equivalence classes of paths
+from $A$ to $B$.  Composition then concatenates paths.
+\end{node}
+\end{node}
+\end{node}
+
+\begin{node}[Functors]\label{cat-0009}%
+When we define a new mathematical gadget, it will be useful to turn our
+attention to defining morphisms for our new gadget. We call the
+morphisms of categories ``functors''.
+
+\begin{definition}
+Let $\cat{C}$, $\cat{D}$ be categories. We define a \define{Functor}
+from $\cat{C}$ to $\cat{D}$ to be $F\colon\cat{C}\to\cat{D}$ consisting
+of
+\begin{enumerate}
+\item a mapping of objects $F_{ob}\colon\ob(\cat{C})\to\ob(\cat{D})$;
+\item a mapping of morphisms $F_{mor}\colon\hom_{\cat{C}}(X,Y)\to\hom_{\cat{D}}(F_{ob}(X),F_{ob}(Y))$;
+\end{enumerate}
+such that
+\begin{enumerate}
+\item $F$ preserves composition: $F_{mor}(g\circ f)=F_{mor}(g)\circ F_{mor}(f)$ whenever
+  $g\circ f$ is defined in $\cat{C}$;
+\item $F$ preserves identity morphisms: for each object $X\in\cat{C}$, $F_{mor}(\id_{X})=\id_{F_{ob}(X)}$.
+\end{enumerate}
+We often suppress the subscripts and just write things like
+\[F\left(X\xrightarrow{f}Y\right)\quad=\quad F(X)\xrightarrow{F(f)}F(Y).\]
+\end{definition}
+
+\begin{node}[Examples]\label{cat-000J}%
+\begin{node}\label{cat-000L}%
+Let $\cat{C}$ be a category. We define the \define{Identity functor}
+$\Id_{\cat{C}}$ which is just the identity function on objects, and the
+identity function on morphisms.
+\end{node}
+  
+\begin{node}[Linear representations of groups]\label{cat-000K}%
+Let $\FF$ be a field, let $G$ be a group. We know we can form the
+groupoid $\cat{G}$ from $G$ \zref{cat-000I}. Then $\FF$-linear
+representations of $G$ are precisely the functions $\cat{G}\to\Vect{\FF}$.
+\end{node}
+
+\begin{node}\label{cat-000N}%
+Let $\cat{C}$ be a locally-small category, let $X,Y\in\ob(\cat{C})$ be
+objects. Then $\hom(X,-)\colon\cat{C}\to\Set$ maps each object
+$B\in\cat{C}$ to the set of morphisms $\hom(X,A)$ and each function
+$f\colon A\to B$ to $\hom(X,f)\colon\hom(X,A)\to\hom(X,B)$ sending
+$g\mapsto f\circ g$ for each $g\in\hom(X,A)$.
+
+We also have $\hom(-,Y)\colon\cat{C}^{op}\to\Set$ be a functor sending each
+object $A\in\ob(\cat{C})$ to the set of morphisms $\hom(A,Y)$, and each
+morphism $h\colon A\to B$ in $\cat{C}$ to $\hom(h,Y)\colon\hom(B,Y)\to\hom(A,Y)$
+sending $g\in\hom(B,Y)$ to $g\circ h\in\hom(A,Y)$.
+\end{node}
+\end{node} % examples
+\end{node}
+
+\section{Universal Properties}
+\input{tex/cat/universal-prop}
 \section{Internalization}
 \input{tex/cat/internal}

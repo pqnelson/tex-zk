@@ -1,5 +1,5 @@
 \documentclass[dvipsnames,HTML]{amsbook}
-\usepackage[all,cmtip]{xy}
+\usepackage{tikz-cd}
 %\usepackage{mathrsfs}
 %\usepackage{mathpazo}
 %\linespread{1.05}
@@ -17,8 +17,6 @@
 \tableofcontents
 \mainmatter
 \vfill\eject
-\chapter{Taking Notes}
-\input{tex/amn}
 
 \part{Foundations}
 \chapter{Type Theory}
@@ -53,6 +51,10 @@
 \input{tex/hda}
 
 \backmatter
+\appendix
+\chapter{Taking Notes}
+\input{tex/amn}
+
 \nocite{*}
 \bibliographystyle{elements}%{amsalpha}
 \bibliography{zk}

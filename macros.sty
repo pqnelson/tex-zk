@@ -62,7 +62,7 @@
   \setTrue{#1}%
   \let\secdef\@gobbletwo \chapter
   \let\@secnumber\@empty % for \@tocwrite and \chaptermark
-  \@tocwrite{chapter}{#2} % DIFF: write to the TOC always
+  \phantomsection\@tocwrite{chapter}{#2} % DIFF: write to the TOC always
   \typeout{#2}\@xp\chaptermark\@xp{#2}%
   \@makeschapterhead{#2}\@afterheading
   \parskip\z@skip

@@ -1,0 +1,77 @@
+% 10
+
+\begin{node}[Product objects]\label{universal-prop-0003}%
+\begin{definition}\label{universal-prop-0004}%
+Let $\cat{C}$ be a category, let $A$ and $B$ be objects in
+$\cat{C}$. The \define{Product object} of $A$ and $B$ is the object
+denoted $A\times B$ with morphisms $\pi_{1}\colon A\times B\to A$ and
+$\pi_{2}\colon A\times B\to B$ such that for all objects $X\in\ob(\cat{C})$
+and morphisms $f_{1}\colon X\to A$ and $f_{2}\colon X\to B$, there
+exists a unique morphism $f\colon X\to A\times B$ such that the diagram
+commutes
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+  & \arrow[dl,swap,"f_{1}"] X \arrow[d,dashed,"f"] \arrow[dr,"f_{2}"] & \\
+A & \ar[l,"\pi_{1}"] A\times B \ar[r,swap,"\pi_{2}"] & B
+\end{tikzcd}
+\end{equation*}
+\end{definition}
+
+\begin{definition}\label{universal-prop-0009}%
+More generally, in a category $\cat{C}$,
+if we have a family of objects $\{A_{i}\}_{i\in I}\subset\ob(\cat{C})$
+equipped with morphisms $\pi_{j}\colon\prod_{i\in I}A_{i}\to A_{j}$ for
+each $j\in I$ such
+that for any object $X$ and family of morphisms 
+$f_{i}\colon X\to A_{i}$ there is a unique morphism $f\colon X\to\prod_{i\in I}A_{i}$
+such that the following diagram commutes
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+  X\arrow[dr,"f_{j}"]\arrow[d,swap,dashed,"f"]  & \\
+\prod_{i\in I}A_{i} \arrow[r,swap,"\pi_{j}"] & A_{j}
+\end{tikzcd}
+\end{equation*}
+\end{definition}
+
+\begin{node}[Examples]\label{universal-prop-0007}%
+\begin{node}\label{universal-prop-0005}%
+In $\Set$, the product object is just the usual direct product.
+\end{node}
+
+\begin{node}\label{universal-prop-0006}%
+In $\Grp$, the product object is the usual product group.
+\end{node}
+
+\begin{node}\label{universal-prop-0008}%
+In $\Top$, the product object is the usual product space. The topology
+is the product topology.
+\end{node}
+\end{node} % examples
+\end{node}
+
+\begin{node}[Pullbacks]\label{universal-prop-0001}%
+\begin{definition}\label{universal-prop-0000}%
+In a category $\cat{C}$ with products, let $f\colon B\to A$ and $g\colon D\to A$
+be morphisms. A \define{Pullback} over $A$ given by these morphisms is
+the object $P$ such that for any other object $X$ with morphisms
+$h_{1}\colon X\to B$ and $h_{2}\colon X\to D$, there exists a unique
+$h\colon X\to P$ making the diagram commute:
+\begin{equation*}
+\begin{tikzcd}%[sep=huge]
+  X \arrow[rrd,bend left,"h_{2}"]
+    \arrow[ddr,bend right,swap,"h_{1}"]
+    \arrow[dr,dashed,"h"] \\
+  & P \arrow[d,"\pi_{1}"'] \arrow[r,"\pi_{2}"] & D \arrow[d,"g"]  \\
+  & B \arrow[r,swap,"f"]  & A
+\end{tikzcd}
+\end{equation*}
+\end{definition}
+
+\begin{node}[Example]
+In the category of sets, $X\times_{Z}Y=\{(x,y)\in X\times Y\mid f(x)=g(y)\}$.
+\end{node}
+\end{node}
+
+\begin{node}\label{universal-prop-0002}%
+
+\end{node}

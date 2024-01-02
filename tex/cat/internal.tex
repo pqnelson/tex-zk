@@ -1,4 +1,168 @@
-% 7
+% 23
+
+\begin{node}[Group object]\label{internal-0007}%
+\begin{definition}
+Let $\cat{C}$ be a category with finite products and a terminal object
+$\mathbf{1}$. We define a \define{Monoid object} in $\cat{C}$ to consist
+of an object $M$ equipped with morphisms $m\colon M\times M\to M$
+and $e\colon\mathbf{1}\to M$ such that
+\begin{enumerate}
+\item $m$ is associative, i.e., the following diagram commutes
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+M\times M\times M\ar[d,swap,"m\times\id_{M}"]\ar[r,"\id_{M}\times m"] & M\times M\ar[d,"m"]\\
+M\times M\ar[r,swap,"m"] & M
+\end{tikzcd}
+\end{equation*}
+\item the unit laws hold (i.e., the identity element acts as expected),
+  i.e., the following diagram commutes
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+\mathbf{1}\times M\ar[dr,swap,"\pi_{2}"]\ar[r,"e\times\id_{M}"] &M\times M\ar[d,"m"] & \ar[l,swap,"\id_{M}\times e"]\ar[dl,"\pi_{1}"]M\\
+& M &
+\end{tikzcd}
+\end{equation*}
+\end{enumerate}
+\end{definition}
+
+\begin{node}[Examples]\label{internal-000J}%
+\begin{node}\label{internal-000K}%
+Let $\FF$ be a field. A monoid object in $\Vect{\FF}$ (considered as a
+monoidal category with tensor product of vector spaces) is precisely an
+associative unital algebra over $\FF$.
+\end{node}
+
+\begin{node}\label{internal-000L}%
+A monoid object in $\Set$ is just the usual notion of a monoid we learn
+in abstract algebra.
+\end{node}
+
+\begin{node}[Joke]\label{internal-000M}%
+A monoid in the category of endofunctors is a monad.
+\end{node}
+\end{node}% examples
+
+\begin{definition}\label{internal-0009}%
+Let $\cat{C}$ be a category with finite products and a terminal object
+$\mathbf{1}$. A \define{Group object} in $\cat{C}$ consists of a monoid
+object $(G,m,e)$ equipped with an ``inverse'' morphism $i\colon G\to G$
+such that the following diagram commutes:
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+G\ar[d,swap,"!"]\ar[r,"\Delta"] & G\times G\ar[r,"i\times\id_{G}"] & G\times G\ar[d,"m"]\\
+\mathbf{1}\ar[rr,swap,"e"] & & G
+\end{tikzcd}
+\end{equation*}
+where $\Delta$ is the diagonal morphism defined by
+$\pi_{1}\circ\Delta=\pi_{2}\circ\Delta$.
+\end{definition}
+
+\begin{node}[Examples]\label{internal-000A}%
+
+\begin{node}\label{internal-000B}%
+In $\Set$, a group object is simply the usual notion of a group we all
+know and love.
+\end{node}
+
+\begin{node}\label{internal-000C}%
+In $\Top$, a group object is precisely a topological group.
+\end{node}
+
+\begin{node}\label{internal-000D}%
+In $\Mfld$, a group object is a Lie group.
+\end{node}
+
+\begin{node}\label{internal-000E}%
+In $\Grp$, a group object looks like\dots well, what? We would have $G$
+be a group, its law of composition $m\colon G\times G\to G$ be a group
+morphism. Could it be different than the usual law of composition? 
+
+We would have $e\colon\mathbf{1}\to G$ pick out the usual identity
+element since $\mathbf{1}$ is the trivial group, and we have no choice
+in the matter. This means that the identity element of $G$ is precisely
+$e(1)$ the identity for the law of composition $m$.
+
+Now, for any $a,b\in G$, we would have $m(a,b)=ab=m(b,a)=ba$, since
+\begin{subequations}
+\begin{align}
+m(a,b) &= m(1\cdot a,b\cdot 1)\\
+&=m(1,b)\cdot m(a,1)\quad\mbox{by group morphism}\\
+&=m(b,1)\cdot m(1,a)\quad\mbox{by unit laws}\\
+&=b\cdot a\\
+&=m(b,1)\cdot m(1,a)\\
+&=m(b\cdot 1,1\cdot a)\\
+&=m(b,a),
+\end{align}
+\end{subequations}
+and similar reasoning gives us the rest of the claim.
+
+Therefore, a group object in $\Grp$ is an Abelian group.
+\end{node}
+
+\begin{node}\label{internal-000F}%
+A group object in the category of supermanifolds $\sMfld$ is precisely a
+super Lie group.
+\end{node}
+
+\begin{node}\label{internal-000G}%
+If we consider the category of algebraic varieties, a group object is
+simply an algebraic group. If we consider the category of schemes, then
+a group object is a group scheme.
+\end{node}
+\end{node} % examples
+
+\begin{node}[References]\label{internal-0008}%
+See Mac Lane~\cite[III\S6]{mac1998categories} and
+the note of Forrester-Barker~\cite{forresterbarker2002group}.
+\end{node}
+\end{node}
+
+\begin{node}[Internal ring object]\label{internal-000H}%
+\begin{definition}
+Let $\cat{C}$ be a Cartesian monoidal category. A \define{Ring object}
+in $\cat{C}$ consists of an object $R$ equipped with
+\begin{enumerate}
+\item addition $a\colon R\times R\to R$ and multiplication $m\colon R\times R\to R$
+\item a zero element $z\colon\mathbf{1}\to R$
+\item a unit element $e\colon\mathbf{1}\to R$
+\item additive inversion $n\colon R\to R$
+\end{enumerate}
+such that the usual axioms apply as encoded by commutative diagrams ---
+so $(R,a,z,n)$ is a group object and $(R,m,e)$ is a monoid object, and
+distributivity holds.
+\end{definition}
+
+\begin{definition}
+Let $(\cat{C},\otimes,\mathbf{1})$ be a monoidal category. Let
+$(A,\mu,e)$ be a monoid in $(\cat{C},\otimes,\mathbf{1})$.
+We define a \define{Left module object} in $\cat{C}$ over $A$ is an
+object $M\in\cat{C}$ equipped with a morphism $\rho\colon A\otimes M\to M$
+(called the action, or ``scalar multiplication'') such that
+\begin{enumerate}
+\item unitality: the following diagram commutes (where $\ell$ is the
+  left unitor isomorphism of $\cat{C}$)
+\begin{equation*}
+\begin{tikzcd}
+\mathbf{1}\otimes M\arrow[dr,swap,"\ell"]\ar[r,"e\otimes\id"] & A\otimes M\ar[d,"\rho"]\\
+& M
+\end{tikzcd}
+\end{equation*}
+\item Action property: the following diagram commutes (where $a_{A,A,M}$
+  is the natural isomorphism called the ``actor'')
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+(A\otimes A)\otimes M \ar[r,"a_{A,A,M}","\sim"']\ar[d,"\mu\otimes M"] &A\otimes(A\otimes M)\ar[r,"A\otimes\rho"] & A\otimes M\ar[d,"\rho"]\\
+A\otimes M \ar[rr,"\rho"] & & M
+\end{tikzcd}
+\end{equation*}
+\end{enumerate}
+\end{definition}
+
+\begin{node}[References]\label{internal-000I}%
+See Mac Lane~\cite[VII\S4]{mac1998categories} for left-module objects
+(usually called ``left action objects'' in the category theory literature).
+\end{node}
+\end{node}
 
 \begin{node}[Internal Category Theory]\label{internal-0004}%
 \begin{definition}\label{internal-0000}%
@@ -17,24 +181,47 @@ equipped with
 such that the usual laws of categories hold:
 \begin{enumerate}
 \item laws specifying the target and source of the identity morphisms
-\[ \xymatrix{X_{0} \ar[dr]_{\id} \ar[r]^{e} & X_{1} \ar[d]^{s}\\
-& X_{0}}\qquad\xymatrix{X_{0} \ar[dr]_{\id} \ar[r]^{e} & X_{1} \ar[d]^{t}\\
-& X_{0}}\]
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+X_{0}\arrow[dr,swap,"\id"]\arrow[r,"e"] & X_{1}\arrow[d,"s"]\\
+                                       & X_{0}
+\end{tikzcd}\qquad
+\begin{tikzcd}[sep=large]
+X_{0}\arrow[dr,swap,"\id"]\arrow[r,"e"] & X_{1}\arrow[d,"t"]\\
+                                       & X_{0}
+\end{tikzcd}
+\end{equation*}
 \item laws specifying the source and target of composite morphisms
-  \[\xymatrixcolsep{4pc} \xymatrix{X_{1}\times_{X_{0}}X_{1}\ar[d]^{p_{1}} \ar[r]^{c} & X_{1}\ar[d]^{s}\\
-    X_{1} \ar[r]^{s}& X_{0}}\quad
-  \xymatrix{X_{1}\times_{X_{0}}X_{1}\ar[d]^{p_{2}} \ar[r]^{c} & X_{1}\ar[d]^{t}\\
-    X_{1} \ar[r]^{t}& X_{0}}\]
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+X_{1}\times_{X_{0}}X_{1}\ar[d,"p_{1}"] \ar[r,"c"] & X_{1}\ar[d,"s"]\\
+    X_{1} \ar[r,"s"] & X_{0}
+\end{tikzcd}\qquad
+\begin{tikzcd}[sep=large]
+X_{1}\times_{X_{0}}X_{1}\ar[d,"p_{2}"] \ar[r,"c"] & X_{1}\ar[d,"t"]\\
+    X_{1} \ar[r,"t"] & X_{0}
+\end{tikzcd}
+\end{equation*}
 \item associativity for composition
-\[\xymatrixcolsep{5pc} \xymatrix{X_{1}\times_{X_{0}}X_{1}\times_{X_{0}}X_{1}\ar[r]^{c\times_{X_{0}}\id}\ar[d]^{\id\times_{X_{0}}c}&X_{1}\times_{X_{0}}X_{1}\ar[d]^{c}\\
-  X_{1}\times_{X_{0}}X_{1}\ar[r]^{c} & X_{1}}\]
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+X_{1}\times_{X_{0}}X_{1}\times_{X_{0}}X_{1}\ar[r,"c\times_{X_{0}}\id"]\ar[d,"\id\times_{X_{0}}c"]&X_{1}\times_{X_{0}}X_{1}\ar[d,"c"]\\
+  X_{1}\times_{X_{0}}X_{1}\ar[r,"c"] & X_{1}
+\end{tikzcd}
+\end{equation*}
 \item the left and right unit laws for composition of morphisms:
-\[\xymatrix{ X_{0}\times_{X_{0}} X_{1}\ar[r]^{e\times\id}\ar[dr]_{p_{2}} & X_{1}\times_{X_{0}} X_{1}\ar[d]^{c} & \ar[l]_{\id\times e} X_{1}\times_{X_{0}}X_{0}\ar[dl]^{p_{1}}\\
-& X_{1} & }\]
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+X_{0}\times_{X_{0}} X_{1}\ar[r,"e\times\id"]\ar[dr,swap,"p_{2}"] & X_{1}\times_{X_{0}} X_{1}\ar[d,"c"] & \ar[l,swap,"\id\times e"] X_{1}\times_{X_{0}}X_{0}\ar[dl,"p_{1}"]\\
+& X_{1} & 
+\end{tikzcd}
+\end{equation*}
 \end{enumerate}
+This is precisely corresponding to Definition~\zref{cat-0000}.
 
 \begin{node}[Examples]\label{internal-0001}%
-A category object internal to $\Set$ is just the usual notion of a category.
+A category object internal to $\Set$ is just the usual notion of a
+category \zref{cat-0001}.
 \end{node}
 \end{definition}
 
@@ -50,18 +237,24 @@ such that
 \item $t=\iota\circ s$ and $s=\iota\circ t$;
 \item left invertibility for internal morphisms: if $\Delta\colon X_{1}\to X_{1}\times X_{1}$ is the diagonal
   morphism, then
-\[\xymatrixcolsep{5pc} \xymatrix{
-  X_{1} \ar[d]^{s} \ar[r]^{\Delta} & X_{1}{}_{t}\times_{X_{0},t}X_{1} \ar[r]^{\id\times\iota}&\ar[d]^{c}{}_{t}X_{1}\times_{X_{0},s}X_{1}\\
-X_{0} \ar[rr]^{e} & & X_{1}} \]
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+  X_{1} \ar[d,"s"] \ar[r,"\Delta"] & X_{1}\mathbin{{}_{t}\times_{X_{0},t}}X_{1} \ar[r,"\id\times\iota"]&\ar[d,"c"]X_{1}\mathbin{{}_{t}\times_{X_{0},s}}X_{1}\\
+X_{0} \ar[rr,"e"] & & X_{1}
+\end{tikzcd}
+\end{equation*}
 \item right invertibility for internal morphisms:
-\[\xymatrixcolsep{5pc} \xymatrix{
-  X_{1} \ar[d]^{t} \ar[r]^{\Delta} & X_{1}{}_{s}\times_{X_{0},s}X_{1} \ar[r]^{\iota\times\id}&\ar[d]^{c}{}_{t}X_{1}\times_{X_{0},s}X_{1}\\
-X_{0} \ar[rr]^{e} & & X_{1}} \]
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+  X_{1} \ar[d,"t"] \ar[r,"\Delta"] & X_{1}\mathbin{{}_{s}\times_{X_{0},s}}X_{1} \ar[r,"\iota\times\id"]&\ar[d,"c"]X_{1}\mathbin{{}_{t}\times_{X_{0},s}}X_{1}\\
+X_{0} \ar[rr,"e"] & & X_{1}
+\end{tikzcd}
+\end{equation*}
 \end{enumerate}
 
 \begin{node}[Example]\label{internal-0005}%
 A groupoid object internal to $\Set$ is just a groupoid as we know and
-love it.
+love it~\zref{cat-000B}.
 \end{node}
 \begin{node}[Example]\label{internal-0006}%
 Lie groupoids~\zref{hda-0009} are groupoids internal to the category of
@@ -71,10 +264,12 @@ smooth manifolds.
 
 \begin{node}[References]\label{internal-0003}%
 I haven't found a suitable reference for this definition. Internal
-categories may be found in Baez and Crans~\cite[\S2]{baez2010higherdimensional},
+categories may be found in Mac~Lane~\cite[XII\S1]{mac1998categories}, Baez and Crans~\cite[\S2]{baez2010higherdimensional},
 the note of Forrester-Barker~\cite{forresterbarker2002group}, and elsewhere.
 P\^{e}gas~\cite{pegas2013groupoids} and
 Martins-Ferreira~\cite{martinsferreira2022internal} provide definitions
-for internal groupoids.
+for internal groupoids. The commutative diagrams for the groupoid's left
+and right invertibility laws should be compared to the diagram for the
+group object~\zref{internal-0009}.
 \end{node}
 \end{node}

@@ -19,7 +19,10 @@
 \let\subset\subseteq
 \let\equipotent\approx
 
+\def\CC{\mathbb{C}}
+\def\FF{\mathbb{F}}
 \def\NN{\mathbb{N}}
+\def\RR{\mathbb{R}}
 \def\ZZ{\mathbb{Z}}
 
 % from Knuth's TAOCPMAC
@@ -44,14 +47,19 @@
 \newcommand\appendstr{\wedge}
 
 % category theory
-\newcommand\cat[1]{\mathbf{#1}}
-\DeclareMathOperator\id{id}
-\newcommand\Set{\cat{Set}}
-\newcommand\Top{\cat{Top}}
 \let\hom\relax
 \DeclareMathOperator\hom{Hom}
+\DeclareMathOperator\id{id}
+\DeclareMathOperator\Id{Id}
+\DeclareMathOperator\ob{Ob}
+\newcommand\cat[1]{\mathbf{#1}}
+\newcommand\Set{\cat{Set}}
+\newcommand\Grp{\cat{Grp}}
+\newcommand\Top{\cat{Top}}
 \newcommand\Vect[1]{#1\textrm{-}\cat{Vect}}
 \newcommand\sVect[1]{#1\textrm{-}\cat{sVect}} % super vector spaces
 \newcommand\Mfld{\cat{Mfld}}
+\newcommand\sMfld{\cat{s}\Mfld}
+% calculus
 \newcommand\D{\mathrm{d}}
 \endinput
