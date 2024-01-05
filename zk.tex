@@ -1,5 +1,6 @@
 \documentclass[dvipsnames,HTML]{amsbook}
 \usepackage{tikz-cd}
+\usetikzlibrary{fit}
 %\usepackage{mathrsfs}
 %\usepackage{mathpazo}
 %\linespread{1.05}
@@ -15,6 +16,8 @@
 \frontmatter
 \maketitle
 \tableofcontents
+\listofpuzzles
+
 \mainmatter
 \vfill\eject
 
@@ -55,6 +58,7 @@
 \chapter{Taking Notes}
 \input{tex/amn}
 
+\unappendix
 \nocite{*}
 \bibliographystyle{elements}%{amsalpha}
 \bibliography{zk}

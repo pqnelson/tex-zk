@@ -1,4 +1,4 @@
-% 26
+% 51
 \section{Basic Definitions}
 
 \begin{node}[Size issues]\label{cat-0002}%
@@ -152,12 +152,90 @@ Let $\cat{D}$ be a subcategory of $\cat{C}$. We say $\cat{D}$ is a
 have $\hom_{\cat{D}}(X,Y)=\hom_{\cat{C}}(X,Y)$.
 \end{definition}
 \end{definition}
+
+\begin{node}[Types of Objects]\label{cat-0012}%
+
+\begin{definition}\label{cat-0013}%
+In a category $\cat{C}$, a \define{Terminal Object} is an object usually
+denoted $\mathbf{1}\in\ob(\cat{C})$ such that for any object
+$X\in\ob(\cat{C})$ there exists exactly one morphism $!\colon X\to\mathbf{1}$.
+\end{definition}
+
+\begin{node}[Examples]\label{cat-0014}%
+\begin{enumerate}
+\item In $\Set$, any singleton set is a terminal object.
+\item In $\Grp$, the trivial group is a terminal object.
+\end{enumerate}
+\end{node}
+
+\begin{definition}\label{cat-0015}%
+Let $\cat{C}$ be a category. We define an \define{Initial Object} in
+$\cat{C}$ to be an object $\emptyset\in\cat{C}$ (or in older literature $\mathbf{0}\in\cat{C}$)
+such that for each object $X\in\cat{C}$ there exists a unique morphisms
+$\emptyset\to X$.
+\end{definition}
+
+\begin{node}[Examples]\label{cat-0016}%
+\begin{enumerate}
+\item In $\Set$, the empty set is the initial object.
+\item In $\Grp$, the trivial group is an initial object.
+\end{enumerate}
+\end{node}
+
+\begin{definition}\label{cat-0017}%
+In a category $\cat{C}$, we define a \define{Null Object} (or
+\textit{Zero Object}) to be an
+object $\mathbf{0}\in\cat{C}$ (or $Z\in\cat{C}$) which is both initial
+and terminal.
+\end{definition}
+\end{node}
+
+\begin{node}[Types of morphisms]\label{cat-000W}%
+
+\begin{definition}\label{cat-000X}%
+Let $\cat{C}$ be a category. We call a morphism $f\colon A\to B$ in
+$\cat{C}$ an \define{Isomorphism} if there exists a morphism $g\colon B\to A$
+in $\cat{C}$ such that $f\circ g=\id_{B}$ and $g\circ f=\id_{A}$.
+In this case, $g$ is unique, and we denote it by $f^{-1}$, and further
+we say $A$ and $B$ \emph{are isomorphic}. We indicate this by writing
+$A\iso B$ to indicate they are isomorphic objects (i.e., there exists an
+isomorphism from $A$ to $B$).
+\end{definition}
+
+\begin{definition}\label{cat-000Y}%
+Let $\cat{C}$ be a category.
+We call a morphism $m\colon B\to C$ \define{Monic} (or a \textit{Monomorphism})
+if for all morphisms $f_{1},f_{2}\colon A\to B$ such that $m\circ f_{1}=m\circ f_{2}$
+implies $f_{1}=f_{2}$.
+\end{definition}
+
+\begin{node}[Example]\label{cat-000Z}%
+In $\Set$ (resp., $\Grp$), monomorphisms are precisely injective functions
+(resp., group morphisms). The mnemonic to remember is that
+``Monomorphisms go \textit{mono-e-mono}''.
+\end{node}
+
+\begin{definition}\label{cat-0010}%
+Let $\cat{C}$ be a category.
+We call a morphism $e\colon B\to C$ \define{Epic} (or a \textit{Epimorphism})
+if for all morphisms $g_{1},g_{2}\colon C\to D$ in $\cat{D}$, 
+whenever $g_{1}\circ e=g_{2}\circ e$ then we necessarily have $g_{1}=g_{2}$.
+\end{definition}
+
+\begin{node}[Example]\label{cat-0011}%
+In $\Set$ (resp., $\Grp$), epimorphisms are precisely surjective functions
+(resp., group morphisms).
+\end{node}
+\end{node}
 \end{node} % category
 
 \begin{node}[Groupoids]\label{cat-000B}%
 \begin{definition}\label{cat-000C}%
-A \define{Groupoid} is a category whose morphisms are all isomorphisms.
+A \define{Groupoid} is a category $\cat{G}$ whose morphisms are all
+isomorphisms. It is common to call $\ob(\cat{G})$ the \textit{base} of
+the groupoid.
 \end{definition}
+
 \begin{node}[Examples]\label{cat-000D}%
 \begin{node}\label{cat-000I}%
 Let $G$ be a group. Then we can form a groupoid whose set of objects is
@@ -172,6 +250,18 @@ For any topological space $X$, we may form the fundamental groupoid
 $\Pi_{1}(X)$ whose objects are the set of underlying points of $X$ and
 morphisms $f\colon A\to B$ are homotopy equivalence classes of paths
 from $A$ to $B$.  Composition then concatenates paths.
+\end{node}
+
+\begin{node}\label{cat-000Q}%
+One rich vein for groupoids is describing the symmetry of fibred objects.
+\end{node}
+
+\begin{node}\label{cat-000R}%
+Let $R$ be an equivalence relation on a set $X$. Then we can form a
+groupoid $\cat{G}$ whose set of objects are $\ob(\cat{G})=X$ and $R$
+gives us the non-identity morphisms: there is a $f\colon x\to y$ iff
+$R(x,y)$ holds. We then interpret $R(y,x)$ as $f^{-1}\colon y\to x$. The
+resulting category $\cat{G}$ is indeed a groupoid.
 \end{node}
 \end{node}
 \end{node}
@@ -225,6 +315,104 @@ morphism $h\colon A\to B$ in $\cat{C}$ to $\hom(h,Y)\colon\hom(B,Y)\to\hom(A,Y)$
 sending $g\in\hom(B,Y)$ to $g\circ h\in\hom(A,Y)$.
 \end{node}
 \end{node} % examples
+
+\begin{node}[Types of functors]\label{cat-001A}%
+
+\begin{definition}\label{cat-001D}%
+We call a functor $F\colon\cat{C}\to\cat{D}$ an \define{Isomorphism}
+if there exists a functor $G\colon\cat{D}\to\cat{C}$ such that $F\circ G=\Id_{\cat{D}}$
+and $G\circ F=\Id_{\cat{C}}$. In this case, we write $G=F^{-1}$ and say
+$\cat{C}$ and $\cat{D}$ are isomorphic.
+
+(This coincides with the criteria~\zref{cat-000X} for a morphism in a
+category to be an isomorphism.)
+\end{definition}
+
+\begin{definition}\label{cat-0019}%
+We call a functor $F\colon\cat{C}\to\cat{D}$ \define{Faithful} if the
+mapping of $\hom$-sets $F\colon\hom_{\cat{C}}(X,Y)\to\hom_{\cat{D}}(F(X),F(Y))$
+is injective.
+\end{definition}
+
+\begin{definition}\label{cat-0018}%
+We call a functor $F\colon\cat{C}\to\cat{D}$ \define{Full} if the
+mapping of $\hom$-sets $F\colon\hom_{\cat{C}}(X,Y)\to\hom_{\cat{D}}(F(X),F(Y))$
+is surjective.
+\end{definition}
+
+\begin{definition}\label{cat-001E}%
+We call a functor $F\colon\cat{C}\to\cat{D}$ \define{Essentially Surjective} if
+for each object $Y\in\cat{D}$ there exists an object $X\in\cat{C}$ such
+that $F(X)\iso Y$ are isomorphic in $\cat{D}$.
+\end{definition}
+
+\end{node} % types of functors
+
+\end{node}
+
+\begin{node}[Natural transformations]\label{cat-000S}%
+
+\begin{definition}
+Let $F,G\colon\cat{C}\to\cat{D}$ be functors. A \define{Natural Transformation}
+$\alpha\colon F\natTo G$ is a function which assigns to each object
+$C\in\cat{C}$ an arrow $\alpha_{C}\colon F(C)\to G(C)$ such that for all
+morphisms $f\colon C\to D$ in $\cat{C}$ the following diagram commutes
+\begin{equation*}
+\begin{tikzcd}[sep=large]
+  C\ar[d,swap,"f"]\\
+  D
+\end{tikzcd}
+\qquad
+\begin{tikzcd}[column sep=4em,
+    execute at end picture={%
+ \node[blue,draw,very thick,fit={(\tikzcdmatrixname.north west) ([xshift=1ex]\tikzcdmatrixname-1-1.east|-\tikzcdmatrixname.south)},
+    inner sep=1ex,label={[blue]above:$F(\cat{C})$}]{};
+ \node[red,draw,very thick,fit={(\tikzcdmatrixname.north east) ([xshift=-1ex]\tikzcdmatrixname-1-2.west|-\tikzcdmatrixname.south)},
+ inner sep=1ex,label={[red]above:$G(\cat{C})$}]{};
+    }]%[sep=large]
+F(C)\ar[d,swap,"F(f)"]\ar[r,"\alpha_{C}"] & G(C)\ar[d,"G(f)"]\\
+F(D)\ar[r,swap,"\alpha_{D}"] & G(D)
+\end{tikzcd}
+\end{equation*}
+\end{definition}
+
+\begin{node}[Whiskering]\label{cat-000T}%
+Let $F,G\colon\cat{C}\to\cat{D}$ be functors and $\alpha\colon F\natTo G$
+be a natural transformation. If $H\colon\cat{D}\to\cat{E}$ is another
+functor, we can form a natural transformation denoted $H\alpha\colon H\circ F\natTo H\circ G$
+defined by $(H\alpha)_{C}=H(\alpha_{C})$ for each $C\in\ob(\cat{C})$.
+
+Similarly, if $K\colon\cat{B}\to\cat{C}$ is a functor, we can define
+another natural transformation $\alpha K\colon F\circ K\natTo H\circ K$
+defined by $(\alpha K)_{B}=\alpha_{K(B)}$ for each $B\in\ob(\cat{B})$.
+\end{node}
+
+\begin{node}[Examples]\label{cat-000U}%
+
+\begin{node}\label{cat-000V}%
+Let $F\colon\cat{C}\to\cat{D}$ be a functor. We have the identity
+natural transformation $\Id_{F}\colon F\natTo F$ defined by components
+$(\Id_{F})_{C}=\id_{F(C)}$ for each object $C\in\ob(\cat{C})$.
+\end{node}
+\end{node}
+
+\begin{definition}\label{cat-001B}%
+Let $F,G\colon\cat{C}\to\cat{D}$ be functors. We define a
+\define{Natural Isomorphism} to be a natural transformation
+$\alpha\colon F\natTo G$ such that every component $\alpha_{X}$ (for
+each $X\in\ob(\cat{C})$) is an isomorphism.
+\end{definition}
+
+\begin{definition}\label{cat-001C}%
+A functor $F\colon\cat{C}\to\cat{D}$ is an \define{Equivalence of Categories}
+(and we say $\cat{C}$ and $\cat{D}$ are \textit{equivalent}) if there
+exists a functor $G\colon\cat{D}\to\cat{C}$ and natural isomorphisms
+$F\circ G\iso\Id_{\cat{D}}\colon\cat{D}\to\cat{D}$ and
+$\Id_{\cat{C}}\iso G\circ F\colon\cat{C}\to\cat{C}$. (The order of the
+isomorphisms allows for a generalization later to adjoint functors.)
+This is a weaker notion than isomorphism of categories~\zref{cat-001D}.
+\end{definition}
+
 \end{node}
 
 \section{Universal Properties}

@@ -1,16 +1,18 @@
-% 9
+% 10
 \begin{node}\label{amn-0000}%
 Jon Sterling argues that scientific thought requires arbitrary nesting
 of trees and the ability to ``transclude'' trees left and right. We can
 do this using the \verb|node| environment in my \verb|iso2145|
 package. Does it really contribute to productivity? I have my doubts.
 \end{node}
+
 \begin{node}\label{amn-0001}%
 I should probably give an earnest attempt to write some notes, to give a
 fair assessment of how useful this is for writing notes. Towards that
 end, I suppose I should give an earnest effort to write some notes on
 the various topics I am interested in at the moment.
 \end{node}
+
 \begin{node}\label{amn-0002}%
 I have written up some Emacs macros to expedite writing new nodes
 (simply \verb|Ctrl-c Ctrl-n| will do this for me now) and
@@ -18,6 +20,7 @@ I have written up some Emacs macros to expedite writing new nodes
 are reproduced below:
 \lstinputlisting[showstringspaces=false,language=elisp,columns=flexible,basewidth={0.5em,0.5em},basicstyle=\ttfamily\small,upquote=true]{zk.el}
 \end{node}
+
 \begin{node}[Organization, IDs]\label{amn-0003}%
 Finding anything is a nightmare in this approach. I have severe doubts
 about this approach of ``writing the ID first, then the notes''. This
@@ -32,6 +35,7 @@ extra digit allows 60,466,176 entries). Then ``namespace'' is a short
 (usually 3-letter long) string like: ``amn'' (for metanotes), ``set''
 (for set theory), ``fol'' (for first-order logic), etc.
 \end{node}
+
 \begin{node}[{Pseudo-hierarchies}]\label{amn-0004}%
 Andy Matuschak has argued\footnote{\url{https://notes.andymatuschak.org/Evergreen_notes?stackedNotes=z8SU3r8xyZyvwRhyDdJasJ2&stackedNotes=zPpqLzE6VWKxXF6BpsAfr4C}}
 that ``pseudo-hierarchies'' are the ``correct'' way to organize
@@ -39,6 +43,7 @@ notes using an ``outline note''. But he doesn't really address why an
 ``outline note'' is a \emph{pseudo}-hierarchy and not a ``real''
 hierarchy. 
 \end{node}
+
 \begin{node}\label{amn-0005}%
 The biggest problem is finding things. Linking nodes together is
 insanely difficult, because I can see the node in the PDF, but I cannot
@@ -96,4 +101,16 @@ Inside the computer there is nothing but bit patterns.  Every theorem prover
 encodes its logic ultimately in terms of bits.  Even programmers rely upon the
 illusion that terms and formulae are present.
 \end{quote}
+\end{node}
+
+\begin{node}\label{amn-0009}%
+I am still relatively confused by how Jon Sterling thinks we should be
+writing notes. His only real instructions are:\footnote{\url{http://www.jonmsterling.com/jms-007L.xml}}
+\begin{quote}
+You may be used to writing \LaTeX\ documents, where you work from the top down: you create some section headings, put some text under those headings, make some deeper section headings, put more text, etc.
+\emph{Forests work in the opposite way, from the bottom up: you start by writing independent, atomic notes/trees and then only later start to (sparingly) assemble these into a hierarchy in order to reify the emerging structure.}
+(Emphasis mine)
+\end{quote}
+Again, the difficulty is that we end up with a lot of files which we
+then manually have to keep track of, with increasing risk of duplication.
 \end{node}

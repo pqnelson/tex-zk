@@ -1,4 +1,4 @@
-% 10
+% 20
 
 \begin{node}\label{hda-0000}%
 The basic idea of ``higher-dimensional algebra'' appears to be to
@@ -68,18 +68,73 @@ A \define{Lie groupoid} is a groupoid internal~\zref{internal-0002} to the
 category of smooth manifolds $\Mfld$. The ``infinitesimal
 approximation'' to a Lie groupoid is precisely a Lie
 algebroid~\zref{hda-0003}.
+
+In particular, the collection of objects $G_{0}$ and morphisms $G_{1}$
+are smooth manifolds; the source and target morphisms $G_{1}\to G_{0}$ are
+surjective submersions; the identity assignment $\id$, the inverse map
+$(-)^{-1}\colon G_{1}\to G_{1}$, and the composition operator are all
+smooth mappings.
+
+\begin{node}[Remark]\label{hda-000A}%
+Usually we speak of a Lie groupoid over a manifold $M$, which considers
+a Lie groupoid whose smooth manifold of objects is $M$.
+\end{node}
+
+\begin{node}[History]\label{hda-000B}%
+Ehrasmann invented the notion of Lie groupoids as an alternative to the
+framework of principal fibre bundles, specifically to study higher
+prolongations of vector fields (and other related differential gadgets).
+\end{node}
 \end{definition}
 
+\begin{node}[Lie Algebroid]\label{hda-000C}%
 \begin{definition}\label{hda-0003}%
 Let $X$ be a manifold. A \define{Lie Algebroid} over $X$ consists of
 a vector bundle $E\to X$ equipped with
 \begin{enumerate}
 \item a Lie bracket $[-,-]\colon\Gamma(E)\otimes\Gamma(E)\to\Gamma(E)$
   on the space of sections;
-\item a morphism of vector bundles $\rho\colon E\to TX$ whose tangent
-  map preserves the bracket: $\D\rho([\xi,\zeta]_{\Gamma E})=[\D\rho(\xi),\D\rho(\zeta)]_{\Gamma TX}$
+\item a morphism of vector bundles (sometimes called the \textit{Anchor})
+  $\rho\colon E\to TX$ whose tangent map preserves the bracket:
+  $\D\rho([\xi,\zeta]_{\Gamma E})=[\D\rho(\xi),\D\rho(\zeta)]_{\Gamma TX}$
 \end{enumerate}
 such that the Leibniz rule holds: for all $X$, $Y\in\Gamma(E)$, and for
 all $f\in C^{\infty}(E)$, we have $[X,f\cdot Y]=f\cdot[X,Y]+\rho(X)(f)\cdot Y$.
 \end{definition}
 
+\begin{node}[Examples]\label{hda-000D}%
+
+\begin{node}\label{hda-000E}%
+A Lie algebra is a Lie algebroid over a singleton $X=\{*\}$.
+\end{node}
+
+\begin{node}\label{hda-000F}%
+If the anchor $\rho\colon E\to TX$ is trivial, then a Lie algebroid is a
+bundle of Lie algebras.
+\end{node}
+\end{node}
+
+\begin{node}[Further reading]\label{hda-000G}%
+Fernandes and Crainic's lecture notes~\cite{fernandes2006lectures}
+is worth reading, but there's a lot of literature on Lie algebroids (and
+Lie groupoids).
+\end{node}
+\end{node}
+
+\begin{node}[Stacks]\label{hda-000H}%
+We can categorify the notion of a sheaf, and this is precisely a
+stack. There are a number of subtleties surrounding ``correct''
+definitions here, see Metzler~\cite{metzler2003topological} for details.
+\end{node}
+
+\begin{node}\label{hda-000I}%
+The dg-category of chain complexes plays the role of stable
+$(\infty,1)$-category of ``$(infty,1)$-vector spaces''. It's in this
+sense that $L_{\infty}$-algebras are categorified Lie algebras. For more
+about stable $\infty$-categories, see Lurie~\cite{lurie2009stable}.
+\end{node}
+
+\begin{node}\label{hda-000J}%
+In general, for categorification of gadgets useful in representation
+theory, see Savage~\cite{savage2015introduction}.
+\end{node}

@@ -1,4 +1,4 @@
-% 12
+% 15
 \section{Tarski--Grothendieck Axioms}\label{sec:set:tarski-grothendieck}
 
 \begin{node}[Axioms]\label{tg-0003}%
@@ -42,7 +42,23 @@ For any set $x$, there exists a Tarski universe containing it.
 \end{node}
 
 \begin{node}\label{tg-0001}%
-There are various different definitions for a Grothendieck universe.
+There are various different definitions for a Grothendieck universe, and
+``universes'' in general. Here are the ones we find in the Mizar
+mathematical library and nLab.
+
+\begin{definition}\label{set:tg-000E}%
+A \define{Universe} consists of a set $\mathcal{U}$ such that:
+\begin{enumerate}
+\item it is transitive: for any $X\in\mathcal{U}$ and for any $x\in X$,
+  we have $x\in\mathcal{U}$;
+\item it is subset-closed: for any $X\in\mathcal{U}$ and any subset
+  $Y\subset X$, we have $Y\in\mathcal{U}$;
+\item it is powerset-closed: for any $X\in\mathcal{U}$, we have $\powerset(X)\in\mathcal{U}$;
+\item For any set $X\subset\mathcal{U}$, either
+  $X\equipotent\mathcal{U}$ are equipotent or $X\in\mathcal{U}$.
+\end{enumerate}
+\end{definition}
+
 \begin{definition}\label{set:tg-0000}%
 A \define{Grothendieck universe}\footnote{Nlab definition accessed
 December 30, 2023 \url{https://ncatlab.org/nlab/revision/Grothendieck+universe/57}} is a set $U$ such that
@@ -99,6 +115,31 @@ just ``sets'').
 \end{node}
 \end{definition}
 \end{node}
+
+\begin{lemma}\label{set:tg-000D}%
+Let $X$ be any set, let $\mathcal{U}_{1}$ and $\mathcal{U}_{2}$ be two
+Grothendieck universes containing $X$. Then
+$\mathcal{U}_{1}\cap\mathcal{U}_{2}$ is a Grothendieck universe
+containing $X$.
+\end{lemma}
+
+\begin{theorem}\label{set:tg-000C}%
+Let $X$ be any set. There exists a ``smallest'' Grothendieck universe
+$\mathcal{U}$ in the sense that for any other Grothendieck universe
+$\mathcal{U}'$ containing $X\in\mathcal{U}'$, we have
+$\mathcal{U}\subset\mathcal{U}'$.
+\end{theorem}
+
+This is an immediate conseuqence of Theorem 21 from \href{https://mizar.uwb.edu.pl/version/current/html/classes3.html\#T21}{\texttt{CLASSES3}}
+from the Mizar library (the existence and uniqueness of the smallest
+Grothendieck universe is proven earlier in that article):
+
+\begin{theorem}[{\texttt{CLASSES3:Th21}}]
+Let $X$ be any set. Then the smallest Grothendieck universe
+$\mathcal{G}$ containing $X$ is a universe and all universes
+$\mathcal{U}$ containing $X\in\mathcal{U}$ contains
+$\mathcal{G}\subset\mathcal{U}$.
+\end{theorem}
 
 \begin{node}\label{tg-000A}%
 The development of set theory using these axioms may be found in the

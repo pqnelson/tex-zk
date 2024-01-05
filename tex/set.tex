@@ -1,4 +1,4 @@
-% 2
+% 4
 \begin{node}\label{set-0000}%
 Set theory is the ``microcode'' to the ``machine code'' of first-order
 logic that mathematics runs on. There are various different ways to
@@ -8,6 +8,34 @@ formalisms is \ZFC\ axioms (give or take the axiom of choice). But
 \NBG\ allows for finitely axiomatizable set theory by adding minimal
 support for proper classes. For more about \ZFC\ set theory,
 Jech~\cite{jech2003set} remains the standard reference.
+\end{node}
+
+\begin{node}[{Consistency of {\ZFC}}]\label{set-0002}%
+There is a 744-state Turing machine which halts if and only if \ZFC\ is
+inconsistent. This requires something like $BB(744)$ steps to halt, if
+it halts at all, where $BB(n)$ is the Busy Beaver function\footnote{For
+a review, see Scott Aaronson's note \url{https://www.scottaaronson.com/papers/bb.pdf}}.
+This would require something along the lines of
+$S(744)\leq\Sigma(2238)$ steps, where $\Sigma(2k)>3\uparrow^{k-2}3$ is a
+lower bound (there are no known upper bounds). That's
+$\Sigma(2238)>3\uparrow^{1121}3$ steps. Compare this to known values, $BB(5)=47\,176\,870$
+and $BB(6)\geq 7.4\times 10^{36543}$. It only gets worse as we consider
+larger values of $BB(k)$. The explicit specification of the Turing
+machine may be found on Github\footnote{\url{https://github.com/sorear/metamath-turing-machines/blob/master/zf2.nql}}
+and follows Tarski's system of predicate logic with equality, and uses
+just ZF minus regularity (and no axiom of choice) because this is
+equiconsistent with \ZFC.
+\end{node}
+
+\begin{node}[Classes]\label{set-0003}%
+I was brought up believing in \ZFC\ and \NBG, at least nominally. Later
+I ended up using Tarski--Grothendieck set theory when working in
+category theory. But I still nominally believe there exists collections
+``bigger'' than sets which we call ``proper classes'', even though we
+don't need anything more than one Grothendieck universe to do all our
+normal mathematics. Proper classes may be little more than a myth
+(certainly it is not a \emph{convenient} fiction). But I still believe in
+and fear them.
 \end{node}
 
 \section{NBG Set Theory}\label{sec:set:nbg}

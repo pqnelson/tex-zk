@@ -16,9 +16,9 @@
 
 % Example of iso2145 theorem environments:
 \newtheorem{theorem}{Theorem}{\it}
+\newtheorem{lemma}{Lemma}{\it}
 \newtheorem{corollary}{Corollary}{\it}
 \newtheorem{definition}{Definition}{}
-\newtheorem{puzzle}{Puzzle}{}
 
 %%%%
 % Sectioning commands
@@ -75,7 +75,11 @@
   \global\@nobreakfalse \endgroup
   \newpage
 }
-
+\let\og@chaptername\chaptername
+\def\unappendix{\par
+  \c@chapter\z@ \c@section\z@
+  \xdef\chaptername{\og@chaptername}
+  \def\thechapter{\arabic{chapter}}}
 }{}
 
 \ifdefined\chapter
@@ -135,6 +139,10 @@
   \fi}{%
 }
 
+% puzzles
+\newcounter{puzzle}
+\def\listofpuzzles{\@starttoc{puzzle}{List of Puzzles}}
+\newenvironment{puzzle}[1][\relax]{\medbreak\noindent\refstepcounter{puzzle}\phantomsection\addcontentsline{puzzle}{chapter}{Puzzle~\thepuzzle\ifx\relax#1\else:~#1\fi}\textbf{Puzzle~\thepuzzle}\ifx\relax#1\else~(#1)\fi\textbf{.\enspace}\ignorespaces}{\medbreak}
 
 % Transclude % sigh, what a pretentious word
 \def\transclude#1{\input{\CurrentFilePath/#1}}
