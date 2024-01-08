@@ -1,0 +1,51 @@
+\begin{node}[Judgement Forms]\label{sml-0004}\index{Judgement!Standard ML}\index{Standard ML!Judgement}%
+We will stipulate the user will be able to determine if an input string
+is a grammatically well-formed \SML\ expression or not. Let us now
+consider the sort of judgemental forms required for discussing \SML\ as
+a deductive system. The basic judgement forms are sketched out here, but
+we probably follow Geuvers and Nederpelt~\cite{nederpelt2014type} in
+adding definitions later on.
+
+\begin{node}\label{sml-0005}\index{Judgement!Reduction}%
+We will define the ``dynamic semantics'' using a notion of
+\define{Reduction}. Let $e$ and $e'$ be expressions. When $k$ is a
+positive integer, we write $e\Reduces{k}e'$ for ``expression $e$ reduces
+to $e'$ in $k$ steps.'' When we omit the $k$, writing $e\Reduces{}e'$,
+we mean ``$e$ reduces to $e'$ in $0$ or more steps''.
+
+Here ``steps'' refers to an abstract operational semantics, which we are
+going to define. It may or may not be proportional to the number of CPU
+cycles of an actual computer evaluating the \SML\ code.
+\end{node}
+
+\begin{node}\label{sml-0006}\index{Judgement!Value}%
+We call an expression a \define{Value} if it evaluates to itself.
+Let $e$ be an expression. The judgement ``Expression $e$ is a value'' is
+denoted ``$e~\Value$''.
+\end{node}
+
+\begin{node}\label{sml-0007}\index{Judgement!Evaluation}%
+Let $e$ be an expression and $v$ be a value. We introduce the judgement
+``$e\evalto v$'' for ``Expression $e$ evaluates to value $v$''. 
+
+This is related to reduction as follows: $e\evalto v$ if and only if either
+$e$ is equal to $v$ already or $e\Reduces{1}e_{1}\Reduces{1}\dots\Reduces{1}v$.
+\end{node}
+
+\begin{node}\label{sml-000C}%
+Let $e$ be an expression, let $T$ be a type. We have the usual typing
+declaration ``$e\esti T$'' for the judgement ``Expression $e$ has type $T$''.
+The colon here is called \textit{esti}\index{Esti}\index{Type declaration}\index{Judgement!Typing}.
+\end{node}
+
+\begin{node}[Raising exceptions]\label{sml-000F}%
+Let $exn$ be a so-called ``exception packet'' (a ``value'' of some kind
+of exception). When an expression $e$ raises an exception, we indicate
+this by the judgement ``$e\Reduces{}\Raise{exn}$''. If we know this is done
+in $k\in\NN$ steps, then we may write ``$e\Reduces{k}\Raise{exn}$''.
+
+If, in the process of evaluating some expression $e[e']$ which has $e'$
+as a subexpression, we have $e'\Reduces{}\Raise{exn}$, then
+the exception propagates out $e[e']\Reduces{}\Raise{exn}$.
+\end{node}
+\end{node}

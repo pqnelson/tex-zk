@@ -1,0 +1,89 @@
+\begin{node}[Functions (Provisionally)]\label{sml-000I}%
+\textbf{Type:} $T_{1}\mbox{ \texttt{->} }T_{2}$ where $T_{1}$ and
+$T_{2}$ are types. Note that $\texttt{->}$ is right associative, so
+$T_{1}\texttt{ -> }T_{2}\texttt{ -> }T_{3}$ is parsed as 
+$T_{1}\texttt{ -> }(T_{2}\texttt{ -> }T_{3})$.
+
+\textbf{Values:} Function closures (see \S6.6 of the definition~\cite{milner1997definition}),
+which is a tuple $(\mathtt{fn}~pat~\texttt{=>}~e_{b}, E)$ where $pat$ is
+a pattern, $E$ is an environment.
+
+\textbf{Operations:} The only operation is applying an argument to a
+function, written $f~t$ for applying $t$ to the function $f$.
+
+\textbf{Typing Rules:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{T-Abs}]{\mathtt{fn}~x~\texttt{=>}~e\esti T_{1}\to T_{2}}{x\esti T_{1}\vdash e\esti T_{2}}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-App}]{e_{1,2}~e_{1}\esti T_{2}}{e_{1,2}\esti T_{1}\to T_{2}
+& e_{1}\esti T_{1}}
+\end{equation}
+\end{subequations}
+
+\textbf{Evaluation:} We evaluate the function expression before
+evaluating the argument.
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{E-App1}]{e_{1}~e_{2}\Reduces{1}e_{1}'~e_{2}}{e_{1}\Reduces{1}e_{1}'}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-App2}]{v_{1}~e_{2}\Reduces{1}v_{1}~e_{2}'}{v_{1}~\Value &
+  e_{2}\Reduces{1}e_{2}'}
+\end{equation}
+Now, since we are using the conventions that we never redefine values or
+functions, the bindings are determined once. Then we can define beta
+reduction with the bindings $\Delta$ explicit in the judgement:
+\begin{equation*}
+\infer%[\Rule{E-Beta}]
+{\Delta\vdash (\mathtt{fn}~x~\texttt{=>}~e_{b})~v_{1}\Reduces{1}\Delta,x=v_{1}\vdash e_{b}}{}
+\end{equation*}
+This is made more precise by rules (109--113) of the Definition~\cite{milner1997definition},
+which is mildly complicated due to pattern matching.
+\end{subequations}
+\begin{node}[Pattern matching]\label{sml-000M}%
+\SML\ functions can be given in multiple clauses depending on the value
+of the argument given. This is known as pattern matching. If the value
+\define{matches} the pattern, then that corresponding clause is executed.
+
+For now, there are several possible patterns since we have only
+discussed integers, Booleans, tuples, and had an aside on records. Oh,
+and functions, we discussed functions.
+
+The simplest pattern is a wildecard, denoted by an underscore ``\verb|_|''.
+This is always matched by any argument.
+
+The next simplest pattern is a variable. If matched, it behaves as we
+expected in our simplified $\beta$-reduction rule: we temporarily append
+to our definitions the variable bound to the value of the function argument.
+
+We could also have ``special constants'' (literals for strings,
+characters, integers, Booleans). The argument matches special constant
+patterns if they are equal as values.
+
+For tuples, we can form a tuple of patterns and perform pattern matching
+component-wise. If all components of the argument passed into the
+function match all components of the tuple pattern, then we extend the
+definitions temporarily (if necessary) and execute the associated
+clause.
+
+We can also annotate patterns with types to clarify what type is
+expected, which is done with the esti operator ``$p\esti T$'' for
+pattern $p$ expected to be type $T$.
+
+We can also ``preserve'' the argument passed in as a variable, writing
+``$x$ \texttt{as} $p$'' which will then match the argument passed in
+against the pattern $p$ and, if there is a match, stores the argument as
+$x$ in the dictionary of bindings.
+
+As we introduce more complicated types (like lists), we will mention
+their pattern matching (if relevant).
+\end{node}
+
+\begin{node}[Remark]\label{sml-000K}%
+Case expressions are syntactic sugar for functions. The \SML\ compiler
+translates $\mathtt{case}~exp~\mathtt{of}~match$ to $(\mathtt{fn}~match)~exp$
+according to Appendix~A of the Definition~\cite{milner1997definition}.
+\end{node}
+\end{node}

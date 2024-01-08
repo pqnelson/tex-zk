@@ -25,7 +25,30 @@ machine may be found on Github\footnote{\url{https://github.com/sorear/metamath-
 and follows Tarski's system of predicate logic with equality, and uses
 just ZF minus regularity (and no axiom of choice) because this is
 equiconsistent with \ZFC.
+
+Note that the Poincar\'e recurrence theorem says that a mechanical
+system would return to its original state in a time interval of
+\begin{equation}
+\Delta t\sim\exp(S)
+\end{equation}
+where $S$ is the entropy of the system. Using the Gibbons--Hawking
+entropy for de Sitter space for our present universe, this would
+give\footnote{The basic argument may be found in Don Page's article
+\arXiv{hep-th/9411193}, but I also noticed Ropotenko \arXiv{0712.0993}}
+\begin{equation}\label{eq:set:poincare-period-of-universe}
+\Delta t_{\text{universe}}\sim\exp(10^{120})\;\mbox{seconds, years,
+  millenia, whatever}.
+\end{equation}
+This is so huge a number, the units don't really matter. Indeed, in
+base-10, we'd have $\Delta t\sim 10^{4.343\cdot 10^{119}}$ which might
+as well be $10^{10^{120}}$.
 \end{node}
+
+\begin{puzzle}[Consistency of ZFC]
+Can we improve the runtime for the Turing machine to determine the
+consistency of \ZFC\ to be within a lifetime? Or, at least, before the
+Poincar\'e recurrence period for the universe in Eq~\eqref{eq:set:poincare-period-of-universe}?
+\end{puzzle}
 
 \begin{node}[Classes]\label{set-0003}%
 I was brought up believing in \ZFC\ and \NBG, at least nominally. Later

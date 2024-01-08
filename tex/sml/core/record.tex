@@ -1,0 +1,74 @@
+\begin{node}[Records]\label{sml:core-0001}%
+\textbf{Type:} \verb|{|$\ell_{1}\esti T_{1},\dots,\ell_{n}\esti T_{n}$\verb|}|
+  where $\ell_{1}$, \dots, $\ell_{n}$ are ``labels'' (which are valid
+  identifiers) and $T_{1}$, \dots, $T_{n}$ are types, and $n\geq0$.
+  
+\textbf{Values:} \verb|{|$\ell_{1}=v_{1},\dots,\ell_{n}=v_{n}$\verb|}|
+  where $v_{1}\esti T_{1}$, \dots, $v_{n}\esti T_{n}$ are values
+
+\textbf{Expressions:} The collection of expressions for this type
+includes all values of type \verb|{|$\ell_{1}\esti T_{1},\dots,\ell_{n}\esti T_{n}$\verb|}|,
+as well as all expressions of the form
+\verb|{|$\ell_{1}=e_{1},\dots,\ell_{n}=e_{n}$\verb|}|
+  where $e_{1}\esti T_{1}$, \dots, $e_{n}\esti T_{n}$ are expressions of
+  appropriate type.
+
+\textbf{Operations:} If all the types of the entries are equality types,
+then we have equality defined on the record type (defined by
+componentwise comparison of key-value pairs with the same labels).
+
+\textbf{Typing rules:}
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{T-EmptyRec}]{\mbox{\texttt{\string{\string}}}\esti\mbox{\texttt{\string{\string}}}}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{T-Rec}]{\mbox{\texttt{\string{$\ell_{1}=e_{1},\dots,\ell_{n}=e_{n}$\string}}}\esti\mbox{\texttt{\string{$\ell_{1}\esti T_{1},\dots,\ell_{n}\esti T_{n}$\string}}}}{e_{1}\esti T_{1}, & \dots & e_{n}\esti T_{n}}
+\end{equation}
+\end{subequations}
+
+\textbf{Evaluation:} Informally, we evaluate a record from left to right
+until all entries are values.
+\begin{subequations}
+\begin{equation}
+\infer[\Rule{V-EmptyRec}]{\mbox{\texttt{\string{\string}}}~\Value}{}
+\end{equation}
+\begin{equation}
+\infer[\Rule{E-Rec1}]{\mbox{\texttt{\string{$\ell_{1}=v_{1},\dots,\ell_{k-1}=v_{k-1},\ell_{k}=e_{k}\dots$\string}}}\Reduces{1}\mbox{\texttt{\string{$\ell_{1}=v_{1},\dots,\ell_{k-1}=v_{k-1},\ell_{k}=e_{k}'\dots$\string}}}}{v_{1}~\Value, & \dots & v_{k-1}~\Value, & e_{k}\Reduces{1}e_{k}'}
+\end{equation}
+\end{subequations}
+
+\textbf{Patterns:} We can match a record value against a pattern which
+looks like a record, in that it has bracket delimiters, and is a finite
+sequence of
+``$\langle$\textit{label}$\rangle$=$\langle$\textit{pattern}$\rangle$''
+items (separated by commas), optionally ending with ellipses ``\verb|...|''
+as a wildcard pattern to match the rest of the record;
+e.g., \verb|{|$\ell_{1}=p_{1}$, $\ell_{2}=p_{2}$, \verb|...}| is a valid
+pattern. 
+
+\begin{node}[Subtlety around extensional equivalence]\label{sml:core-0002}%
+There is some subtlety here with how \SML\ defines semantics of record
+types and how we defined extensional equivalence~\zref{sml-0008}, because if we have \verb|{|$\ell_{1} = $ \verb|raise| $en_{1}$, $\ell_{2} = $ \verb|raise| $en_{2}$ \verb|}|
+and  \verb|{|$\ell_{2} = $ \verb|raise| $en_{2}$, $\ell_{1} = $ \verb|raise| $en_{1}$ \verb|}|
+where $en_{1}\not\exteq en_{2}$, then these two record instances are
+not extensionally equivalent: they raise different exceptions. Therefore
+the two records with permuted entries are not extensionally equivalent
+\emph{when two or more entries raise extensionally inequivalent exceptions}.
+But for values, or records with entries which loop forever, they will be
+extensionally equivalent.
+
+I suppose one way around this problem is to have the parser sort the
+entries in a record alphabetically by its label. But this inelegantly
+adds a lot of overhead to the rules as we have introduced them,
+requiring $\ell_{1}<\dots<\ell_{n}$.
+\end{node}
+\begin{node}\label{sml:core-0003}%
+Note, in Appendix A of the Definition~\cite{milner1997definition},
+the product type~\zref{sml-000H} is syntactic sugar around the record
+type $T_{1}\mbox{ \texttt{*} }T_{2}$ is really treated as synonymous with
+\texttt{\string{$\quasiquote{1}\esti T_{1},\quasiquote{2}\esti T_{2}$\string}}.
+Then the empty product is precisely \texttt{\string{\string}}, and this
+is isolated as a separate special type called the \define{Unit Type}.
+\end{node}
+\end{node}

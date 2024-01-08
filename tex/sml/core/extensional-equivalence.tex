@@ -1,0 +1,34 @@
+\begin{definition}[Extensional equivalence]\label{sml-0008}%
+\begin{node}[For non-function expressions]\label{sml-0009}%
+Let $e$ and $e'$ are two expressions of the same nonfunction type.
+We say $e$ and $e'$ are \define{Extensionally Equivalent} and write
+$e\exteq e'$ whenever one of the following is true:
+\begin{enumerate}
+\item Evaluation of $e$ produces the same value as does the evaluation
+  of $e'$; or
+\item Evaluation of $e$ raises ``the same'' exception as does the evaluation
+  of $e'$; or
+\item Evaluation of $e$ and $e'$ both loop forever.
+\end{enumerate}
+By ``raising `the same' exception'', we mean the exceptions are
+extensionally equivalent in the following sense:
+We call two exceptions ``extensionally equivalent'' if they are of
+the same type and their payloads are extensionally equivalent.
+\end{node}
+
+\begin{node}[For function values]\label{sml-000A}%
+Let $f$, $g$ be two function values of type $T\to T'$.
+We say $f$ and $g$ are \define{Extensionally Equivalent}, written
+$f\exteq g$, if for all values $v$ of type $T$, we have $f(v)\exteq g(v)$.
+\end{node}
+
+\begin{node}[For function expressions]\label{sml-000B}%
+Let $e$, $e'$ be expressions of type $T\to T'$. We say $e$ and $e'$ are
+\define{Extensionally Equivalent}, written $e\exteq e'$, if
+\begin{enumerate}
+\item They both evaluate to extensionally equivalent function values; or
+\item Both raise extensionally equivalent exceptions; or
+\item Both loop forever when evaluated.
+\end{enumerate}
+\end{node}
+\end{definition}

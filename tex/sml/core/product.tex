@@ -1,0 +1,36 @@
+\begin{node}[Products]\label{sml-000H}%
+\textbf{Type:} $T_{1}\mbox{ \texttt{*} }T_{2}$ for any types $T_{1}$ and $T_{2}$.
+More generally, for any $n\geq 2$ and types $T_{1}$, \dots, $T_{n}$, we
+form the product type $T_{1}\mbox{ \texttt{*} }\dots\mbox{ \texttt{*} }T_{n}$.
+
+\textbf{Values:} For values $v_{1}\esti T_{1}$, \dots, $v_{n}\esti T_{n}$
+we have the tuple $(v_{1},\dots,v_{n})$ be a value of type 
+$T_{1}\mbox{ \texttt{*} }\dots\mbox{ \texttt{*} }T_{n}$.
+
+\textbf{Operations:} We can have projections for product types, but
+instead we use patterns to destructure tuples.
+
+\textbf{Typing Rules:}
+\begin{equation}
+\infer[\Rule{T-Tuple}]{(t_{1},\dots,t_{n})\esti T_{1}\mbox{ \texttt{*} }\dots\mbox{ \texttt{*} }T_{n}}{%
+t_{1}\esti T_{1},&\dots,&t_{n}\esti T_{n}
+}
+\end{equation}
+
+\textbf{Evaluation:} We evaluate components of a tuple from left to
+right, until all the components are values.
+\begin{equation}
+\infer[\Rule{E-Tuple}_{k}]{(v_{1},\dots,v_{k-1},t_{k},\dots,t_{n})\Reduces{1}(v_{1},\dots,v_{k-1},t_{k}',\dots,t_{n})}{%
+v_{1}~\Value &\dots&v_{k-1}~\Value&t_{k}\Reduces{1}t_{k}'}
+\end{equation}
+
+\begin{node}[Remark]\label{sml-000J}%
+Note that the record type is ``more primitive'' than the product type,
+since $T_{1}\mbox{ \texttt{*} }\dots\mbox{ \texttt{*} }T_{n}$ is then
+translated implicitly to
+$\{\quasiquote{1}\esti T_{1},\dots,\quasiquote{n}\esti T_{n}\}$.
+Tuples $(t_{1},\dots,t_{n})$ is translated to records
+$\{\quasiquote{1}=t_{1},\dots,\quasiquote{n}=t_{n}\}$.
+This is stated in Appendix A of the definition~\cite{milner1997definition}.
+\end{node}
+\end{node}

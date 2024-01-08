@@ -1,4 +1,4 @@
-% 5
+% 24
 \begin{node}[Normal forms]\label{prop-000P}%
 A common trick in logic is to take some sort of ``normal form'' of
 formulas. That is to say, we restrict attention to a sublanguage of
@@ -12,7 +12,35 @@ Harrison~\cite{harrison2009handbook} for much of the material here.)
 In propositional logic, we define a \define{Literal} to be a
 propositional variable or its negation. We say that a literal is
 \define{Negative} if it is of the form $\neg A$; otherwise we say it is
-\define{Positive}. 
+\define{Positive}.
+
+\begin{node}\label{prop:normal-form-000F}%
+We can give some code to test if a formula is a literal, to check if it
+is positive or negative:
+
+\begin{sml}
+fun is_literal (Atom _) = true
+ |  is_literal (Not A) = is_literal A
+ |  is_literal _ = false;
+
+fun is_negative (Not _) = true
+ |  is_negative _ = false;
+
+fun is_positive lit = not (is_neative lit);
+\end{sml}
+\end{node}
+
+\begin{node}[Negation]\label{prop:normal-form-000G}%
+We speak of \emph{negating} a literal, which simply takes $\neg A$ and
+produces $A$ (and vice-versa). We will implement more generous code, to
+work with \emph{any} proposition $A$.
+
+\begin{sml}
+(* negate : Prop -> Prop *)
+fun negate (Not A) = A
+ |  negate A = Not A;
+\end{sml}
+\end{node}
 \end{definition}
 
 \begin{definition}\label{prop-000O}%
@@ -26,16 +54,6 @@ literals. Inductively:
 \item We nominally accept $\verum$ and $\falsum$ as ``degenerate'' cases
   of negation normal form.
 \end{enumerate}
-
-\begin{node}[History of term NNF]\label{prop-normal-form-0003}%
-The term ``negation normal form'' appears to have been coined by the
-1960s. It appears in Raymond Smullyan's 1968 book \textit{First-Order Logic}
-in exercise 3 (on page 131), and in John Barwise's 1967 doctoral thesis
-``Infinitary logic and admissible sets''. But it is unclear to me if
-either of these men actually \emph{coined} the term. Certainly, it seems
-safe to speculate that it appears \emph{after} 1928, i.e., when Hilbert
-coined the terms ``disjunctive normal form'' and ``conjunctive normal form''~\zref{prop-normal-form-0004}.
-\end{node}
 \end{definition}
 
 \begin{node}[Transforming to NNF]\label{prop-000R}%
@@ -61,20 +79,24 @@ disjunctions, and ``pull negations down to the literals'':
 \end{subequations}
 In \SML, we could write a function transforming any \verb|Prop|
 instance~\zref{prop-000G} into negation normal form (using some
-optimizations) as something like:
+simplifications~\zref{prop-000Z}) as something like:
 \begin{sml}
-(* nnf : Prop -> Prop *)
-fun nnf (And(A,B)) = And (nnf A, nnf B)
-  | nnf (Or(A,B)) = Or(nnf A, nnf B)
-  | nnf (Implies(A,B)) = Or(nnf(Not A), nnf B)
-  | nnf (Iff(A,B)) = Or(And(nnf A, nnf B),
-                        And(nnf(Not A), nnf(Not B)))
-  | nnf (Not (Not A)) = nnf A
-  | nnf (Not (And (A, B))) = Or(nnf(Not A),nnf(Not B))
-  | nnf (Not (Implies (A,B))) = And(nnf A, nnf(Not B))
-  | nnf (Not (Iff (A,B))) = Or(And(nnf A, nnf(Not B)),
-                               And(nnf(Not A), nnf B))
-  | nnf (fm as _) = fm;
+(* in struct Prop *)
+local
+  fun nnf1 (And(A,B)) = And (nnf1 A, nnf1 B)
+    | nnf1 (Or(A,B)) = Or(nnf1 A, nnf1 B)
+    | nnf1 (Implies(A,B)) = Or(nnf1(Not A), nnf1 B)
+    | nnf1 (Iff(A,B)) = Or(And(nnf1 A, nnf1 B),
+                           And(nnf1(Not A), nnf1(Not B)))
+    | nnf1 (Not (Not A)) = nnf1 A
+    | nnf1 (Not (And (A, B))) = Or(nnf1(Not A),nnf1(Not B))
+    | nnf1 (Not (Implies (A,B))) = And(nnf1 A, nnf1(Not B))
+    | nnf1 (Not (Iff (A,B))) = Or(And(nnf1 A, nnf1(Not B)),
+                                 And(nnf1(Not A), nnf1 B))
+    | nnf1 (fm as _) = fm;
+in
+  fun nnf fm = nnf1 (simplify fm)
+end;
 \end{sml}
 \end{node}
 
@@ -105,8 +127,9 @@ first coined the acronym ``NENF'', and I do not honestly know what
 The transformation to NENF more or less follows the rules for
 transformation to NNF, except it preserves biconditionals. Its rules may
 be coded up quickly (with precomposing with a simplification function,
-which will simplify the proposition with various identities):
+which will simplify the proposition with various identities~\zref{prop-000Z}):
 \begin{sml}
+(* in struct Prop *)
 local
   (* nenf1 : Prop -> Prop *)
   fun nenf1 (And (A,B)) = And (nenf1 A, nenf1 B)
@@ -139,10 +162,167 @@ D_{i} = \ell_{i_{1}}\land\ell_{i_{2}}\land\dots\land\ell_{i_{n_{i}}}
 \end{equation}
 \end{subequations}
 (where each $\ell_{\star}$ is a literal~\zref{prop-000Q}).
+
 \begin{theorem}\label{prop-000T}%
 If a proposition is in disjunctive normal form, then it is in negation
 normal form.
 \end{theorem}
+
+\begin{node}[Construction using truth tables]\label{prop:normal-form-0005}%
+Given a proposition $\varphi$, we can form a logically equivalent
+proposition $\psi$ by writing down the truth table for $\varphi$. Each
+row of the truth table defines a valuation~\zref{prop-0004} $v$,
+which we use to form a disjunct $\ell_{1}\land\dots\land\ell_{k}$
+where for each propositional variable $p_{j}$ gives us the literal
+$\ell_{j}=p_{j}$ if $v(p_{j})$ is true, and $\ell_{j}=\neg p_{j}$
+if $v(p_{j})$ is false. Then taking the disjunction of all these
+disjuncts gives us the proposition $\psi$ logically equivalent to
+$\varphi$. This requires all $2^{k}$ valuations.
+\end{node}
+
+\begin{node}[Construction via transformation]\label{prop:normal-form-0006}%
+If we start with a proposition $\varphi$ in negation normal
+form~\zref{prop-000O}, then we can repeatedly apply the following
+tautologies to transform it to DNF:
+\begin{subequations}
+\begin{equation}
+A\land (B\lor C)\iff (A\land B)\lor(A\land C)
+\end{equation}
+\begin{equation}
+(A\lor B)\land C\iff (A\land C)\lor(B\land C)
+\end{equation}
+\end{subequations}
+The implementation in \SML\ requires a bit of care, to avoid
+transforming the syntax tree needlessly ``too many times''. We separate
+out applying the distributive laws (assuming the subpropositions are
+already in DNF) from the recursive transformations of subpropositions
+into DNF, so in particular only on conjunctions will we have to think
+about distributivity. Then the transformation to DNF will pass over the
+syntax tree once.
+\begin{sml}
+local
+  fun distrib (And (p,(Or(q,r)))) = Or(distrib(And(p,q)), distrib(And(p,r)))
+   |  distrib (And (Or(p,q),r)) = Or(distrib(And(p,r)), distrib(And(q,r)))
+   |  distrib (fm as _) = fm;
+in
+  fun to_dnf (And (p,q)) = distrib(And(to_dnf p, to_dnf q))
+   |  to_dnf (Or (p,q)) = Or(to_dnf p, to_dnf q)
+   |  to_dnf (fm as _) = fm
+end;
+\end{sml}
+\end{node}
+\begin{node}[Set-based representation]\label{prop:normal-form-0007}%
+\begin{node}\label{prop:normal-form-0008}%
+The basic idea is to represent a proposition in DNF using sets, so that
+we can quickly distinguish $A\land\neg B\lor\neg A\land B$ disjuncts
+from conjuncted literals. We encode this particular example as
+$\{\{A,\neg B\},\{\neg A,B\}\}$
+a set of conjunctions (where the conjunctions are themselves sets of
+literals). 
+\end{node}
+\begin{node}\label{prop:normal-form-0009}%
+Distributivity~\zref{prop:normal-form-0006} needs to be phrased using
+this set representation. We would expect something like (supposing we
+had access to a \verb|Set| library):
+\begin{sml}
+(* pseudocode *)
+fun set_dnf (And (A,B)) = distrib (set_dnf A) (set_dnf B)
+ |  set_dnf (Or (A,B)) = Set.union (set_dnf A) (set_dnf B)
+ |  set_dnf (fm as _) = Set.singleton (Set.singleton fm);
+\end{sml}
+This would transform $A\land(B\lor C)$ into $dnf(\{\{A\}\}\land\{\{B\},\{C\}\})$
+which should coincide with $(A\land B)\lor(A\land C)$. This would require
+$distrib(\{\{A\}\},\{\{B\},\{C\}\})=\{\{A,B\},\{A,C\}\}$.
+Similarly, $(A\lor B)\land C$ would be expected to transform into $\{\{A,C\},\{B,C\}\}$,
+which tells us how $distrib(\{\{A\},\{B\}\}, \{\{C\}\})$ would behave.
+This gives us the basis for the general situation
+\begin{equation}
+(A_{1}\lor\dots\lor A_{m})\land(B_{1}\lor\dots\lor B_{n})
+=\bigvee_{i=1}^{m}\bigvee_{j=1}^{n}(A_{i}\land B_{j}).
+\end{equation}
+This gives us the code for distributivity:
+\begin{sml}
+(* distrib : (Prop Set.t) -> (Prop Set.t) -> (Prop Set.t) Set.t *)
+fun distrib c1 c2 = Set.map (fn a =>
+                               Set.map (fn b => 
+                                         Set.union (Set.singleton a)
+                                                   (Set.singleton b))
+                                       c2)
+                            c1;
+\end{sml}
+\end{node}
+\begin{node}\label{prop:normal-form-000A}%
+Now we may follow suite with using transformations, and write the code
+for using sets to transform a proposition in NNF to a set representation
+of DNF:
+\begin{sml}
+fun set_dnf (And (A, B)) = distrib (set_dnf A) (set_dnf B)
+ |  set_dnf (Or (A, B)) = Set.union (set_dnf A) (set_dnf B)
+ |  set_dnf (fm as _) = Set.singleton (Set.singleton fm);
+\end{sml}
+\end{node}
+\begin{node}[Optimization: use noncontradictory disjuncts]\label{prop:normal-form-000B}%
+We can remove the trivial disjuncts, which are the ones which involve
+both a literal and its negation.
+\begin{sml}
+(* trivial : Prop Set.t -> Prop Set.t *)
+fun trivial literals =
+let
+  val (pos,neg) = Set.partition positive literals
+in
+  not (Set.null (Set.intersection pos (Set.map negate neg)))
+end;
+
+(* Example usage: Set.filter (non trivial) (set_dnf prop)
+   produces a logically equivalent but smaller DNF representation of the
+   proposition. *)
+\end{sml}
+\end{node}
+\begin{node}[Optimization: Subsumption]\label{prop:normal-form-000C}%
+If we have two disjuncts $D_{1}$ and $D_{2}$ which appear in the DNF for
+our formula $D_{1}\lor D_{2}\lor\dots$ which happen to be such that
+$D_{1}\subset D_{2}$, then we can discard $D_{1}$. In this case, we say
+$D_{2}$ \define{Subsumes} $D_{1}$.
+
+We use this to transform a generic formula (possibly in NNF, possibly not)
+into a set-representation of DNF.
+\begin{sml}
+fun simp_dnf False = Set.Empty
+ |  simp_dnf True = Set.singleton (Set.Empty)
+ |  simp_dnf A =
+let
+  val djs = Set.filter (non trivial) (set_dnf (nnf A))
+in
+  Set.filter (fun d =>
+                not (Set.exists (fn d' => Set.isSubsetOf d' d) djs))
+             djs
+end;
+\end{sml}
+\end{node}
+\begin{node}\label{prop:normal-form-000D}%
+We can now transform back from the set-representation to a \lstinline[basicstyle=\color{sbase03}\ttfamily\small,language=SML]{Prop}
+object using the preceding function. Care must be taken to transform
+$\{\emptyset\}\mapsto\verum$ and $\{\}\mapsto\falsum$, which is carved
+out explicitly in the helper functions.
+\begin{sml}
+(* dnf : Prop -> Prop *)
+local
+  fun set_disj s = if Set.null s
+                   then False
+                   else if Set.isSingleton s
+                   then Set.elemAt 0 s
+                   else Set.foldr Or (Set.elemAt 0 s) (Set.deleteAt 0 s);
+  fun set_conj s = if Set.null s
+                   then True
+                   else if Set.isSingleton s
+                   then Set.elemAt 0 s
+                   else Set.foldr And (Set.elemAt 0 s) (Set.deleteAt 0 s);
+in
+  fun dnf fm = list_disj (Set.map list_conj (simpdnf fm))
+end;
+\end{sml}
+\end{node}
+\end{node}
 \end{definition}
 
 \begin{definition}\label{prop-000U}%
@@ -159,25 +339,91 @@ where each conjunct $C_{i}$ is of the form
 and each $\ell_{i_{j}}$ is a literal~\zref{prop-000Q}.
 \end{subequations}
 
-\begin{node}[History of terms CNF and DNF]\label{prop-normal-form-0004}%
-Carnap's ``Testability and Meaning'' (\textit{Philosophy of Science}
-\textbf{3} no.4 (1936) 419--471) cites Hilbert (\textit{Logik} [?],
-p.63) and separately Carnap's earlier book \textit{Logical Syntax of Language}
-(calling it  ``conjunctive standard form'') as the source of conjunctive
-normal form. Coincidentally, ``Testability and Meaning'' appears to coin
-the term ``disjunctive normal form'' on page 437, citing page 13 of some work by Hilbert (there is no bibliography for ``Testability and Meaning'').
-The 1950 English translation of Hilbert and Ackermann's
-\textit{Principles of Mathematical Logic} uses the term ``disjunctive
-normal form'' (ch.~1, \S6) and ``conjunctive normal form'' (ch~1, \S7).
-It seems safe to credit David Hilbert for inventing these notions, and
-may be found in this German book published 1928.
-\end{node}
-
 \begin{theorem}\label{prop-000V}%
 If a proposition is in conjunctive normal form, then it is in negation
 normal form.
 \end{theorem}
+
+\begin{node}[Transformation to CNF]\label{prop:normal-form-000E}%
+\begin{node}[Set-representation]\label{prop:normal-form-000H}%
+We can take advantage of the fact that, if we have a proposition $A$,
+and if we can write $\neg A$ in DNF as
+\begin{subequations}
+\begin{equation}
+\neg A\iff\bigvee^{m}_{i=1}\bigwedge^{n}_{j=1}\ell_{i,j},
+\end{equation}
+then de Morgan's laws give us:
+\begin{equation}
+A \iff\bigwedge^{m}_{i=1}\bigvee^{n}_{j=1}\neg\ell_{i,j}.
+\end{equation}
+\end{subequations}
+This is precisely the CNF for $A$. We can do this using our earlier code
+to give the set-representation for the DNF of a proposition~\zref{prop:normal-form-000A},
+negating literals~\zref{prop:normal-form-000G}, and de Morgan's laws:
+\begin{sml}
+(* set_cnf : Prop -> (Prop Set.t) Set.t *)
+fun set_cnf A = Set.map (Set.map negate) (set_dnf (nnf (Not A)));
+\end{sml}
+\end{node}
+
+\begin{node}[Simplification]\label{prop:normal-form-000I}%
+We can simplify the set-representation for the CNF of a formula, though
+the representations for $\verum$ and $\falsum$ change.
+\begin{sml}
+fun simp_cnf False = Set.singleton (Set.Empty)
+ |  simp_cnf True = Set.Empty
+ |  simp_cnf A = let val cs = Set.filter (non trivial) (set_cnf A)
+                 in Set.filter (fn c =>
+                                  not(Set.exists (fn c' => Set.isSubsetOf c' c)
+                                                 cs))
+                               cs
+                 end;
+\end{sml}
+\end{node}
+
+\begin{node}[Transformation to CNF Formula]\label{prop:normal-form-000J}%
+We can now compose the previous functions with transforming the
+set-representation back to a \lstinline[basicstyle=\color{sbase03}\ttfamily\small,language=SML]{Prop}
+instance, just as we did for DNF~\zref{prop:normal-form-000D} with
+similar helper functions:
+\begin{sml}
+(* cnf : Prop -> Prop *)
+local
+  fun set_disj s = if Set.null s
+                   then False
+                   else if Set.isSingleton s
+                   then Set.elemAt 0 s
+                   else Set.foldr Or (Set.elemAt 0 s) (Set.deleteAt 0 s);
+  fun set_conj s = if Set.null s
+                   then True
+                   else if Set.isSingleton s
+                   then Set.elemAt 0 s
+                   else Set.foldr And (Set.elemAt 0 s) (Set.deleteAt 0 s);
+in
+  cnf A = set_conj (Set.map set_disj (simp_cnf A))
+end;
+\end{sml}
+\end{node}
+
+\end{node}
+
 \end{definition}
+
+
+\begin{theorem}
+The proposition $A_{1}\iff(A_{2}\iff(\dots\iff A_{n}))$, when converted
+to CNF, will have $\bigO(2^{n})$ leaves in its syntax tree.
+
+\begin{node}\label{prop:normal-form-000K}%
+This is the ``worst case'' scenario for conversion to CNF, so we'd like
+to avoid this particular problem. Instead of using ``CNF on the nose'',
+we'll convert to a proposition which is \emph{equisatisfiable} (i.e.,
+propositions $A$ and $B$ are equisatisfiable meaning $A$ is satisfiable
+if and only if $B$ is satisfiable). This is a weaker notion than
+\emph{equivalid} ($A$ is a tautology if and only if $B$ is a tautology).
+\end{node}
+\end{theorem}
+
 
 \begin{definition}\label{prop-000W}%
 Let $\varphi$ be a proposition.
@@ -189,11 +435,53 @@ many transformations, each of which introduce a ``fresh'' propositional
 variable $X$ which replaces all instances of some subproposition
 $\alpha$, and we conjunct onto it $X\iff\alpha$. There are a great many
 variations of the procedure.
+\end{definition}
 
-\begin{node}\label{prop-000X}%
+\begin{node}[Satisfiability Problem]\label{prop:normal-form-000L}%
+Given a proposition $A$, is it a tautology? Can we determine
+``mechanically'' that it follows from propositions $B_{1}$, \dots, $B_{n}$?
+Equivalently, can we determine $B_{1}\land\dots\land B_{n}\implies A$
+is a tautology?
+
+\begin{node}\label{prop:normal-form-000M}%
+This is a ``toy problem'' of the more interesting case, where we have a
+mathematical proof presented in first-order logic, and we would like the
+computer to verify that step $n+1$ really follows logically from steps
+$1$, \dots, $n$ (and possibly cited theorems or definitions).
+\end{node}
+\end{node}
+
+\begin{node}[History]\label{prop:normal-form-000N}%
+\begin{node}[History of term NNF]\label{prop-normal-form-0003}%
+The term ``negation normal form'' appears to have been coined by the
+1960s. It appears in Raymond Smullyan's 1968 book \textit{First-Order Logic}
+in exercise 3 (on page 131), and in John Barwise's 1967 doctoral thesis
+``Infinitary logic and admissible sets''. But it is unclear to me if
+either of these men actually \emph{coined} the term. Certainly, it seems
+safe to speculate that it appears \emph{after} 1928, i.e., when Hilbert
+coined the terms ``disjunctive normal form'' and ``conjunctive normal form''~\zref{prop-normal-form-0004}.
+\end{node}
+
+\begin{node}[History of terms CNF and DNF]\label{prop-normal-form-0004}%
+Carnap's ``Testability and Meaning'' (\textit{Philosophy of Science}
+\textbf{3} no.4 (1936) 419--471) cites Hilbert (\textit{Logik} [?],
+p.63) and separately Carnap's earlier book \textit{Logical Syntax of Language}
+(calling it  ``conjunctive standard form'') as the source of conjunctive
+normal form. Coincidentally, ``Testability and Meaning'' appears to coin
+the term ``disjunctive normal form'' on page 437, citing page 13 of some work by Hilbert (there is no bibliography for ``Testability and Meaning'').
+The 1950 English translation of Hilbert and Ackermann's
+\textit{Principles of Mathematical Logic} uses the term ``disjunctive
+normal form'' (ch.~1, \S6) and ``conjunctive normal form'' (ch~1, \S7).
+It seems safe to credit David Hilbert for inventing these notions, and
+may be found in this German book published 1928, and probably may be
+found in Hilbert's lectures on logic earlier in the 1920s.
+\end{node}
+
+\begin{node}[History of definitional CNF]\label{prop-000X}%
 It appears the first time the \emph{phrase} ``definitional CNF'' was
 used may be found in Beckert and Posegga~\cite{beckert1994lean}. The
-idea may be traced back to Tsetin~\cite{Tseitin1983}.
+idea may be traced back to de la Tour~\cite{de1990minimizing} who, in
+turn, improves upon Tsetin~\cite{Tseitin1983}.
 \end{node}
-\end{definition}
+\end{node}
 \end{node}
