@@ -1,4 +1,4 @@
-% 0
+% 4
 \begin{node}[Syntax]\label{prop-000J}%
 \begin{node}\label{prop-000I}%
 The BNF grammar for propositional logic may be written down explicitly
@@ -42,15 +42,25 @@ recursive data structure. This reflects the tree-like structure to the
 grammar of well-formed formulas \zref{prop-000I}.
 
 If we were to do this in production, we would probably place this in a
-structure with the various other utility functions.
+structure with the various other utility functions. For example, the
+datatype encoding variables might want to include metadata.
 
 \begin{sml}
-datatype Prop = Atom of string
-              | Not of Prop
-              | And of Prop * Prop
-              | Or of Prop * Prop
-              | Implies of Prop * Prop
-              | Iff of Prop * Prop;
+type Var = string;
+
+datatype Prop = P of Var;
+
+datatype 'a Formula = True
+                    | False
+                    | Atom of 'a
+                    | Not of 'a Formula
+                    | And of ('a Formula)*('a Formula)
+                    | Or of ('a Formula)*('a Formula)
+                    | Implies of ('a Formula)*('a Formula)
+                    | Iff of ('a Formula)*('a Formula)
+                    | Forall of Var*('a Formula)
+                    | Exists of Var*('a Formula);
+(* We will work with `Prop Formula` in propositional logic *)
 \end{sml}
 \end{node}
 \end{definition}
@@ -64,5 +74,53 @@ parentheses to alter it. Some examples:
 \item $A\iff (\neg B)\lor C\implies D$ is parsed as $A\iff(((\neg B)\lor C)\implies D)$.
 \item $A\implies B\implies C$ is parsed as $(A\implies B)\implies C$.
 \end{enumerate}
+\end{node}
+
+
+\begin{node}\label{prop:syntax-0000}%
+The set of propositional variables will be useful when trying to
+determine if we have a tautology or contradiction or whatever.
+
+\begin{node}\label{prop:syntax-0002}%
+Testing for membership should be straightforward.
+
+\begin{sml}
+(* in structure Prop *)
+fun member _ [] = false
+ |  member (p as (P y)) ((P x)::xs) = (x = y) orelse member p xs;
+\end{sml}
+\end{node}
+
+\begin{node}[Union of sets of propositional variables]\label{prop:syntax-0003}%
+We will encode sets of propositional variables as lists without
+duplicates, so taking the union of two such finite sets of variables
+requires testing for duplicates before merging in.
+
+\begin{sml}
+(* merge : ('a -> 'a list -> bool) -> 'a list -> 'a list -> 'a list *)
+fun merge member [] rs = rs
+ |  merge member ls [] = ls
+ |  merge member (h::tl) xs = if member h xs
+                              then merge tl xs
+                              else merge tl (h::xs)
+\end{sml}
+\end{node}
+\begin{node}\label{prop:syntax-0001}%
+Now we can obtain the set of propositional variables:
+
+\begin{sml}
+(* in structure Prop *)
+(* vars : Prop Formula -> Prop list *)
+fun vars False = []
+ |  vars True = []
+ |  vars (Atom p) = [p]
+ |  vars (Not fm) = vars fm
+ |  vars (Or (A,B)) = merge member (vars A) (vars B)
+ |  vars (And (A,B)) = merge member (vars A) (vars B)
+ |  vars (Implies (A,B)) = merge member (vars A) (vars B)
+ |  vars (Iff (A,B)) = merge member (vars A) (vars B)
+ |  vars _ = [];
+\end{sml}
+\end{node}
 \end{node}
 \end{node}

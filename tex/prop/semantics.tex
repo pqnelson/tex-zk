@@ -1,4 +1,4 @@
-% 0
+% 5
 
 \begin{node}[Semantics]\label{prop-000K}%
 \begin{node}[Connectives]\label{prop-0001}%
@@ -85,6 +85,26 @@ Valuations describe the \emph{semantics} of logic, in the sense
 that we are describing a possible configuration of the ``world''.
 \end{node}
 
+
+\begin{node}\label{prop:semantics-0000}%
+We can define the semantics of propositional logic using an \lstinline{eval}
+function, which is defined using a valuation (i.e., a function
+\texttt{Prop -> bool}):
+
+\begin{sml}
+(* Prop.eval : 'a Formula -> ('a -> bool) -> bool *)
+fun eval False v = false
+  | eval True v = true
+  | eval (Atom p) v = v(p)
+  | eval (Not fm) v = not (eval fm v)
+  | eval (And (A,B)) v = (eval A v) andalso (eval B v)
+  | eval (Or (A,B)) v = (eval A v) orelse (eval B v)
+  | eval (Implies (A,B)) v = not(eval A v) orelse (eval B v)
+  | eval (Iff (A,B)) v = (eval A v) = (eval B v)
+  | eval _ _ = raise Fail "Invalid propositional formula"; 
+\end{sml}
+\end{node}
+
 \begin{definition}\label{prop-000L}%
 We call a proposition $A$ a \define{Tautology} (or \textit{Logically Valid})
 if it evaluates to $\verum$ under every valuation $\rho(A)=\verum$.
@@ -93,6 +113,50 @@ That is to say, its truth-table value is ``true'' for \emph{all} rows.
 ``Validity'' is the term used in first-order logic, but Wittgenstein's
 \textit{Tractatus} popularized the term ``Tautology''.
 \end{definition}
+
+\begin{node}\label{prop:semantics-0001}%
+The implementation of testing a propositional formula as a tautology or
+not involves checking every valuation is satisfied:
+
+\begin{sml}
+(* Prop.onallvaluations : ((Prop -> bool) -> bool)
+                          -> (Prop -> bool)
+                          -> Prop list
+                          -> bool *)
+fun onallvaluations subfn v ([] : Prop list) = subfn v
+  | onallvaluations subfn v (((p as (P x))::ps) : Prop list) =
+    let fun v' t ((q as (P y)) : Prop) = if (x = y) then t else v(q)
+    in (onallvaluations subfn (v' false) ps) andalso
+       (onallvaluations subfn (v' true) ps)
+    end;
+
+(* Prop.tautology : Prop Formula -> bool *)
+fun tautology fm = onallvaluations (eval fm) (fn _ => false) (vars fm);
+\end{sml}
+\begin{node}\label{prop:semantics-0002}%
+We can test this code on Bourbaki's axioms found in their propositional
+logic, as stated in the \textit{Theory of Sets}~\cite[(I~\S3.1)]{bourbaki1968theory}, as:
+\begin{sml}
+(* Bourbaki's axioms *)
+local
+    val A = Atom (P "A")
+    val B = Atom (P "B")
+    val C = Atom (P "C")
+in
+    val s1 = Implies (Or(A,A), A);
+    val s2 = Implies (A, Or(A,B));
+    val s3 = Implies (Or(A,B), Or(B,A));
+    val s4 = Implies (Implies(A,B),
+                      Implies(Or(C,A),
+                              Or(C,B)));
+    val bourbaki_axioms_are_tautologies = Prop.tautology s1 andalso
+                                          Prop.tautology s2 andalso
+                                          Prop.tautology s3 andalso
+                                          Prop.tautology s4;
+end;
+\end{sml}
+\end{node}
+\end{node}
 
 \begin{definition}\label{prop-000M}%
 We will call a proposition $A$ \define{Satisfiable} if there exists at
@@ -125,12 +189,18 @@ Let $B$ and $C$ be propositions.
 \end{node}
 
 \begin{definition}\label{prop-0008}%
-We will call a proposition a \define{Contradiction} if there is no
-valuation for which it is true. Equivalently, if a proposition is
-false under every valuation, then it is a contradiction.
+We will call a proposition a \define{Contradiction} (or
+\define{Unsatisfiable}) if there is no valuation for which it is
+true. Equivalently, if a proposition is false under every valuation,
+then it is a contradiction. 
 \begin{node}\label{prop-0009}%
 Observe, a proposition $A$ is a contradiction if and only if $\neg A$
 is a tautology.
+\end{node}
+
+\begin{node}\label{prop:semantics-0003}%
+A proposition $A$ is a tautology if and only if $\neg A$ is
+unsatisfiable (i.e., $\neg A$ is always false in every valuation).
 \end{node}
 \end{definition}
 
@@ -171,5 +241,19 @@ is logically equivalent to one involving only these connectives). This
 is because $A\land B$ is logically equivalent to $\neg(\neg A\lor\neg B)$,
 $A\implies B$ is logically equivalent to $(\neg A)\lor B$, and $A\iff B$
 is logically equivalent to $(A\implies B)\land(B\implies A)$.
+
+\begin{node}\label{prop:semantics-0004}%
+Bourbaki~\cite{bourbaki1968theory}, Hilbert and Ackermann, and Russell
+and Whitehead use $\{\neg,\lor\}$ as their primitives and the axioms
+\begin{enumerate}
+\item $A\lor A\implies A$
+\item $A\implies(A\lor B)$
+\item $A\lor B\implies B\lor A$
+\item $(A\implies B)\implies((C\lor A)\implies(C\lor B))$.
+\end{enumerate}
+Russell and Whitehead had a fifth axiom proving disjunction is
+associative, but Bernays proved (in 1926) it is a consequence of the
+other four axioms. 
+\end{node}
 \end{node}
 \end{node}

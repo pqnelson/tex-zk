@@ -32,14 +32,16 @@ A \define{Category} $\cat{C}$ consists of
 \item for any objects $X,Y\in\ob(\cat{C})$, there is a (possibly empty)
   collection of morphisms $\hom(X,Y)$;
 \item for each object $X\in\ob(\cat{C})$, an identity morphism $\id_{X}\in\hom(X,X)$;
-\item for objects $X,Y,Z\in\ob(\cat{C})$ and morphisms $f\in\hom(X,Y)$,
-  $g\in\hom(Y,Z)$, there exists a morphism $g\circ f\in\hom(X,Z)$
+\item for objects $X,Y,Z\in\ob(\cat{C})$, there is a binary operator
+  $\circ\colon\hom(Y,Z)\times\hom(X,Y)\to\hom(X,Z)$ called
+  \define{composition} (of morphisms);
+  % and morphisms $f\in\hom(X,Y)$, $g\in\hom(Y,Z)$, there exists a morphism $g\circ f\in\hom(X,Z)$
 \end{enumerate}
 such that
 \begin{enumerate}
-\item composition is associative: for any $W,X,Y,Z\in\ob(\cat{C})$, if
+\item composition is associative: for any $W$, $X$, $Y$, $Z\in\ob(\cat{C})$, if
   $f\in\hom(W,X)$, $g\in\hom(X,Y)$, $h\in\hom(Y,Z)$, then $(h\circ g)\circ f=h\circ(g\circ f)$;
-\item unit laws for composition: for any objects $X,Y\in\ob(\cat{C})$,
+\item unit laws for composition: for any objects $X$, $Y\in\ob(\cat{C})$,
   if $f\in\hom(X,Y)$, then $\id_{Y}\circ f=f$ and $f\circ\id_{X}=f$.
 \end{enumerate}
 \end{definition}

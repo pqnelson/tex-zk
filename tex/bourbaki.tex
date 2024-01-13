@@ -1,4 +1,4 @@
-% 12
+% 21
 \begin{node}\label{bourbaki-0000}%
 The Bourbaki group has long since been intriguing to me. Everything about it: the organization, writing style, content of their books, etc.
 \end{node}
@@ -153,3 +153,152 @@ version of concepts).
 \end{enumerate}
 \end{puzzle}
 
+\section{Formal Framework}
+
+\begin{node}\label{bourbaki-000C}%
+Underlying Bourbaki's \textit{Elements of Mathematic} is, ostensibly, a
+formal system~\cite[ch~I]{bourbaki1968theory}. This is rather baroque
+and never explicitly invoked. But it's curious, and I'd like to talk
+about it.
+\end{node}
+
+\begin{node}\label{bourbaki-000D}%
+Bourbaki's proof calculus is a Hilbert system with the ``Russell--Bernays
+axioms''\footnote{This appears to be the axioms found in the
+\textit{Principia Mathematica}, specifically corresponding to axioms
+$*1.2$, $*1.3$, $*1.4$, and $*1.6$ in \textit{Principia}. Bernays proved
+its logical completeness in ``Axiomatische Untersuchungen des
+Aussagen-Kalkuls der \textit{Principia Mathematica}.''
+\textit{Mathematische Zeitschrift} \textbf{25} (1926) 305--320;
+translated into English in Richard Zach's \textit{Universal Logic: An
+  Anthology} (2012) pp.43--58. Russell and Whitehead call these axioms
+``principle of tautology'', ``principle of addition'',
+``principle of permutation'', ``principle of
+summation''. Coincidentally, this is also the axioms found in Hilbert
+and Ackermann's \textit{Grundz\"{u}ge der theoretischen Logik} (1928).}
+(I~\S3.1) using primitive connectives $\neg$ and $\lor$ (so, e.g.,
+$A\implies B$ is understood as an abbreviation for $(\neg A)\lor B$):
+\begin{itemize}
+\item[(S1)] $(A\lor A)\implies A$
+\item[(S2)] $A\implies(A\lor B)$
+\item[(S3)] $(A\lor B)\implies(B\lor A)$
+\item[(S4)] $(A\implies B)\implies((C\lor A)\implies(C\lor B))$.
+\end{itemize}
+Then axioms are given for quantified theories (I~\S4.2) as:
+\begin{itemize}
+\item[(S5)] If $R$ is a relation of theory $\mathcal{T}$, if $T$ is a
+  term in $\mathcal{T}$, and if $x$ is a letter, then the relation
+  $(T\mid x)R\implies(\exists x)R$ is an axiom.
+\end{itemize}
+The last two logical axioms concern equality (I~\S5.1):
+\begin{itemize}
+\item[(S6)] Let $x$ be a letter, let $T$ and $U$ be terms in theory $\mathcal{T}$,
+  and let $R[x]$ be a relation in $\mathcal{T}$. Then the relation
+  $(T=U)\implies(R[T]\iff R[U])$ is an axiom.
+\item[(S7)] If $R$ and $S$ are relations in a theory $\mathcal{T}$,
+  and if $x$ is a letter, then the relation $((\forall x)(R\iff S))\implies(\tau_{x}(R)=\tau_{x}(S))$
+  is an axiom.
+\end{itemize}
+The usual quantifier introduction and elimination rules are given as
+derived inference rules: S5 is $\exists$-introduction,
+C27 is $\forall$-introduction, and
+C30 is $\forall$-elimination. Existential-elimination can be given
+automatically using the $\tau$-operator to obtain the witness term.
+\begin{node}[Proofs]\label{bourbaki-000K}%
+Bourbaki presents a ``mathematical theory'' as a triple consisting of
+axioms, schemes, and primitive signs. However, what it means to
+``develop'' a theory, Bourbaki makes clear, it is producing a ``stock
+ticker'' [my term] or ``livestream'' of formulas such that:
+\begin{enumerate}
+\item the formula appearing in the stream is an axiom, or an instance of
+  a scheme; or
+\item if the formulas $\boldsymbol{A}$ and $\boldsymbol{A}\Longrightarrow\boldsymbol{B}$
+  have appeared previously in the stream, then $\boldsymbol{B}$ may be
+  printed. 
+\end{enumerate}
+Then a ``proof'' amounts to tracing back in this stock ticker the
+relevant formulas justifying a given theorem. \emph{Proofs are not objects}
+in the sense that we now think of them (as ``\LaTeX\ environments'' or,
+for type theorists, ``proof objects''). Instead, for Bourbaki, proofs
+are identified as tracing back through this stream.
+\end{node}
+
+\begin{node}[Quantifiers]\label{bourbaki-000E}%
+Since Bourbaki is using Hilbert's
+$\varepsilon$-calculus~\zref{sec:epsilon-calc}, the quantifiers are
+defined in terms of the Hilbert operator~\zref{epsilon-calc-0008}, which
+causes a combinatorial explosion in the size of expressions. If I were
+to try to formalize Bourbaki all over again, I would probably add a
+quantifier (probably $\forall$) as a primitive notion, then define
+$\exists P[x]\iff\neg(\forall x.\neg P[x])$. I'd also add rewriting
+rules to replace $P[\tau_{x}P[x]]\mapsto\exists x.P[x]$ and
+$P[\tau_{x}\neg P[x]]\mapsto\forall x.P[x]$. This gives us the powerful
+Hilbert choice operator without the catastrophic bloat. On the other
+hand, this also gives us quite a bit of cruft.
+\end{node}
+
+\begin{node}[Natural deduction]\label{bourbaki-000J}%
+Bourbaki assembles a number of metatheorems, which he calls ``deductive
+criteria'', which enables us to approximately work at the level of
+natural deduction. He gives some examples of how these criteria are used
+in natural language proofs.
+\end{node}
+\end{node}
+
+\begin{node}[Set axioms]\label{bourbaki-000F}%
+The axioms for set theory is rather weak, equivalent to \emph{Zermelo}
+set theory (\textbf{not} \ZF). But it is simultaneously \emph{stronger}
+in some dimensions than \ZFC\ since the Hilbert choice operator acts
+like a ``nuclear fly swatter''\footnote{Professor Kevin Pipkin, of
+Folsom Lake College, introduced me to this delightful phrase.}.
+Grothendieck then added the axiom of universes~\zref{tg-0001}, which
+makes it stronger than \ZFC\ in every sense.
+
+The axioms for Bourbaki's set theory are explicitly given by one scheme
+and several axioms. 
+
+\begin{node}[Scheme of selection and union]\label{bourbaki-000G}%
+When we have a binary predicate $R[x,y]$ and a set $Y$, we will often
+want to form the set $\{x\mid R[x,y]\mbox{ for some }y\in Y\}$. This is
+given by the following scheme (the last ``logical axiom'' in Bourbaki's logic):
+\begin{itemize}
+\item[(S8)] Let $R$ be a relation, let $x$ and $y$ be distinct variables [``letters''],
+let $X$ and $Y$ be distinct from $x$ and $y$. Further, we require $X$
+and $Y$ do not appear in $R$. The relation
+\[(\forall y)(\exists X)(\forall x)(R\implies(x\in X))\implies(\forall Y)\operatorname{Coll}_{x}((\exists y)(y\in Y\mbox{ and }R)) \]
+is an axiom.
+\end{itemize}
+Here ``$\operatorname{Coll}_{X}(\dots)$'' means the formula
+[``relation''] in parentheses is ``collectivizing'', i.e., we can form a
+set $Z$ of the elements $X\in Z$ satisfying it --- so intuitively we can
+read $\operatorname{Coll}_{X}(R[X])$ as $(\exists Z)(\forall X)(R[X]\iff X\in Z)$.
+In fact, Bourbaki writes $\mathcal{E}_{x}(R)$ for the set of elements
+$x$ satisfying $R$.
+This scheme allows us to form unions and it's essentially as strong as
+the axiom schemas of specification and replacement.
+
+Bourbaki derives the axiom of separation in their metatheorem C51, and
+the axiom scheme of replacement [``Fraenkel's scheme''] in metatheorem C53. 
+\end{node}
+
+\begin{node}[Axioms]\label{bourbaki-000H}%
+The remaining axioms of Bourbaki's set theory are:
+\begin{itemize}
+\item[(A1)] Extent: $(\forall x)(\forall y)((x\subset y)\mbox{ and }(y\subset x))\implies x=y$
+\item[(A2)] Pairing: $(\forall x)(\forall y)\operatorname{Coll}_{z}(z=x\mbox{ or }z=y)$
+\item[(A3)] Ordered pair: $(\forall x)(\forall x')(\forall y)(\forall y')(((x,y)=(x',y'))\implies(x=x'\mbox{ and }y=y'))$
+\item[(A4)] Powerset: $(\forall X)\operatorname{Coll}_{Y}(Y\subset X)$
+\item[(A5)] Infinity: There exists an infinite set.
+\end{itemize}
+\end{node}
+
+\begin{node}\label{bourbaki-000I}%
+Since we can derive Fraenkel's scheme, and the remaining axioms of
+Bourbaki's set theory coincides with the axioms of Tarski--Grothendieck
+set theory~\zref{sec:set:tarski-grothendieck} except for the axioms of
+regularity and the universe, it's not hard to believe that Bourbaki set
+theory plus universes is stronger than \ZFC. We would need to show the relation
+\[R[X]:=((X\neq\emptyset)\implies(\exists Y)((Y\in X)\land(X\cap Y=\emptyset)))\]
+holds for all $X$.
+\end{node}
+\end{node}
