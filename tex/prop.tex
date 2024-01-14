@@ -56,20 +56,20 @@ local
    | (Or (True, p)) => True
    | (Implies (False, p)) => True
    | (Implies (p, True)) => True
-   | (Implies (p, True)) => p
+   | (Implies (True, p)) => p
    | (Implies (p, False)) => Not p
    | (Iff (p, True)) => p
    | (Iff (True, p)) => p
    | (Iff (p, False)) => Not p
    | (Iff (False, p)) => Not p
-   | (fm as _) => fm
+   | fm => fm
 in
   fun simplify (Not p) = simplify1 (Not (simplify p))
    |  simplify (And (p,q)) = simplify1 (And (simplify p, simplify q))
    |  simplify (Or (p,q)) = simplify1 (Or (simplify p, simplify q))
    |  simplify (Implies (p,q)) = simplify1 (Implies (simplify p, simplify q))
    |  simplify (Iff (p,q)) = simplify1 (Iff (simplify p, simplify q))
-   |  simplify (fm as _) = fm
+   |  simplify fm = fm
 end;
 \end{sml}
 \end{node}

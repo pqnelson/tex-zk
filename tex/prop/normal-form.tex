@@ -26,7 +26,7 @@ fun is_literal (Atom _) = true
 fun is_negative (Not _) = true
  |  is_negative _ = false;
 
-fun is_positive lit = not (is_neative lit);
+fun is_positive lit = not (is_negative lit);
 \end{sml}
 \end{node}
 

@@ -1,4 +1,4 @@
-% 20
+% 22
 \begin{node}\label{fol-0000}%
 I'm nonplussed with Mendelson's treatment~\cite{mendelson2015mathematical}
 of first-order logic using a Hilbert system, but his treatment of
@@ -34,6 +34,24 @@ $\langle$\textit{argument lists}$\rangle$ & ::= & $\langle$\textit{term}$\rangle
   & $|$ & $\langle$\textit{term}$\rangle$ \verb#,# $\langle$\textit{argument list}$\rangle$\\
 \end{tabular}
 \end{center}
+
+\begin{node}\label{fol-000K}%
+We can implement this with varying degrees of flexibility. The quickest
+way is to ignore arity, and just use a list of terms. This is fine.
+
+But a bigger consideration worth taking time to seriously think through
+is how should we handle \emph{bound variables}? This seems like a silly
+consideration, but it's an easy source of bugs. If we're just doing
+first-order logic (i.e., we're not doing $\varepsilon$-calculus), then
+de Bruijn indices should be seriously considered as a contender for
+bound variables. In this case, we should add \texttt{BVar of Int}
+for bound variables represented by de Bruijn indices. For now, we will
+be cavalier and work with ``variables''.
+\begin{sml}
+datatype Term = Var of Var
+              | Fn of string * (Term list);
+\end{sml}
+\end{node}
 \end{definition}
 
 \begin{definition}\label{fol-0003}%
@@ -46,6 +64,17 @@ Its BNF grammar is:
 $\langle$\textit{atomic formula}$\rangle$ & ::= & $\langle$\textit{predicate symbol}$\rangle$ \verb#(# $\langle$\textit{arguments}$\rangle$ \verb#)#\\
 \end{tabular}
 \end{center}
+
+\begin{node}\label{fol-000L}%
+We can implement this in \SML\ using similar considerations as functions
+in terms. We will call this datatype \lstinline{Fol}, so we can work
+with \texttt{Fol Formula} types to reinforce our intuition that we're
+working with first-order logic formulas.
+
+\begin{sml}
+datatype Fol = R of string * (Term list);
+\end{sml}
+\end{node}
 \end{definition}
 
 \begin{definition}\label{fol-0004}%
