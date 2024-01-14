@@ -1,4 +1,6 @@
 % 4
+\chapter{Set Theory}
+
 \begin{node}\label{set-0000}%
 Set theory is the ``microcode'' to the ``machine code'' of first-order
 logic that mathematics runs on. There are various different ways to
@@ -9,46 +11,6 @@ formalisms is \ZFC\ axioms (give or take the axiom of choice). But
 support for proper classes. For more about \ZFC\ set theory,
 Jech~\cite{jech2003set} remains the standard reference.
 \end{node}
-
-\begin{node}[{Consistency of {\ZFC}}]\label{set-0002}%
-There is a 744-state Turing machine which halts if and only if \ZFC\ is
-inconsistent. This requires something like $BB(744)$ steps to halt, if
-it halts at all, where $BB(n)$ is the Busy Beaver function\footnote{For
-a review, see Scott Aaronson's note \url{https://www.scottaaronson.com/papers/bb.pdf}}.
-This would require something along the lines of
-$S(744)\leq\Sigma(2238)$ steps, where $\Sigma(2k)>3\uparrow^{k-2}3$ is a
-lower bound (there are no known upper bounds). That's
-$\Sigma(2238)>3\uparrow^{1121}3$ steps. Compare this to known values, $BB(5)=47\,176\,870$
-and $BB(6)\geq 7.4\times 10^{36543}$. It only gets worse as we consider
-larger values of $BB(k)$. The explicit specification of the Turing
-machine may be found on Github\footnote{\url{https://github.com/sorear/metamath-turing-machines/blob/master/zf2.nql}}
-and follows Tarski's system of predicate logic with equality, and uses
-just ZF minus regularity (and no axiom of choice) because this is
-equiconsistent with \ZFC.
-
-Note that the Poincar\'e recurrence theorem says that a mechanical
-system would return to its original state in a time interval of
-\begin{equation}
-\Delta t\sim\exp(S)
-\end{equation}
-where $S$ is the entropy of the system. Using the Gibbons--Hawking
-entropy for de Sitter space for our present universe, this would
-give\footnote{The basic argument may be found in Don Page's article
-\arXiv{hep-th/9411193}, but I also noticed Ropotenko \arXiv{0712.0993}}
-\begin{equation}\label{eq:set:poincare-period-of-universe}
-\Delta t_{\text{universe}}\sim\exp(10^{120})\;\mbox{seconds, years,
-  millenia, whatever}.
-\end{equation}
-This is so huge a number, the units don't really matter. Indeed, in
-base-10, we'd have $\Delta t\sim 10^{4.343\cdot 10^{119}}$ which might
-as well be $10^{10^{120}}$.
-\end{node}
-
-\begin{puzzle}[Consistency of ZFC]
-Can we improve the runtime for the Turing machine to determine the
-consistency of \ZFC\ to be within a lifetime? Or, at least, before the
-Poincar\'e recurrence period for the universe in Eq~\eqref{eq:set:poincare-period-of-universe}?
-\end{puzzle}
 
 \begin{node}[Classes]\label{set-0003}%
 I was brought up believing in \ZFC\ and \NBG, at least nominally. Later
@@ -61,7 +23,8 @@ normal mathematics. Proper classes may be little more than a myth
 and fear them.
 \end{node}
 
-\section{NBG Set Theory}\label{sec:set:nbg}
+\transclude{set/zfc}
+
 \transclude{set/nbg}
 
 \transclude{set/tg}

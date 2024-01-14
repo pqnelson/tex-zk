@@ -1,0 +1,311 @@
+% 22
+\section{ZFC Set Theory}
+\begin{node}[Axioms]\label{set:zfc-0000}%
+Let me review the axioms as enumerated in the order Wikipedia gives us,
+in a close approximation to the Mizar language:
+
+\begin{node}[Extentionality]\label{set:zfc-0001}%
+For all sets $X$ and $Y$, if every object $x$ satisfies $x\in X$ iff
+$x\in Y$, then $X=Y$.
+\end{node}
+
+\begin{node}[Regularity]\label{set:zfc-0004}%
+For any object $x$ and for any set $X$ such that $x\in X$,
+there exists a set $Y$ such that $Y\in X$ and for all objects $z$ either
+$z\notin X$ or $z\notin Y$.
+\end{node}
+
+\begin{node}[Schema of Specification]\label{set:zfc-0005}%
+Let $\schematicvar{A}$ be a set, let $\schematicvar{P}[-]$ be a unary predicate of
+objects. There exists a set $X$ such that for all objects $x$ we have
+$x\in X$ if and only if $x\in\schematicvar{A}$ and $\schematicvar{P}[x]$.
+\end{node}
+
+\begin{node}[Pairing]\label{set:zfc-0002}%
+For all objects $x$ and $y$, there exists a set $z$ such that for all
+objects $a$ we have $a\in z$ if and only if $a=x$ or $a=y$.
+\end{node}
+
+\begin{node}[Union]\label{set:zfc-0003}%
+For any set $X$, there exists a set $Z$ such that for all objects $x$ we
+have $x\in Z$ if and only if there exists a set $Y$ such that $x\in Y$
+and $Y\in X$.
+\end{node}
+
+\begin{node}[Schema of replacement]\label{set:zfc-0006}%
+Let $\schematicvar{P}[-,-]$ be a binary predicate of sets, let $\schematicvar{A}$
+be a set. There exists a set $X$ such that for all objects $x$ we have
+$x\in X$ if and only if there exists an object $y\in\schematicvar{A}$ such
+that $\schematicvar{P}[y,x]$; provided:
+\begin{enumerate}
+\item For all objects $x$, $y$, $z$, if $\schematicvar{P}[x,y]$ and
+  $\schematicvar{P}[x,z]$, then $x=z$.
+\end{enumerate}
+\end{node}
+
+\begin{node}[Infinity]\label{set:zfc-0007}%
+There exists a set $X$ such that
+\begin{enumerate}[label=(\roman*)]
+\item there exists a set $e$ such that for all objects $z$ we have
+  $z\notin e$ and $e\in X$; and
+\item for all sets $y$ such that $y\in X$ there exists a set $s$ such
+  that $s\in X$ and for all objects $z$ we have $z\in s$ iff $z=y$ or
+  $z\in y$.
+\end{enumerate}
+Informally, in (ii), $s=\{y\}\cup y$ is the successor of $y$.
+\end{node}
+
+\begin{node}[Power set]\label{set:zfc-0008}%
+For all sets $X$, there exists a set $P$ such that for all sets $Z$ we
+have $Z\in P$ if and only if for all objects $z$ such that $z\in Z$
+satisfies $z\in X$.
+\end{node}
+
+\begin{node}[Choice]\label{set:zfc-0009}%
+For any set $X$ such that there exists an object $x\in X$,
+there exists a function $f\colon X\to\union_{A\in X}A$ such that for
+all sets $A$ such that $A\in X$ satisfies $f(A)\in A$.
+
+\begin{node}\label{set:zfc-000A}%
+This form of the axiom of choice requires defining the union of a family
+of sets $\union_{A\in X}A$ and functions.
+\end{node}
+
+\begin{node}[Alternative version]\label{set:zfc-000B}%
+If we stipulate the shorthand $\exists!x,P[x]$ for
+$(\exists x)(P[x]\land((\forall y)(P[y]\implies x=y)))$, then we could
+also borrow Freek Wiedijk's formalization\footnote{From his Automath
+code for the paper ``Is ZFC a hack?''~\cite{wiedijk2006zf} \url{http://www.cs.ru.nl/~freek/zfc-etc/zfc.aut}}:
+
+For all sets $X$, if every set $Y\in X$ is nonempty, 
+and if for all sets $Y_{1}\in X$ and $Y_{2}\in X$ we have either
+$Y_{1}$ misses $Y_{2}$ or $Y_{1}=Y_{2}$,
+then there exists a set $Z$ such that for all sets $Y\in X$ there exists
+a unique $Y'\in X'$ such that $Y'\in Y$.
+
+This requires defining the predicate ``misses'' for sets.
+\end{node}
+
+\begin{node}[Well-ordering version]\label{set:zfc-000C}%
+If we have the definition of ordered pairs $(x,y)=\{\{x\},\{x,y\}\}$
+and relations, then we can use Zermelo's theorem to state an equivalent
+form of the axiom of choice: for all sets $X$, there exists a relation
+$R$ such that $R$ well-orders $X$.
+
+We say $R$ well-orders $X$ if $R$ is reflexive, transitive,
+antisymmetric, connected [i.e., for all $x,y\in X$ if $x\neq y$ and
+  $(x,y)\notin R$, then $(y,x)\in R$], and is well-founded [i.e., for
+  all sets $Y\subset X$ such that $Y\neq\emptyset$ there exists an
+  object $a\in Y$ such that $\{x\in X\mid(x,y)\in R\}$ misses $Y$].
+
+This requires quite a bit of more work than Wiedijk's version.
+\end{node}
+\end{node} % axiom of choice
+
+\begin{node}[Remarks]\label{set:zfc-000D}%
+\begin{node}\label{set:zfc-000E}%
+The Tarski--Grothendieck axioms \zref{sec:set:tarski-grothendieck}
+either coincide with the \ZFC\ axioms, or can recover the \ZFC\ axioms
+as theorems. We could prove that $\ZF+(\mbox{Universe})$ (i.e., the
+\ZF\ axioms plus the axiom ``For each set $X$, there exists a Grothendieck universe~\zref{tg-0001}
+$\mathcal{U}$ containing $X\in\mathcal{U}$'') is equal in strength to
+the Tarski--Grothendieck axioms.
+\end{node} % universes
+
+\begin{node}[Classes]\label{set:zfc-000F}%
+We cannot form the ``collection of all sets'' in \ZFC\ since the only
+sort of collection which exists is a set. This normally leads
+mathematicians to consider ``classes'' as ``bigger collections''.
+\ZFC\ cannot work directly with classes. There are two possible
+remedies:
+\begin{enumerate}
+\item Although \ZFC\ doesn't treat classes as ``first class entities'',
+we can still meaningfully work with classes as formulas. Jech~\cite{jech2003set}
+does this, as does the Metamath proof assistant\footnote{See \url{https://us.metamath.org/mpegif/mmset.html\#class}}. (This seems to be
+traced back to Quine's \textit{Set Theory and its Logic} (1969), but I
+do not have access to the book to verify that claim.)
+\item If we wanted to work with classes directly, we would either turn to
+\NBG~\zref{sec:set:nbg} or \MK\ axioms. When working in category theory,
+it turns out to be insufficient, and so \emph{conglomerates} are
+introduced to formalize the notion of ``the collection of all classes''.
+Unsurprisingly, we find we need to form ``the collection of all conglomerates'',
+which leads to the notion of a \emph{cartel}\footnote{I actually have
+not seen this term used too frequently, see Horst Herrlich and George
+Strecker's \textit{Category Theory} (2007), chapter 2.}. The astute reader will
+realize we are ``iterating the same construction'', and this is what
+leads us to consider Tarski--Grothendieck set theory.\footnote{We
+usually take ``the smallest'' Grothendieck universe $\mathcal{U}$
+containing the natural numbers $\NN\in\mathcal{U}$ to be the universe of
+sets, which corresponds to $\mathcal{U}=V_{\kappa}$ for some inaccessible
+$\kappa$. Then $V_{\kappa+1}$ is the collection of all classes,
+$V_{\kappa+2}$ is the collection of all conglomerates, and so
+on. Although to be frank, we could weaken our demands to $\kappa$ being
+a worldly cardinal rather than an inaccessible cardinal.}
+\end{enumerate}
+\end{node} % classes
+
+\begin{node}[Independence of axioms]\label{set:zfc-000I}%
+An axiom is ``independent'' of the others if we can negate the axiom
+without producing an inconsistent theory.
+The axiom of choice~\zref{set:zfc-0009} is independent of the other
+axioms of \ZF\ set theory. Curiously, the axiom of
+regularity~\zref{set:zfc-0004} is independent of the other axioms of
+\ZF\ set theory.
+
+Usually we prove claims of independence using forcing techniques\index{Forcing}. The
+basic idea underlying forcing techniques is to start with a model $M$ of
+the axioms, then adjoin an element $U$ to it forming a new model $M[U]$.
+This is analogous to adjoining an element $X$ to a ring $R$ to form a
+new ring $R[X]$, except it's considerably more complicated for models of
+\ZF\ since the axioms of \ZF\ are considerably more tricky than
+rings. We are forced to do this slowly and explicitly, constructing this
+new element $U$ one step at a time, tracking what properties would be
+``forced'' to hold at each step (hence the name
+``forcing''). Chow~\cite{chow2008beginners} reviews the ``big picture''
+of forcing.
+\end{node}
+\end{node} % remarks
+\end{node} % axioms
+
+\begin{node}[{Consistency of {\ZFC}}]\label{set:zfc-000G}%
+A natural question, when given an axiomatic system, is to ask if it is
+consistent. Unfortunately, G\"{o}del proved it is impossible for a
+system to determine its own consistency (unless it is inconsistent). The
+best we can hope for is \emph{relative consistency}. But there has been
+some interesting developments lately.
+
+\begin{node}[Using Turing machines]\label{set-0002}%
+There is a 744-state Turing machine which halts if and only if \ZFC\ is
+inconsistent. The explicit specification of the Turing
+machine may be found on Github\footnote{\url{https://github.com/sorear/metamath-turing-machines/blob/master/zf2.nql}}
+and follows Tarski's system of predicate logic with equality, and uses
+just ZF minus regularity (and no axiom of choice) because this is
+equiconsistent with \ZFC.
+
+\begin{node}[Axiomatization]\label{set:zfc-000J}%
+Basically, it's a Hilbert proof system whose inference rules are
+``detachment'' (\textit{modus ponens}) and generalization. The axioms
+are
+\begin{itemize}
+\item[(B1)] $(\varphi\implies\psi)\implies((\psi\implies\chi)\implies(\varphi\implies\chi))$
+\item[(B2)] $(\neg\varphi\implies\varphi)\implies\varphi$
+\item[(B3)] $\varphi\implies(\neg\varphi\implies\psi)$
+\item[(B4)] $\bigl((\forall x)(\varphi\implies\psi)\bigr)\implies\bigl(((\forall x)(\varphi))\implies((\forall x)(\psi))\bigr)$
+\item[(B6a)] $x=y\implies\bigl((\forall z)(x=y\land x\in y)\implies(\forall z)(x\in y)\bigr)$
+  where $x\neq z$ and $y\neq z$
+\item[(B6b)] $\bigl((\forall x)(\forall y)(\varphi)\bigr)\implies\bigl((\forall y)(\forall x)(\varphi)\bigr)$
+\item[(B6c)] $((\exists x)(\forall x)(\varphi))\implies\varphi$
+\item[(B7)] $(\exists x)(x = y)$
+\item[(B8a)] $x=y\implies(x=z\implies y=z)$
+\item[(B8b)] $x=y\implies(x\in z\implies y\in z)$
+\item[(B8c)] $x=y\implies(z\in x\implies z\in y)$
+\item[(EXT)] $(\forall v_{2})(v_{2}\in v_{0}\iff v_{2}\in v_{1})\implies v_{0}=v_{1}$
+\item[(REP)] $(\forall v_{3})(\exists v_{1})(\forall v_{2})((\forall v_{1})(\varphi)\implies v_{2}=v_{1})\implies(\exists v_{1})(\forall v_{2})\bigl(v_{2}\in v_{1}\iff(\exists v_{3})(v_{3}\in v_{0}\land(\forall v_{1})(\varphi))\bigr)$
+\item[(POW)] $(\exists v_{1})(\forall v_{2})\bigl((\forall v_{3})(v_{3}\in v_{2}\implies v_{3}\in v_{0})\implies v_{2}\in v_{1}\bigr)$
+\item[(UNI)] $(\exists v_{1})(\forall v_{2})((\exists v_{3})(v_{2}\in v_{3}\land v_{3}\in v_{0})\implies v_{2}\in v_{1})$
+\item[(INF)] $(\exists v_{1})(v_{0}\in v_{1}\land(\forall v_{0})(v_{0}\in v_{1}\implies(\exists v_{2})(v_{2}\in v_{1}\land(\forall v_{1})(v_{1}\in v_{2}\iff v_{1}=v_{0}))))$
+\end{itemize}
+\end{node}
+
+\begin{node}[Encoding]\label{set:zfc-000K}%
+The formulas are encoded as integers. We use the Cantor pairing
+\begin{equation}
+(X~.~Y):= X + \frac{1}{2}(X+Y)(X+Y+1),
+\end{equation}
+which is a bijection on non-negative integers. This notation is extended
+as
+\begin{subequations}
+\begin{align}
+(X~Y~Z) &:= (X~.~(Y~.~Z))\\
+(Z) &:= (Z~.~0)\\
+(X;~Y) &:= (X~.~(;~Y)) = (X~.~1+(Y~.~0)).
+\end{align}
+\end{subequations}
+Well-formed formulas $\varphi$ are recursively numbered using
+$|\varphi|$ which we define as:
+\begin{subequations}
+  \begin{align}
+    |v_{i}=v_{j}| &= ((i~.~j)~.~0)\\
+    |v_{i}\in v_{j}| &= ((i~.~j)~.~1)\\
+    |\varphi\implies\psi| &= ((|\varphi|~.~|\psi|)~.~2)\\
+    |\neg\varphi| &= (|\varphi|~.~3)\\
+    |(\forall v_{i})(\varphi)| &= ((i~.~|\varphi|)~.~4).
+  \end{align}
+\end{subequations}
+Observe that the well-formed formula with numeric value $0$ is $|v_{0}=v_{0}|$.
+The well-formed formula with numeric value $1$ is $|v_{0}\in v_{0}|$
+which is not a theorem of \ZF. This serves as the canonical
+contradiction, and the Turing machine searches for a proof of $1$ (i.e.,
+it halts when an inconsistency is found).
+\end{node}
+
+\begin{node}\label{set:zfc-000L}%
+The architecture of the Turing machine itself, it keeps a stack of
+theorems. A proof is a list of integers taken in groups of 4 --- we
+could think of them as ``axiom codes'' [opcodes] and three parameters. 
+Proofs manipulate the stack of theorems, inference rules pop one (or
+two) theorems off and then push the inferred theorem back onto the stack.
+Axioms push theorems onto the stack. There are 18 axiom codes for the 2
+inference rules and 16 axioms of logic and set theory.
+
+Well-formed formulas are constructed using a sequence of calls to
+functions which manipulate the ``wff stack'', effectively using a
+reverse-Polish notation:
+\begin{itemize}
+\item \verb|v_0()| manipulates the stack $s\mapsto (v_{0},s)$ pushing
+  $v_{0}$ ontop of the wff-stack $s$;
+\item \verb|v_1()| pushes $v_{1}$ to the top of the stack $s\mapsto(v_{1},s)$
+\item \verb|v_2()| pushes $v_{2}$ to the top of the stack $s\mapsto(v_{2},s)$
+\item \verb|v_3()| pushes $v_{3}$, $s\mapsto(v_{3},s)$
+\item \verb|par1()| pushes a scheme parameter $s\mapsto(P_{1},s)$ ---
+  these are the ``parameter'' arguments to the instruction
+\item \verb|par2()| pushes a scheme parameter $s\mapsto(P_{2},s)$
+\item \verb|par3()| pushes a scheme parameter $s\mapsto(P_{3},s)$
+\item \verb|wim()| pops two formulas and pushes an implication $(\psi,\varphi,s)\mapsto(\varphi\implies\psi,s)$
+\item \verb|wn()| pops the top of the stack, then pushes the negation
+  back onto the stack $(\varphi,s)\mapsto(\neg\varphi,s)$
+\item \verb|wal()| manipulates the stack by pushing a universal quantifier $(\varphi,x,s)\mapsto((\forall x)(\varphi),s)$
+\item \verb|wex()| pushes an existential quantifier $(\varphi,x,s)\mapsto((\exists x)(\varphi),s)$
+\item \verb|wa()| conjoins the top two formulas in the stack
+  $(\psi,\varphi,s)\mapsto(\varphi\land\psi,x)$
+\item \verb|wel()| $(y,x,s)\mapsto(x\in y,s)$
+\item \verb|weq()| $(y,x,s)\mapsto(x=y,s)$
+\end{itemize}
+\end{node}
+
+\begin{node}[Runtime of Turing machine too long]\label{set:zfc-000H}%
+This requires something like $BB(744)$ steps to halt, if
+it halts at all, where $BB(n)$ is the Busy Beaver function\footnote{For
+a review, see Scott Aaronson's note \url{https://www.scottaaronson.com/papers/bb.pdf}}.
+This would require something along the lines of
+$S(744)\leq\Sigma(2238)$ steps, where $\Sigma(2k)>3\uparrow^{k-2}3$ is a
+lower bound (there are no known upper bounds). That's
+$\Sigma(2238)>3\uparrow^{1121}3$ steps. Compare this to known values, $BB(5)=47\,176\,870$
+and $BB(6)\geq 7.4\times 10^{36543}$. It only gets worse as we consider
+larger values of $BB(k)$. 
+
+Note that the Poincar\'e recurrence theorem says that a mechanical
+system would return to its original state in a time interval of
+\begin{equation}
+\Delta t\sim\exp(S)
+\end{equation}
+where $S$ is the entropy of the system. Using the Gibbons--Hawking
+entropy for de Sitter space for our present universe, this would
+give\footnote{The basic argument may be found in Don Page's article
+\arXiv{hep-th/9411193}, but I also noticed Ropotenko \arXiv{0712.0993}}
+\begin{equation}\label{eq:set:poincare-period-of-universe}
+\Delta t_{\text{universe}}\sim\exp(10^{120})\;\mbox{seconds, years,
+  millenia, whatever}.
+\end{equation}
+This is so huge a number, the units don't really matter. Indeed, in
+base-10, we'd have $\Delta t\sim 10^{4.343\cdot 10^{119}}$ which might
+as well be $10^{10^{120}}$.
+\end{node}
+\end{node}
+
+\begin{puzzle}[Consistency of ZFC]
+Can we improve the runtime for the Turing machine to determine the
+consistency of \ZFC\ to be within a lifetime? Or, at least, before the
+Poincar\'e recurrence period for the universe in Eq~\eqref{eq:set:poincare-period-of-universe}?
+\end{puzzle}
+\end{node} % consistency

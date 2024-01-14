@@ -425,8 +425,6 @@ fun hypo_syll th1 th2 =
                          ^(thm_to_s th1)^" and "
                          ^(thm_to_s th2)); 
 
-(* lm1 Bourbaki.a_implies_b C; *)
-
 local
     val result = hypo_syll Bourbaki.a_implies_b Bourbaki.a_implies_b_implies_c;
     val expected = Implies(A,C);
