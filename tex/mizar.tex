@@ -1,0 +1,56 @@
+% 4
+\chapter{Mizar}
+
+\begin{node}\label{mizar-0000}%
+\Mizar\ is both a formal language and the name of a proof assistant
+which uses the formal language as its input language. Unlike other proof
+assistants, \Mizar\ focuses on readability and reflecting how working
+mathematicians write mathematical proofs ``in the wild''.
+
+Broadly speaking, the input language for any proof assistant (and,
+indeed, any formal language offered to formalize mathematics) can be
+partitioned into two interconnected sub-languages: the first for definitions,
+the second for theorems and proofs. These share the same language for
+encoding formulas (``propositions'') and terms.
+\end{node}
+
+\begin{node}[Foundations]\label{mizar-0001}%
+The foundations for \Mizar\ is purely pragmatic, reflecting working
+mathematics. Specifically, it uses a slightly modified version of
+first-order logic (jokingly referred to as $(1+\varepsilon)$-order logic)
+using free second-order variables for schemes, using a soft-type system
+atop untyped logic, and Tarski--Grothendieck set theory~\zref{sec:set:tarski-grothendieck}.
+
+I am told that there were early experiments using \MK\ set theory, but
+Andrzej Trybulec and friends ran into difficulties formalizing category
+theory. This led the \Mizar\ group to strengthen their foundations to
+Tarski--Grothendieck set theory.
+\end{node}
+
+\begin{node}[Formulas]\label{mizar-0003}%
+Logical formulas can be translated in a fairly straightforward manner,
+using the following recursive translation process:
+\begin{center}
+\begin{tabular}{rcl}
+$\neg\alpha$ & $\mapsto$ & \texttt{not} $\alpha$\\
+$\alpha\land\beta$ & $\mapsto$ & $\alpha$ \texttt{\&} $\beta$\\
+$\alpha\lor\beta$ & $\mapsto$ & $\alpha$ \texttt{or} $\beta$\\
+$\alpha\implies\beta$ & $\mapsto$ & $\alpha$ \texttt{implies} $\beta$\\
+$\alpha\iff\beta$ & $\mapsto$ & $\alpha$ \texttt{iff} $\beta$\\
+$(\exists x)\alpha$ & $\mapsto$ & \texttt{ex x st} $\alpha$\\
+$(\forall x)\alpha$ & $\mapsto$ & \texttt{forall x holds} $\alpha$\\
+$(\forall x)(\alpha\implies\beta)$ & $\mapsto$ & \texttt{forall x st} $\alpha$ \texttt{holds} $\beta$\\
+\end{tabular}
+\end{center}
+Atomic formulas are built either applying predicates to terms, or
+something of the form ``$\langle$\textit{term}$\rangle$ \texttt{is}
+$\langle$\textit{type or adjective}$\rangle$''.
+\end{node}
+
+\section{Proof Steps}
+
+\begin{node}\label{mizar-0002}%
+The proof language, when using informal notation for terms and formulas,
+may stand alone as its own formal language. Wiedijk~\cite{wiedijk2000vernacular}
+presents this as \emph{a} mathematical vernacular.
+\end{node}

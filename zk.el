@@ -106,4 +106,5 @@
 
 (global-set-key "\C-ct" #'zk-transclude)
 
-
+(require 'warnings)
+(add-to-list 'warning-suppress-types '(yasnippet backquote-change))
