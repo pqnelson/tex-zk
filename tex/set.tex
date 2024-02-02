@@ -1,4 +1,4 @@
-% 4
+% 5
 \chapter{Set Theory}
 
 \begin{node}\label{set-0000}%
@@ -21,6 +21,24 @@ don't need anything more than one Grothendieck universe to do all our
 normal mathematics. Proper classes may be little more than a myth
 (certainly it is not a \emph{convenient} fiction). But I still believe in
 and fear them.
+\end{node}
+
+\begin{node}[Axiom of Limitation of Size]\label{set-0004}%
+We usually denote $\properclass{V}$ to be the proper class of all
+sets. Let $X$ be a class. Then $X$ is a proper class if and only if
+there exists a surjective function $F\colon X\onto\properclass{V}$.
+This works for ``virtual classes'' as well. There we have a scheme,
+which looks like:
+
+Let $\schematicvar{C}[-]$ be a unary predicate of objects [our ``virtual
+class''], let $\schematicvar{F}(-)$ be a set parametrized by an
+object. If for each set $y$ there exists an object such that
+$\schematicvar{C}[x]$ and $y=\schematicvar{F}(x)$, then there does not
+exist a set $c$ such that for each object $x$ we have $x\in c$ iff
+$\schematicvar{C}[x]$.
+
+This allows us to have the limitation of size heuristic in \ZFC\ and
+related set theories lacking classes.
 \end{node}
 
 \transclude{set/zfc}

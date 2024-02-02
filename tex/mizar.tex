@@ -1,4 +1,4 @@
-% 4
+% 72
 \chapter{Mizar}
 
 \begin{node}\label{mizar-0000}%
@@ -53,4 +53,936 @@ $\langle$\textit{type or adjective}$\rangle$''.
 The proof language, when using informal notation for terms and formulas,
 may stand alone as its own formal language. Wiedijk~\cite{wiedijk2000vernacular}
 presents this as \emph{a} mathematical vernacular.
+\end{node}
+
+\begin{node}[Let or $\forall$-introduction]\label{mizar-0004}%
+When trying to prove the claim $(\forall x)P[x]$, we begin with the step
+``\texttt{let} $y$;'' the proof obligation transforms to
+$P[y]$. Schematically:
+\begin{verse}
+$\langle$\emph{proof of \/}$(\forall x)P[x]\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{let }$y$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$P[y]\rangle$\\*
+\end{verse}
+Usually the name of the variable introduced in the \texttt{let} step is
+the same as the name of the variable bound to the $\forall$ quantifier.
+This step corresponds to the natural deduction rule of
+$\forall$-introduction:
+\begin{equation*}
+\frac{\Gamma,y\vdash P[y]}{\Gamma\vdash(\forall x)P[x]}\mathtt{let\ }y
+\end{equation*}
+As usual with natural deduction, we read this rule from bottom to top.
+\end{node}
+
+\begin{node}[Assume]\label{mizar-0005}%
+The \texttt{assume} step can be used in three ways.
+
+\begin{node}[Implication-introduction]\label{mizar-0006}%
+When we are trying to prove the claim $A\implies B$, then we can begin
+by ``\texttt{assume} $A$;'' which transforms the goal into just
+$B$. This means:
+\begin{verse}
+$\langle$\emph{proof of \/}$A\to B\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{assume }$A$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$B\rangle$\\*
+\end{verse}
+This corresponds to the natural deduction $\Longrightarrow$-introduction
+\[\frac{\Gamma,A\vdash B}{\Gamma\vdash A\implies B}\mathtt{assume}~A.\]
+\end{node}
+
+\begin{node}[Negation-introduction]\label{mizar-0007}%
+Since $\neg A$ is the same as $A\implies\falsum$, we can use this proof
+step to prove $\neg A$:
+\begin{verse}
+$\langle$\emph{proof of \/}$\neg A\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{assume }$A$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$\bot\rangle$\\*
+\end{verse}
+This is precisely $\neg$-introduction
+\[\frac{\Gamma,A\vdash\falsum}{\Gamma\vdash\neg A}\mathtt{assume}~A.\]
+\end{node}
+
+\begin{node}[Reductio ad absurdum]\label{mizar-0008}%
+If stipulating $\neg A$ yields a contradiction, then we can infer $A$ to
+be true. This is precisely the \emph{reductio ad absurdum} gambit:
+\begin{verse}
+$\langle$\emph{proof of \/}$A\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{assume }$\neg A$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$\falsum\rangle$\\*
+\end{verse}
+The natural deduction rule for this is
+\[\frac{\Gamma,\neg A\vdash\falsum}{\Gamma\vdash A}\mathtt{assume}~\neg A.\]
+\end{node}
+\end{node}
+
+\begin{node}[Thus]\label{mizar-0009}%
+Arguably the ``converse'' to the \texttt{assume} step (which eliminates
+a hypothesis from the statement to be proven) is the \texttt{thus} step
+(which eliminates a conclusion to the statement to be proven). When the
+proof obligation is $A\land B$, then ``\texttt{thus} $A$'' will
+transform the goal into $B$:
+
+\begin{verse}
+$\langle$\emph{proof of \/}$A\wedge B\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{thus }$A$\texttt{ by }$\ldots$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$B\rangle$\\*
+\end{verse}
+In natural deduction, this is the $\land$-introduction rule:
+\[\frac{\Gamma\vdash A,\qquad\Gamma\vdash B}{\Gamma\vdash A\land B}\mathtt{thus}~A\]
+where the ``top left'' corner is the justification for the step.
+
+\textbf{Every proof must end with a ``thus'' statement.}
+
+\begin{node}[Hence = then + thus]\label{mizar-000E}%
+When we prefix ``\texttt{thus}'' with ``\texttt{then}'' (using the
+previous step as justification), \Mizar\ provides the syntactic sugared
+proof step ``\texttt{hence}'' with optional references.
+\end{node}
+\end{node}
+
+\begin{node}[Per cases $\lor$-elimination]\label{mizar-000A}%
+Suppose we have $A_{1}\lor\dots\lor A_{n}$ proven already, and we wish
+to use this to prove $B$. We just need to prove $A_{1}\implies B$,
+\dots, $A_{n}\implies B$. Each of these cases are then a subproof, where
+we begin by ``\texttt{suppose} $A_{j}$;'' and work a proof of $B$ from
+this hypothesis $A_{j}$. Schematically, this looks like
+\begin{verse}
+$\langle$\emph{proof of \/}$B\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{per cases by }$\ldots$\texttt{;}\\*
+\qquad \texttt{suppose }$A_{1}$\texttt{;}\\*
+\qquad\quad $\langle$\emph{proof of \/}$B$ \emph{from \/}$A_{1}\rangle$\\*
+\qquad $\ldots$\\*
+\qquad \texttt{suppose }$A_{n}$\texttt{;}\\*
+\qquad\quad $\langle$\emph{proof of \/}$B$ \emph{from \/}$A_{n}\rangle$\\*
+\end{verse}
+The justification ``\texttt{by}\dots'' refers to the place where we have
+proven $A_{1}\lor\dots\lor A_{n}$. When $A_{1}\lor\dots\lor A_{n}$ is a
+tautology (like $A_{1}\lor\neg A_{1}$), no justification is necessary.
+
+This corresponds to the natural deduction rule of $\lor$-elimination:
+\[\frac{\Gamma\vdash A_{1}\lor\dots\lor A_{n},\quad\Gamma,A_{1}\vdash B,\quad\dots\quad\Gamma,A_{n}\vdash B}{\Gamma\vdash B}\mathtt{per\ cases}\]
+As usual, the left-most of the top subgoals justifies the proof step.
+\end{node}
+
+\begin{node}[Consider or $\exists$-elimination]\label{mizar-000B}%
+We can apply an existentially quantified theorem $(\exists x) P[x]$ to
+reason about such an $x$:
+\begin{verse}
+$\langle$\emph{proof of \/}$A\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{consider }$x$\texttt{ such that }$P[x]$\texttt{ by }$\ldots$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$A\rangle$\\*
+\end{verse}
+In natural deduction, this corresponds to $\exists$-elimination:
+\[\frac{\Gamma\vdash(\exists x)P[x],\qquad\Gamma,x,P[x]\vdash A}{\Gamma\vdash A} \mathtt{consider}~x~\mathtt{such\ that}~P[x]\]
+The top-left subgoal justifies this proof step.
+
+\begin{node}[Given = assume + consider]\label{mizar-000D}%
+There is syntactic sugar in \Mizar\ to combine the steps
+\begin{verse}
+\texttt{assume }$(\exists x)P[x]$\texttt{;}\\*
+\texttt{then consider }$x$\texttt{ such that }$P[x]$\texttt{;}\\*
+\end{verse}
+into one equivalent single step
+\begin{verse}
+\texttt{given }$x$\texttt{ such that }$P[x]$\texttt{;}\\*
+\end{verse}
+This is pure syntactic sugar.
+\end{node}
+\end{node}
+
+\begin{node}[Take, or $\exists$-introduction]\label{mizar-000C}%
+If we wish to prove an existential statement, we need to
+``\texttt{take}'' a term and prove it satisfies the predicate:
+\begin{verse}
+$\langle$\emph{proof of \/}$(\exists x)P[x]\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{take }$a$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$P[a]\rangle$\\*
+\end{verse}
+This is precisely natural deduction $\exists$-introduction rule:
+\[\frac{\Gamma\vdash P[a]}{\Gamma\vdash(\exists x)P[x]}\mathtt{take}~a\]
+No justification is needed for this step.
+\end{node}
+
+\begin{node}[Set]\label{mizar-000H}%
+We can introduce new variables which abbreviate some complex terms by
+writing ``\texttt{set} $A$ \texttt{=} $\langle$\textit{term\/}$\rangle$''.
+\end{node}
+
+\begin{node}[Reconsider as coercion]\label{mizar-000I}%
+We can force \Mizar\ to treat a given term as if it was one stated,
+i.e., we can coerce a term to be a specific type. This requires
+justification. Schematically, this step looks like:
+\begin{verse}
+  \texttt{reconsider} $t$ \texttt{=} $\langle$\textit{term\/}$\rangle$ \texttt{as} $\langle$\textit{type\/}$\rangle$ \texttt{by}\dots\texttt{;}\\*
+\end{verse}
+Here $t$ is usually a fresh identifier.
+\end{node}
+
+\begin{node}[Bi-conditional proof skeleton]\label{mizar-000F}%
+If we wish to prove the formula $A\iff B$, the Mizar proof skeleton
+looks like
+\begin{verse}
+$\langle$\emph{proof of \/}$A\iff B\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{thus }$A\implies B$\texttt{;}\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{thus }$B\implies A$\texttt{;}\\*
+\end{verse}
+This is quite straightforward after some reflection, since the proof
+obligation is $(A\implies B)\land(B\implies A)$.
+\end{node}
+
+\begin{node}[Disjunction proof skeleton]\label{mizar-000G}%
+When proving the claim $A\lor B$, we begin by stipulating $\neg A$,
+then proving $B$:
+\begin{verse}
+$\langle$\emph{proof of \/}$A\lor B\rangle \equiv$\\*
+\qquad $\langle$\emph{preliminary steps\/}$\rangle$\\*
+\qquad \texttt{assume }$\neg A$\texttt{;}\\*
+\qquad $\langle$\emph{proof of \/}$B\rangle$\\*
+\end{verse}
+An important caveat for \Mizar\ is that although logically $A\lor B$
+is equivalent to $B\lor A$, this is not true for \Mizar\ since the
+normal form for $A\lor B$ is different than that for $B\lor A$. So you'd
+have to tell \Mizar\ that $B\lor A\implies A\lor B$, then in a subproof
+demonstrate $B\lor A$, and combine them together to obtain $A\lor B$.
+\end{node}
+
+\section{Definitions}
+
+\begin{node}\label{mizar-000J}%
+All new notions in \Mizar\ have the following possible components, as
+they are found within a ``\texttt{definition}\dots\texttt{end}'' block:
+\begin{enumerate}
+\item First we write down the arguments (if any) along with their
+  corresponding types, called the \textit{loci}. These are written down
+  using the ``\texttt{let}'' keyword.
+\item Next we writen down any assumptions for the definition using the
+  ``\texttt{assume}'' or ``\texttt{given}'' keywords.
+\item Then we have the main part of the definition, which is discussed
+  in this section.
+\item Then we have correctness conditions (if needed) along with their proofs.
+\item Then we have [optionally] properties for the notion (like
+  commutativity for an operator, reflexivity for a predicate, etc.).
+\end{enumerate}
+These are the basic components for a definition.
+
+\begin{node}[Loci accumulate in a block]\label{mizar-000K}%
+We can define multiple notions within the same block. In this case, the
+loci ``accumulate'' from the start of the definition block all the way
+to the current point.
+\end{node}
+
+\begin{node}[Notions available after block closes]\label{mizar-000L}%
+Newly defined notions become ``available'' only \emph{after} the block
+is closed the the ``\texttt{end;}'' keyword. If we try to use a defined
+notion within the same block defining it, then \Mizar\ reports an error
+marked with a \texttt{*102} flag (for unknown predicates) or similar flags.
+\end{node}
+
+\begin{node}[Loci must be used]\label{mizar-000M}%
+None of the arguments in a definition may be omitted in the declaration
+part of a definitional block. Arguments may be ``hidden'', for example:
+\begin{mizar}
+definition
+  let E be set, A be Subset of E;
+  func A' -> Subset of E equals
+  E \ A;
+  :: ...
+end;
+\end{mizar}
+Here ``\texttt{E}'' is a hidden argument, and ``\texttt{A}'' is a
+visible argument. We could have two visible arguments in our example,
+writing something like
+\begin{mizar}
+definition
+  let E be set, A be Subset of E;
+  func '(E,A) -> Subset of E equals
+  E \ A;
+  :: ...
+end;
+\end{mizar}
+This is also fine, but less frequently done in \Mizar.
+
+But this is the key property of loci: \textbf{they must either be
+  a visible argument of the defined notion or be used as a parameter in another locus}.
+\end{node}
+
+\begin{node}[No repeated arguments]\label{mizar-000N}%
+We cannot repeat arguments in definitions, for example
+\begin{mizar}
+definition
+  let E be set, A be Subset of E;
+  func '(E,A,A) -> Subset of E equals
+::>          *141
+  E \ A;
+  :: ...
+end;
+::> 141: Locus repeated
+\end{mizar}
+Mizar flags a repeated locus appearing in the definition.
+\end{node}
+
+\begin{definition}
+The \define{format} of a definition is an ordered triple consisting of
+the identifier of the newly defined notion, the number of arguments to
+its left, and the number of arguments to its right.
+\end{definition}
+
+\begin{definition}
+The \define{pattern} of a definition is an ordered quadruple consisting of
+\begin{enumerate}
+\item the identifier of the notion,
+\item the tuple of types for the arguments to its left,
+\item the tuple of types for the arguments to its right, and
+\item the type of the defined notion (if applicable).
+\end{enumerate}
+\end{definition}
+\end{node}
+
+\begin{node}[Predicates]\label{mizar-000O}%
+We have a list of loci variables, followed by the the ``\texttt{pred}''
+keyword followed by the predicate's pattern. The arity is specified with
+a certain number of loci symbols on both sides of a predicate
+symbol. For example,
+\begin{mizar}
+definition
+  let f,g be Function;
+  let A be set;
+  pred f,g equal_outside A means
+:Def:
+  f|(dom f \ A) = g|(dom g \ A);
+end;
+\end{mizar}
+This formalizes the formula $f|_{\dom(f)\setminus A}=g|_{\dom(g)\setminus A}$
+in a predicate \verb|equal_outside|.
+
+\begin{node}[Definitional theorem]\label{mizar-000P}%
+When referring to a definition, \Mizar\ is really making a reference to
+its corresponding ``definitional theorem'' implicitly generated by the
+system. This looks like for the given example:
+\begin{mizar}
+for f,g being Function, A being set holds
+f,g equal_outside A iff f|(dom f \ A) = g|(dom g \ A);
+\end{mizar}
+\end{node}
+
+\begin{node}[Piecewise definitions]\label{mizar-000Q}%
+We can define a notion by cases depending on the values of the loci
+arguments. For example,
+\begin{mizar}
+definition
+  let x,y be ext-real number;
+  pred x <= y means
+  ex p,q being Element of REAL st p = x & q = y & p <= q
+    if x in REAL & y in REAL
+  otherwise x = -infty or y = +infty;
+end;
+\end{mizar}
+In this case, the definitional theorem has the form
+\begin{mizar}
+for x,y being ext-real number holds
+  (x in REAL & y in REAL implies
+    (x <= y iff ex p,q being Element of REAL
+                st p = x & q = y & p <= q)) &
+  (not x in REAL or not y in REAL implies
+    (x <= y iff x = -infty or y = +infty));
+\end{mizar}
+\end{node}
+\end{node}
+
+\begin{node}[Attributes]\label{mizar-000R}%
+Attributes are defined with an ``\texttt{attr}'' keyword, followed by
+its \emph{subject}, then the ``\texttt{is}'' keyword, the attribute's
+symbol, the ``\texttt{means}'' keyword, and then its
+definiens. \Mizar\ requires the last locus declared by its subject. For
+example,
+\begin{mizar}
+definition
+  let E be set, A be Subset of E;
+  attr A is proper means :Def:
+  A <> E;
+end;
+\end{mizar}
+This corresponds to the definitional theorem:
+\begin{mizar}
+for E being set, A being Subset of E holds
+A is proper iff A <> E;
+\end{mizar}
+Attributes can have visible arguments.
+
+\begin{node}[Idiom]\label{mizar-000V}%
+I've seen it be idiomatic \Mizar\ to name the subject ``\texttt{IT}'',
+in analogy to the ``\texttt{it}'' keyword used in mode definitions.
+\end{node}
+\end{node}
+
+\begin{node}[Modes]\label{mizar-000S}%
+Types are called ``modes'' in \Mizar. There are two kinds of mode
+definitions in \Mizar:
+\begin{enumerate}
+\item expandable modes: this is an abbreviation of the form
+  ``$\langle$\textit{new type name}$\rangle$ \texttt{is} $\langle$\textit{adjectives}$\rangle$
+  $\langle$\textit{type}$\rangle$''; this is an ``abbreviation''.
+\item non-expandable modes: this introduces a new type in terms of an
+  existing type satisfying some condition.
+\end{enumerate}
+Any loci which appear must be in the suffix of the mode definition
+following ``\texttt{of}'' keyword.
+
+\begin{node}[Correctness conditions]\label{mizar-000X}%
+We need to prove the existence of at least one object with the specific type.
+This is for non-expandable modes only, because expandable modes
+leverages the existence as registered by registration blocks (for the
+adjectives) and the existence of pre-existing types. The correctness
+condition has a proof skeleton of the form:
+\begin{mizar}
+definition
+  let x1 be T1, ..., xN be TN;
+  mode T -> MotherMode means P[x1, ..., xN, it];
+  existence
+  proof
+    thus ex t being MotherMode st P[x1, ..., xN, t];
+  end;
+end;
+\end{mizar}
+This is standard classical logic which is glossed over in undergraduate education.
+\end{node}
+
+\begin{node}[Widening]\label{mizar-000Y}%
+The ``mother type'' in a mode definition is used to specify the direct
+predecessor of the defined mode in the tree of \Mizar\ types. We say the
+type constructed with the new mode \define{widens} to its mother
+type. This also takes into account the adjectives that come with the
+ancestor types.
+
+The built-in \texttt{object} is the widest type, the \texttt{set} type
+is the next widest, and the zeroeth axiom identifies these two types as
+the same.
+\end{node}
+
+\begin{node}[Example modes]\label{mizar-000W}%
+\begin{node}\label{mizar-000T}%
+An example of an expandable mode is a function:
+\begin{mizar}
+definition
+  mode Function is Function-like Relation;
+end;
+\end{mizar}
+\end{node}
+
+\begin{node}[Non-expandable mode]\label{mizar-000U}%
+Another example of a mode, one which is non-expandable, is:
+\begin{mizar}
+definition
+  let X be set;
+  mode a_partition of X -> Subset-Family of X means :Def:
+  union it = X
+  & for A being Subset of X st A in it holds A <> {}
+  & for B being Subset of X st B in it holds A = B or A misses B;
+end;
+\end{mizar}
+Observe that ``\texttt{it}'' is a keyword which refers to an object of
+the newly defined type.
+\end{node}
+\end{node}
+
+\begin{node}[Best practices]\label{mizar-0019}%
+Following the advice of Korni\l{}owicz~\cite{Korniowicz2009-KORHTD},
+the type to the right of \texttt{->} in non-expandable mode definitions
+should not include adjectives, because we can register adjectives later
+in a conditional registration (something along the lines of ``\texttt{-> adjective Type}'').
+In general, we should try to make the types ``as weak as possible'', and
+use registration as much as possible.
+\end{node}
+\end{node}
+
+\begin{node}[Functors]\label{mizar-000Z}%
+Terms are constructed using the ``\texttt{func}'' keyword. After the
+loci declarations and optional assumptions, we have the \texttt{func}
+keyword, arguments to its left, the identifier being defined, arguments
+to its right, then the ``\texttt{->}'' keyword, then the type of the
+term, followed by either ``\texttt{equals} $\langle$\textit{term\/}$\rangle$''
+or ``\texttt{means} $\langle$\textit{formula\/}$\rangle$''.
+
+\begin{node}[Correctness]\label{mizar-0010}%
+The correctness condition varies depending on how we're defining the
+term:
+\begin{enumerate}
+\item for ``\texttt{equals} $\langle$\textit{term\/}$\rangle$'', we need
+  to prove the right-hand side of this equality has the correct type;
+\item ``\texttt{means} $\langle$\textit{formula\/}$\rangle$'' requires
+  proving the existence of the term and the uniqueness of the term.
+\end{enumerate}
+The proof skeleton for these look like:
+\begin{mizar}
+definition
+  let x1 be T1, ..., xN be TN;
+  func t(x1, ..., xN) -> T means P[x1, ..., xN, it];
+  existence
+  proof
+    thus ex tm being T st P[x1, ..., xN, tm];
+  end;
+  uniqueness
+  proof
+    thus for t1 being T st P[x1, ..., xN, t1]
+         for t2 being T st P[x1, ..., xN, t2]
+         holds t1 = t2;
+  end;
+end;
+definition
+  let x1 be T1, ..., xN be TN;
+  func t(x1, ..., xN) -> T equals f(x1, ..., xN);
+  coherence
+  proof
+    thus f(x1, ..., xN) is T;
+  end;
+end;
+\end{mizar}
+\end{node}
+\begin{node}[Definitions environ]\label{mizar-0011}%
+When we include an article in the \texttt{definitions} environment
+directive, \Mizar\ will automatically perform $\delta$-expansion on
+definitions using the ``\texttt{equals}'' keyword.
+\end{node}
+\end{node}
+
+\begin{node}[Structures]\label{mizar-0012}%
+A structure in \Mizar\ allows us to formalize a logical signature (the
+primitive operators for a gadget). A structure definition contains a
+list of \emph{selectors} to denote its fields, characterized by their
+name and type. For example,
+\begin{mizar}
+definition
+  struct multMagma
+  (# carrier -> set,
+     multF -> BinOp of the carrier #);
+end;
+\end{mizar}
+Here \texttt{multMagma} is the name of the structure, it has a field
+called its \texttt{carrier} and a binary operator on it called its
+\texttt{multF}. This structure can be used to define a group, upper
+semilattices, and lower semilattices\dots and any notion based on a set
+and a binary operator on it, really.
+
+But this is just the ``stuff and structure'' underlying a group. We need
+to impose the group axioms on it to obtain a group. This is done using
+attributes to formalize the axioms, then a mode to formalize the type of
+a group.
+
+\begin{node}[Inheritance]\label{mizar-0014}%
+We can form a family of structures as subtypes of other structures using
+an inheritance mechanism. For many structures, the \texttt{1-sorted}
+structure is the common ancestor (when there is an obvious underlying
+set, \texttt{the carrier of it}). For an example, here's how we would
+define a topological group structure:
+\begin{mizar}
+definition
+  struct (1-sorted) TopStruct
+  (# carrier -> set,
+     topology -> Subset-Family of the carrier #);
+end;
+definition
+  struct (multMagma, TopStruct) TopGrStr
+  (# carrier -> set,
+     multF -> BinOp of the carrier,
+     topology -> Subset-Family of the carrier #);
+end;
+\end{mizar}
+The advantage of this approach is that all results about topological
+spaces hold for topological groups (as do all results about groups).
+\end{node}
+
+\begin{node}[Idiom]\label{mizar-0013}%
+It's idiomatic \Mizar\ to define a new \texttt{Gadget} by defining a
+\texttt{struct GadgetStr} with appropriate fields, then an attribute
+\texttt{Gadget-like}, and finally a new type \texttt{mode Gadget is Gadget-like GadgetStr}.
+\end{node}
+
+\begin{node}[Parametrized by terms]\label{mizar-0015}%
+We can parametrize a structure using other sets or types. For example,
+we have a vector space \emph{over a field}, which can be formalized
+using the structure definition:
+\begin{mizar}
+definition
+  let F be 1-sorted;
+  struct (addLoopStr) VectSpStr over F
+  (# carrier -> set,
+     addF -> BinOp of the carrier,
+     ZeroF -> Element of the carrier,
+     lmult -> Function of [:the carrier of F,the carrier:],
+     the carrier #);
+end;
+\end{mizar}
+Here we leave the field $F$ ``much more generally'', as any \texttt{1-sorted}
+object. \emph{It's usually a good idea to be more accepting in these parameters}
+than a strict ``literalist interpretation'' of the mathematical text.
+\end{node}
+
+\begin{node}[Aggregates]\label{mizar-0016}%
+We can construct an ``instance'' of a structure using what \Mizar\ calls
+\emph{aggregates}. For example, \verb|multMagma(#INT,addint#)|
+constructs an instance of a multiplicative magma where \texttt{INT} is
+the set of integers, and \texttt{addint} is the binary operator of
+adding two integers together to obtain a third integer. The only thing
+we need to check is that the terms's types ``match'' the types of the
+respective fields (for our example, \texttt{INT} must be a set, and
+\texttt{addint} must be of type \texttt{BinOp of INT}).
+\end{node}
+
+\begin{node}[Strict adjective]\label{mizar-0017}%
+There is a secret adjective for all structure types, ``\texttt{strict}''.
+It means an object of a structure type contains exactly the
+fields enumerated in its definition, nothing more.
+\end{node}
+
+\begin{node}[Forgetful functors]\label{mizar-0018}%
+This is a horrible pun. When a structure type has ancestors, we can
+access the underlying type of one of its ancestors. For example, if $G$
+is an object whose type is \texttt{TopGroupStr}, then we can access
+\texttt{the multMagma of G} to obtain
+\texttt{multMagma}\verb|(#|\texttt{the carrier of G, the multF of G}\verb|#)|.
+\end{node}
+
+\begin{node}[Remarks]\label{mizar-001C}%
+
+\begin{node}[Alternatives using finite functions]\label{mizar-001A}%
+Note that Lee and Rudnicki~\cite{Lee2007alternative} discuss using a
+finite map in the object language (i.e., literally a \texttt{Function}
+whose domain is a subset of \texttt{Nat} and fields are just numbers) as
+an alternative to the structure types we've discussed here.
+\end{node}
+
+\begin{node}[Types are almost always proper classes]\label{mizar-001B}%
+By the axiom of the limitation of size~\zref{set-0004} for a set, we see
+that types in \Mizar\ are almost always proper classes. For structure
+types, this is clearly obvious for descendents of \texttt{1-sorted}
+structures, since we can form at least one instance of a structure for
+any given set.
+\end{node}
+\end{node} % end of Remarks
+
+\end{node}
+
+\section{Notation and Redefinitions}
+
+\begin{node}[Synonyms and Antonyms]\label{mizar-001D}%
+We can introduce new terms, predicates, etc., as synonyms or antonyms of
+existing notions. These appear in \texttt{notation} blocks.
+
+\begin{node}[Examples]\label{mizar-001E}%
+
+\begin{node}\label{mizar-001F}%
+  The predicate $x\notin y$ is the antonym for $x\in y$, which appears in
+  \verb|XBOOLE_0|:
+\begin{mizar}
+notation
+  let x be object,y be set;
+  antonym x nin y for x in y;
+end;
+\end{mizar}
+\end{node}
+\begin{node}\label{mizar-001G}%
+The predicate $x\nsubset y$ is the antonym for $x\subset y$, which
+appears also in \verb|XBOOLE_0|:
+\begin{mizar}
+notation
+  let x be object,y be set;
+  antonym x nin y for x in y;
+end;
+\end{mizar}
+\end{node}
+\begin{node}\label{mizar-001H}%
+The predicates $b\geq a$, $a > b$, $b < a$ may be written as synonyms
+and antonyms of $a\leq b$, as done in \verb|XXREAL_0|:
+\begin{mizar}
+notation
+  let a,b be ExtReal;
+  synonym b >= a for a <= b;
+  antonym b < a for a <= b;
+  antonym a > b for a <= b;
+end;
+\end{mizar}
+\end{node}
+\end{node} % end examples
+
+\begin{node}[Loci types can be more specific]\label{mizar-001I}%
+The loci for the synonym (or antonym) \emph{can} have more specific
+types than the original definition.
+\end{node}
+
+\begin{node}[Loci cannot be fixed constant]\label{mizar-001J}%
+We cannot fix a constant value for any of the loci variables. We can't
+swap a loci (say, $A$) with a constant (say, \texttt{NAT}). This is not
+allowed. If you want to do this, you should consider defining a new term
+(or predicate, or whatever).
+\end{node}
+
+\begin{node}[Synonyms can hide arguments]\label{mizar-001K}%
+We can ``hide'' the number of visible arguments (or, if for some reason
+you'd like, \emph{increase} the number of visible arguments) using
+synonyms. For example:
+\begin{mizar}
+definition
+  let A be set, B be Subset of A;
+  pred pred_symbol_1 A,B means not contradiction;
+end;
+
+notation
+  let A be set, B be Subset of A;
+  synonym pred_symbol_1 B for pred_symbol_1 A,B;
+end;
+\end{mizar}
+\end{node}
+
+\begin{node}[Loci cannot be repeated]\label{mizar-001L}%
+Like in definitions, we cannot repeat loci, or have unused loci.
+\end{node}
+
+\begin{node}[Only non-expandable modes can have synonyms]\label{mizar-001M}%
+Only the non-expandable modes (types defined using ``\texttt{means}'')
+can have synonyms. So if we tried to do something like:
+\begin{mizar}
+definition
+  let X;
+  mode Subset of X is Element of bool X;
+end;
+
+notation
+  let X be set;
+  synonym mode_symbol of X for Subset of X;
+::>                                 *134
+end;
+::> 134: Cannot redefine expandable mode
+\end{mizar}
+\Mizar\ is unhappy because ``\texttt{Subset of X}'' is defined as an
+expandable mode (as we have reproduced its definition above).
+\end{node}
+
+\begin{node}\label{mizar-001N}%
+An important feature for \Mizar\ synonyms is that they do not inherit
+the type of a redefined original constructor. (Say what?) Well,
+\Mizar\ allows redefinitions~\zref{mizar-001O}\dots for a variety of reasons. This is
+``flat'', in the sense that when considering which redefinition to apply
+(and if none apply, just return to the original) we use the best fit
+using types. But it's not a hierarchy of attempts, it's just ``one deep''.
+
+So if we try to have a synonym for a type that is redefined, then the
+synonym will match \emph{the initial definition} and not the redefinition.
+\end{node}
+\end{node}
+
+\begin{node}[Redefinitions]\label{mizar-001O}%
+Naumorwicz and Byli{\'n}ski~\cite{naumowicz2004improving} and Korni\l{}owicz~\cite{Korniowicz2016registrations} note there are three
+reasons to consider redefinitions in \Mizar:
+\begin{enumerate}
+\item to specialize result types of defined functors and modes;
+\item to change the ``right-hand side'' [the ``definientia''] of a
+  defined notion (predicates, attributes, functors, and modes);
+\item to declare properties of particular constructors.
+\end{enumerate}
+Let's look at examples where this happens.
+\begin{node}[Specializing the result type]\label{mizar-001P}%
+For example, if we have defined $f^{-1}$ the inverse function of $f$ as
+\verb|f"| in Mizar by
+\begin{mizar}
+definition
+  let f be Function;
+  assume f is one-to-one;
+  func f" -> Function equals
+  f~;
+end;
+\end{mizar}
+Then for permutations, we'd want to instead make sure that $f^{-1}$ is a
+permutation, not just ``some function''. We'd do this by changing the
+``return type'' of \verb|f"|:
+\begin{mizar}
+definition
+  let X be set;
+  let f be Permutation of X;
+  redefine func f" -> Permutation of X;
+end;
+\end{mizar}
+This is probably one of the most common uses of redefinitions I've seen.
+
+\begin{node}\label{mizar-001S}%
+Note that we cannot ``broaden'' the return type. If we tried to redefine
+\verb|f"| to be, say, a \texttt{set} instead, then \Mizar\ would flag
+this as an invalid specification error (\texttt{*117}).
+\end{node}
+\begin{node}[Best practices]\label{mizar-001T}%
+Also note that we should try to prefer using attributes and
+registrations to change the type of a definition, rather than
+redefinitions. Registering an adjective is elegant. Redefinitions are
+brute-force kludges. See Korni\l{}owicz~\cite{Korniowicz2016registrations}
+and Naumowicz and Byli{\'n}ski~\cite{naumowicz2004improving} for more on
+redefinitions and why we should prefer registrations.
+\end{node}
+\end{node}
+
+\begin{node}[Changing the meaning]\label{mizar-001Q}%
+For example, the builtin definition of equality is axiomatized in the
+extensionality axiom:
+\begin{mizar}
+theorem :: TARSKI:2 :: Extensionality
+  (for x being object holds x in X iff x in Y) implies X = Y;
+\end{mizar}
+That's all well and fine, but when proving two relations are equal, it's
+more useful to use a different definition (which is equivalent ``under
+the hood''). For example:
+\begin{mizar}
+definition
+  let P,R;
+  redefine pred P = R means
+:: RELAT_1:def 2
+  for a,b being set holds [a,b] in P iff [a,b] in R;
+end;
+\end{mizar}
+Similarly, for functions, equality is more easily reasoned about if the
+domains are equal and their values are equal point-wise:
+\begin{mizar}
+definition
+  let f,g;
+  redefine pred f = g means
+:: FUNCT_1:def 11
+  dom f = dom g
+  & for x being set st x in dom f holds f.x = g.x;
+end;
+\end{mizar}
+And so on.
+\end{node}
+
+\begin{node}[Declaring properties]\label{mizar-001R}%
+This is the ``preferred usage'' for redefinitions. In \verb|GROUP_6|, we
+can add the property that \verb|are_isomorphic| is symmetric in its
+arguments:
+\begin{mizar}
+definition
+  let G,H be Group;
+  redefine pred G,H are_isomorphic;
+  symmetry; :: this is the property
+end;
+\end{mizar}
+It's unexciting to witness, because it looks like nothing is being
+redefined. It should better be thought of as an ``addendum'' rather than
+a ``redefinition''.
+\end{node}
+\end{node}
+
+\section{Registrations}
+
+\begin{node}\label{mizar-001U}%
+The registration system is really a spectacular bit of ingenuity. 
+Schwarzweller~\cite{schwarzweller2007mizar} is the best reference on the
+subject, specifically how \Mizar\ uses registrations to make some
+deductions automatic.
+\end{node}
+
+\begin{node}[Existential registration]\label{mizar-001V}%
+When we want to use an attribute as an adjective, we must tell
+\Mizar\ that there exists at least one object with the specific type and
+attribute. For example,
+\begin{mizar}
+registration
+  cluster finite non empty set;
+  existence
+  proof
+    thus ex x being set st x is finite & x is non empty;
+  end;
+end;
+\end{mizar}
+My intuition reflexively thinks of existential registrations when
+discussing the registration system.
+\end{node}
+
+\begin{node}[Conditional registration]\label{mizar-001W}%
+When we want one attribute to automatically imply another, this is the
+conditional registration system's job. For example, every empty set is
+finite, this is registered as:
+\begin{mizar}
+registration
+  cluster empty -> finite set;
+  coherence
+  proof
+    thus for x being set st x is empty holds x is finite;
+  end;
+end;
+\end{mizar}
+
+\begin{node}[Blank antecedents]\label{mizar-001X}%
+We can permit the ``antecedent'' to this registration to be blank, in
+which case this records adjectives that will always be associated to the
+given type. For example:
+\begin{mizar}
+registration
+  let X be finite set;
+  cluster -> finite Subset of X;
+  coherence
+  proof
+    thus for A being Subset of X holds A is finite;
+  end;
+end;
+\end{mizar}
+This enables \Mizar\ to automatically make note of the fact that all
+subsets of finite sets are finite.
+\end{node}
+
+\begin{node}[Cooperating with existential registrations]\label{mizar-001Y}%
+When we have conditional registrations occuring \emph{before} an
+existential registration, then the existential registration will
+automatically ``round up'' (as in ``wrangle up'' --- see
+Naumowicz~\cite{naumowicz2009enhanced} for details about this process)
+all the adjectives for us. For example:
+\begin{mizar}
+registration
+  cluster empty -> Relation-like set;
+  correctness; :: omitted
+  cluster empty -> Function-like set;
+  correctness; :: omitted
+end;
+
+registration
+  cluster empty set;
+  existence; :: omitted
+end;
+\end{mizar}
+What's really going on ``under the hood'' is that when \Mizar\ 
+encounters ``\texttt{cluster empty set}'', it is remembering all the
+conditional registrations on \texttt{empty}, and this is secretly
+registering the existential cluster:
+\begin{mizar}
+registration
+  cluster Relation-like Function-like empty set;
+  existence; :: omitted
+end;
+\end{mizar}
+Why is this important? Because importing such a registration is only
+possible if the constructors of all its adjectives are imported in the
+article's environment. You will get perplexing errors otherwise, but the
+\textsc{Constr} utility may be able to help detect these errors.
+\end{node}
+\end{node}
+
+\begin{node}[Functorial registration]\label{mizar-001Z}%
+Similar to conditional registration, but for terms. That is to say, when
+we want to register a term satisfies some attribute or adjective
+``automatically'', then we use a functorial registration. For example:
+\begin{mizar}
+registration
+  let X be non empty set;
+  let Y be set;
+  cluster X \/ Y -> non empty;
+  coherence;
+end;
+\end{mizar}
+This tells \Mizar\ that $X\cup Y$ is automatically nonempty when $X$ is
+nonempty. 
 \end{node}

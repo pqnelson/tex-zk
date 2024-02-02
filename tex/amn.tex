@@ -1,4 +1,4 @@
-% 10
+% 11
 \chapter{Taking Notes}
 \begin{node}\label{amn-0000}%
 Jon Sterling argues that scientific thought requires arbitrary nesting
@@ -114,4 +114,20 @@ You may be used to writing \LaTeX\ documents, where you work from the top down: 
 \end{quote}
 Again, the difficulty is that we end up with a lot of files which we
 then manually have to keep track of, with increasing risk of duplication.
+\end{node}
+
+\begin{node}[Curl to get Bibtex entries]\label{amn-000A}%
+  We can use curl to get \textsc{Bib}\TeX\ entries, for example:
+\begin{Verbatim}
+$ curl -LH "Accept: application/x-bibtex" https://doi.org/10.1006/jsco.2001.0456
+  @article{Rudnicki_2001,
+    title={Commutative Algebra in the Mizar System},
+    volume={32}, ISSN={0747-7171},
+    url={http://dx.doi.org/10.1006/jsco.2001.0456},
+    DOI={10.1006/jsco.2001.0456}, number={1--2},
+    journal={Journal of Symbolic Computation},
+    publisher={Elsevier BV},
+    author={Rudnicki, Piotr and Schwarzweller, Christoph and Trybulec, Andrzej},
+    year={2001}, month=jul, pages={143--169} }
+\end{Verbatim}
 \end{node}
