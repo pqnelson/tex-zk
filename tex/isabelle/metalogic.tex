@@ -1,0 +1,76 @@
+% 8
+\section{Pure: Isabelle's Metalogic}
+\begin{node}[Logical framework]\label{isabelle:metalogic-0000}%
+In a logical framework, we need some way to encode judgements and
+inference rules, then proofs in the ``object logic'' are leveraged by
+using the ``meta-logic''. Isabelle encodes a judgement $\mathcal{J}$ in
+the object logic as a proposition in the meta-logic denoted
+$\llbracket\mathcal{J}\rrbracket$, and object-logic inference rules
+\[\infer{\mathcal{J}}{\mathcal{J}_{1} & \dots & \mathcal{J}_{n}}\]
+are encoded as meta-logic implications (written ``\texttt{==>}'' in
+Isabelle code)
+\[\llbracket\mathcal{J}_{1}; \dots; \mathcal{J}_{n}\rrbracket\implies\llbracket\mathcal{J}\rrbracket.\]
+This coincides with how we reason about deductive systems.
+\end{node}
+\begin{definition}
+The metalogic used by Isabelle is called \define{Pure} (or Isabelle/Pure).
+\end{definition}
+\begin{node}[Implies]\label{isabelle:metalogic-0001}%
+We have a primitive constant
+\[\Longrightarrow\colon prop\Rightarrow prop\Rightarrow prop\]
+which coincides with implication. The ``shorter'' arrows $\Rightarrow$
+coincide with the function type in Isabelle's metalogic. When writing
+this down on paper, it is useful to use the \textsc{ascii} syntax for
+$\Longrightarrow$ which Isabelle uses (``\texttt{==>}'').
+\begin{node}[Inference rules]\label{isabelle:metalogic-0004}%
+We have its introduction inference rule:
+\[\infer[(\implies I)]{A\implies B}{\infer*{B}{[A]}}\]
+and its elimination inference rule:
+\[\infer[(\implies E)]{B}{A\implies B & A}\]
+\end{node} % inference rules
+\end{node}
+\begin{node}\label{isabelle:metalogic-0002}%
+We have the universal quantifier for the metalogic be denoted by
+$\bigwedge x.\varphi$, and it's useful when we have an inference rule
+involve schematic variables or side conditions. The type signature for
+$\bigwedge_{\sigma}\mathbin{:}(\sigma\to prop)\to prop$ where $\sigma$
+is a type variable. Specifically, $\bigwedge x.\varphi$ where $x$ has
+type $\sigma$ abbreviates $\bigwedge_{\sigma}(\lambda x.\varphi)$.
+\begin{node}[Inference rules]\label{isabelle:metalogic-0005}%
+We have its introduction inference rule:
+\[\infer[(\bigwedge I)]{\bigwedge x. B(x)}{\infer*{B(x)}{[x]}}\]
+and its elimination inference rule:
+\[\infer[(\bigwedge E)]{B~a}{\bigwedge x.B~x}\]
+\end{node}
+\end{node}
+\begin{node}\label{isabelle:metalogic-0003}%
+Equality in the meta-logic is traditionally denoted $\equiv$ in the
+Isabelle literature. This is used to implement the underlying
+$\lambda$-calculus. The type signature for this is
+\[\equiv\colon\alpha\Rightarrow\alpha\Rightarrow prop\]
+where $\alpha$ is a type variable.
+\begin{node}[Inference rules]\label{isabelle:metalogic-0006}%
+Equality is an equivalence relation,
+\[\infer{A\equiv A}{},\qquad%
+\infer{B\equiv A}{A\equiv B},\qquad%
+\infer{A\equiv C}{A\equiv B&B\equiv C}\]
+We also define $\lambda$-calculus's inference rules using it:
+\[\infer[\alpha\mbox{-conv}]{(\lambda x.B)\equiv(\lambda y.B[y/x])}{}\]
+provided $y$ is not free in $B$,
+\[\infer[\eta\mbox{-conv}]{(\lambda x.f~x)\equiv f}{}\]
+provided $x$ is not free in $f$,
+\[\infer[\beta\mbox{-conv}]{(\lambda x.B)A\equiv B[A/x]}{}.\]
+We have the abstraction rule,
+\[\infer[\mbox{abs}]{(\lambda x.A)\equiv(\lambda x.B)}{A\equiv B}\]
+provided $x$ is not free in any of the assumptions of the derivation of
+$A\equiv B$. We also have the congruence rule,
+\[\infer[\mbox{comb}]{f~a\equiv g~b}{f\equiv g,&a\equiv b}.\]
+\end{node}
+\end{node}
+\begin{node}[References]\label{isabelle:metalogic-0007}%
+Isabelle's metalogic seems to first be introduced in Paulson~\cite{paulson1988foundation}.
+Chen reviews Isabelle's metalogic in chapter 2 of his master's thesis~\cite{chen2019implementation}.
+Ro{\ss}kopf and Nipkow~\cite{Rosskopf2022formalization} formalize this
+metalogic in Isabelle itself.
+\end{node}
+

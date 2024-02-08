@@ -1,5 +1,6 @@
 %\usepackage[top=1in,bottom=1in,inner=1in,outer=1in]{geometry}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{stmaryrd} % double brackets
 \usepackage{iso2145}
 \usepackage{amsmath,amssymb}
 \usepackage{proof} %lkproof, for \infer
@@ -151,5 +152,72 @@
 \def\transclude#1{\input{\CurrentFilePath/#1}}
 
 \long\def\zref#1{\textup{\tagform@{\S\ref {#1}}}}
+
+
+
+% Measure the width of mathematical symbols, thank you GuM!
+% https://tex.stackexchange.com/a/363939
+
+\def\do#1{\@ifdefinable#1{\newdimen#1}}
+\do\@TempWidthOne
+\do\@TempWidthTwo
+\newcommand*\WidthInMathUnitsOf[2]{%
+    \settowidth\@TempWidthOne{$\m@th #1#2$}%
+    \settowidth\@TempWidthTwo{$\m@th #1\mspace{1mu}$}%
+    \strip@pt \dimexpr \@TempWidthOne*\p@/\@TempWidthTwo \relax
+}
+\newcommand*\SetToWidthInMathUnits[3]{%
+    \settowidth\@TempWidthOne{$\m@th #2#3$}%
+    \settowidth\@TempWidthTwo{$\m@th #2\mspace{1mu}$}%
+    \edef #1{%
+        \strip@pt \dimexpr \@TempWidthOne*\p@/\@TempWidthTwo \relax
+    }%
+}
+\newcommand*\ExtractHexDigitOfFamilyOfSymbol[1]{%
+    \expandafter\@ExtractHexDigitOfFamily \meaning #1% must be a cs token
+}
+\@ifdefinable\@ExtractHexDigitOfFamily{
+    \def\@ExtractHexDigitOfFamily#1"#2#3#4#5{#3}
+}
+
+\newcommand*{\ReportWidthsOf}[1]{%
+    \par
+    \begingroup
+        \setlength{\abovedisplayskip}{\smallskipamount}%
+        \indent
+        Width of $#1$
+        (\texttt{\string #1}, \emph{i.e.}, \texttt{\meaning #1})
+        in:%
+        \begin{align*}%
+            % \ReportWidthFor\displaystyle     {#1}\\%
+            \ReportWidthFor\textstyle        {#1}\\%
+            \ReportWidthFor\scriptstyle      {#1}\\%
+            \ReportWidthFor\scriptscriptstyle{#1}%
+        \end{align*}%
+    \endgroup
+}
+\newcommand*{\ReportWidthFor}[2]{%
+    \texttt{\string #1}&=
+        \texttt{\WidthInMathUnitsOf #1{#2}mu}%
+}
+\newcommand*{\ReportValueOfOneEm}[1]{%
+    &\text{in #1 size,}%
+        &\quad\texttt{1em}%
+            &=\texttt{\the \fontdimen 6 \csname #1font\endcsname 2}%
+        &&\qquad\text{(from \texttt{\fontname \csname #1font\endcsname 2})}%
+}
+\newcommand*{\ReportSizeOfFontOfSymbol}[2]{%
+    &\texttt{\pdffontsize\csname #2font\endcsname
+                "\ExtractHexDigitOfFamilyOfSymbol{#1}}%
+        &&\quad\text{in #2 size}%
+        &\qquad(\texttt{\string\fontname}%
+            &=\texttt{\fontname\csname #2font\endcsname
+                "\ExtractHexDigitOfFamilyOfSymbol{#1}})%
+}
+\newcommand*{\ReportSizeOfMSAMFont}{%
+    \ReportSizeOfFontOfSymbol{\vartriangleright}%
+}
+
+\newcommand*{\mytemp}{} % just declare the name
 
 \endinput

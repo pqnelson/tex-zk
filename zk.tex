@@ -1,11 +1,12 @@
 \documentclass[dvipsnames,HTML]{amsbook}
+\usepackage[T1]{fontenc}
 %\usepackage{tikz-cd}
 %\usepackage{mathrsfs}
 %\usepackage{mathpazo}
 %\linespread{1.05}
 \usepackage{macros}
 %\usepackage[left]{showlabels} % uncomment if you want the "tags" printed
-\usepackage{sml,mizar}
+\usepackage{sml,mizar,isabelle}
 \usepackage{notation}
 \input{logos}
 \title{Random Zettelkasten Test}
@@ -37,6 +38,8 @@
 
 \include{tex/mizar}
 
+\include{tex/isabelle}
+
 %% \part{Eulerian Mathematics}
 
 %% \include{tex/calculus}
@@ -48,6 +51,7 @@
 \include{tex/hda}
 
 \backmatter
+\part{Backmatter}
 \appendix
 \include{tex/amn}
 

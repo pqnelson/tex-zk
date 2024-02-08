@@ -1,0 +1,69 @@
+% 5
+\section{Higher-Order Logic as Programming Language}
+
+\begin{node}\label{isabelle:hol-0000}%
+There are two ways to use \texttt{HOL} in Isabelle: it's a foundations
+of mathematics, or it's a functional programming language on steroids.
+For this latter perspective, which we will investigate in this section,
+Nipkow and Klein~\cite{Nipkow2014concrete} is among the best references.
+We have discussed in Chapter~\ref{chapter:sml} how to think of \SML\ as
+a deductive system, but now we can actually use a deductive system for
+functional programming.
+\end{node}
+
+\begin{puzzle}[\SML\ formalized in Isabelle]\label{isabelle:hol-0002}%
+Can we actually formalize the semantics of \SML\ in Isabelle? How can we
+prove adequacy?
+\end{puzzle}
+
+\begin{node}\label{isabelle:hol-0001}%
+Unfortunately, confusingly, the type of formulas in Isabelle/HOL is
+\texttt{bool} (compared to ``\texttt{o}'' in Isabelle/FOL).
+\end{node}
+
+\begin{node}[Getting started]\label{isabelle:hol-0003}%
+The scratch theory can be used to do scratch work. We'd import the
+``Main'' theory (which is just a wrapper to import all the useful HOL
+theories, like lists, sets, etc.):
+\begin{Isabelle}
+theory Scratch
+  imports Main
+begin
+
+end
+\end{Isabelle}
+
+\begin{node}[Unit testing]\label{isabelle:hol-0004}%
+I am not sure there is an idiomatic way to do unit testing. Since
+Isabelle can prove the correctness of the code, the only reason to do
+unit tests would be to demonstrate some examples of the code (and for
+regression testing purposes: to make sure changes don't break anything).
+There has been some work done, e.g., by Brucker and
+Wolff~\cite{brucker2013theorem}. 
+
+In ``\texttt{HOL/List.thy}'', there is some code provided to check
+results:
+\begin{Isabelle}[xleftmargin=-6pc]
+ML_val \<open>   (* HOL/List.thy *)
+  let
+    val read = Syntax.read_term \<^context> o Syntax.implode_input;
+    fun check s1 s2 =
+      read s1 aconv read s2 orelse
+        error ("Check failed: " ^
+          quote (#1 (Input.source_content s1)) ^ Position.here_list [Input.pos_of s1, Input.pos_of s2]);
+  in
+    check \<open>[(x,y,z). b]\<close> \<open>if b then [(x, y, z)] else []\<close>;
+    check \<open>[(x,y,z). (x,_,y)\<leftarrow>xs]\<close> \<open>map (\<lambda>(x,_,y). (x, y, z)) xs\<close>;
+    check \<open>[e x y. (x,_)\<leftarrow>xs, y\<leftarrow>ys]\<close> \<open>concat (map (\<lambda>(x,_). map (\<lambda>y. e x y) ys) xs)\<close>;
+    check \<open>[(x,y,z). x<a, x>b]\<close> \<open>if x < a then if b < x then [(x, y, z)] else [] else []\<close>;
+    check \<open>[(x,y,z). x\<leftarrow>xs, x>b]\<close> \<open>concat (map (\<lambda>x. if b < x then [(x, y, z)] else []) xs)\<close>;
+    check \<open>[(x,y,z). x<a, x\<leftarrow>xs]\<close> \<open>if x < a then map (\<lambda>x. (x, y, z)) xs else []\<close>;
+    (* ... *)
+\<close>;
+\end{Isabelle}
+Basically the \verb|check| will read the two arguments its given, and
+tests if they are $\alpha$-convertible or not (via the \verb|aconv|
+predicate --- I only learned about this function from Appendix A of the
+1990 tutorial~\cite{paulson1990tutorial}). 
+\end{node}
+\end{node}

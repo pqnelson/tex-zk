@@ -1,0 +1,80 @@
+% 5
+\chapter{Isabelle}
+
+\begin{node}\label{isabelle-0000}%
+The basic idea of Isabelle is that it is a proof assistant based on a
+fragment of intuitionistic higher-order logic (called the ``meta-logic''
+and denoted $\mathcal{M}$), which serves as a logical
+framework for implementing other deductive systems. The most developed
+deductive system appears to be Isabelle/HOL.
+
+\begin{node}[Terminology]\label{isabelle-0002}%
+The convention is to refer to the Isabelle implementation of deductive
+system $X$ as ``Isabelle/$X$''. For example, Isabelle/HOL implements
+higher-order logic, Isabelle/FOL for first-order logic, Isabelle/ZF for
+Zermelo--Fraenkel set theory, and so on. People call the system $X$ the
+``object logic'' (analogous to the ``metalanguage'' and ``object
+language'' distinction).
+
+Confusingly, Isabelle/Pure is the name given to the code implementing
+$\mathcal{M}$ in Isabelle.
+\end{node}
+
+\begin{node}[References]\label{isabelle-0001}%
+Paulson~\cite{paulson1988foundation} first sketched out $\mathcal{M}$
+and implemented Isabelle. (Really, Paulson has been the heart and dynamo
+behind Isabelle.)
+Ro{\ss}kopf and Nipkow~\cite{Rosskopf2022formalization} have formalized
+$\mathcal{M}$ inside Isabelle/HOL, producing a validated version of
+Isabelle (which runs extremely slowly). 
+\end{node}
+\end{node}
+
+\begin{node}[Isabelle/ZF]\label{isabelle-0003}%
+As best as I can determine, Isabelle/ZF builds on No\"{e}l's
+``proof-of-concept'' work~\cite{Noel1993experimenting}. Specifically,
+using Isabelle/FOL, the \ZF\ axioms are implemented. Details may be
+found in Paulson's reviews~\cite{Paulson1993set,Paulson1995set}. Paulson
+later~\cite{Paulson2003ac} mechanized the proof of the relative
+consistency of the axiom of choice. Gunther and friends~\cite{gunther2020formalization}
+have recently formalized results concerning forcing using Isabelle/ZF.
+
+Paulson notes~\cite[\S2.2]{Paulson1993set} that in Isabelle's set
+theory, ``\texttt{i}'' is the type of sets and ``\texttt{o}'' is the
+type of formulas (I think this is a nod to Church's usage of $\iota$ for
+individuals and $o$ for propositions). 
+\end{node}
+
+\begin{node}[Getting started]\label{isabelle-0004}%
+When we formalize something in Isabelle, they are organized into files
+ending with ``\texttt{.thy}'' (they're called ``theory files''). The
+basic template for such files look like (in a file named ``\texttt{example.thy}''):
+\begin{Isabelle}
+theory example
+imports Theory_1 ... Theory\_n
+begin
+
+...
+
+abbreviation mizeq :: "Set \<Rightarrow> Set \<Rightarrow> o" (infixl "=" 50)
+  where "mizeq \<equiv> IFOL.eq"
+
+
+ML \<open>
+val basic_ss = FOL_basic_ss;
+val main_ss = FOL_ss;
+val mk_Trueprop = \<^make_judgment>;
+val dest_Trueprop = \<^dest_judgment>;
+\<close>
+  
+end
+\end{Isabelle}
+The ``code'' goes in between the ``begin'' and ``end'' segment of the file.
+
+We need to use Isabelle's jEdit \textsc{ide}, though there is a small
+community which still use Emacs's proof general.
+\end{node}
+
+\transclude{isabelle/metalogic}
+\transclude{isabelle/fol}
+\transclude{isabelle/hol}

@@ -1,0 +1,47 @@
+% 4
+\section{First-order logic}
+
+\begin{node}\label{isabelle:fol-0000}%
+Isabelle implements Gentzen's natural deduction systems \textsc{nj} and
+\textsc{nk}. Intuitionistic first-order logic is defined first, as the
+theory \texttt{IFOL}. Classical logic (theory \texttt{FOL}) is
+implemented by extending \texttt{IFOL} with the addition of the double
+negation rule. Some basic proof provedures are provided, but it is not
+as developed as \texttt{HOL}.
+\end{node}
+
+\begin{node}[Terms]\label{isabelle:fol-0003}%
+Isabelle uses type classes for forming a hierarchy of classes, and
+\texttt{IFOL} defines a ``top type'' (base class) for the
+hierarchy: the \texttt{term} type class.
+\end{node}
+
+\begin{node}[Formulas]\label{isabelle:fol-0001}%
+It appears to be idiomatic Isabelle to denote the type of formulas by
+``\texttt{o}'' (I think this is following Church's practice as found in
+his article ``A Formulation of the Simple Theory of Types'' which uses
+omicron $o$ for the type of formulas). The BNF grammar for formulas is
+\begin{center}
+\begin{tabular}{rcl}
+$\langle$\textit{formula\/}$\rangle$ & $::=$ & $\langle$\textit{term\/}$\rangle$ \texttt{=} $\langle$\textit{term\/}$\rangle$\\
+  & $\mid$ & $\langle$\textit{term\/}$\rangle$ \verb|~=| $\langle$\textit{term\/}$\rangle$\\
+  & $\mid$ & \verb|~| $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#&# $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#|# $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#--># $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#<-># $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & \texttt{ALL} $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$ \texttt{.} $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & \texttt{EX} $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$ \texttt{.} $\langle$\textit{formula\/}$\rangle$\\
+  & $\mid$ & \texttt{EX!} $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$ \texttt{.} $\langle$\textit{formula\/}$\rangle$\\*
+$\langle$\textit{id*\/}$\rangle$ & $::=$ & $\langle$\textit{blank\/}$\rangle$\\
+& $\mid$ & $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$\\
+\end{tabular}
+\end{center}
+\end{node}
+
+\begin{node}[References]\label{isabelle:fol-0002}%
+The earliest documentation concerning Isabelle/FOL seems to be Paulson's
+tech report~\cite{paulson1993object}. Zhan~\cite{Zhan2017formalization}
+applies his AUTO2 tool to \texttt{FOL} and Isabelle/ZF to formalize
+results concerning the fundamental group.
+\end{node}

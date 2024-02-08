@@ -1,0 +1,243 @@
+
+% Improving upon https://github.com/lammich/isabelle_llvm/blob/master/papers/2021_Enschede_Talk/lstisabelle.tex
+
+% This is basically what Isabelle2023's jedit default settings look like
+\definecolor{isabellecomment1}{HTML}{CC0000} % 
+\definecolor{isabellecomment2}{HTML}{FF8400} % 
+\definecolor{isabellecomment3}{HTML}{6600CC} % 
+\definecolor{isabellecomment4}{HTML}{CC6600} % 
+\definecolor{isabellefunction}{HTML}{9966FF} % 
+\definecolor{isabelleinvalid}{HTML}{FF0066} % 
+\definecolor{isabellekw1}{HTML}{006699} % bold -- lemma, theorem, proof, text, then, have
+\definecolor{isabellekw2}{HTML}{009966} % bold -- assumes, shows, for, etc.
+\definecolor{isabellekw3}{HTML}{0099FF} % bold -- assume, fix, show
+\definecolor{isabellekw4}{HTML}{66CCFF} % bold
+\definecolor{isabellelabel}{HTML}{02B902} % plain
+\definecolor{isabellelit1}{HTML}{FF00CC} % plain
+\definecolor{isabellelit2}{HTML}{CC00CC} % 
+\definecolor{isabellelit3}{HTML}{9900CC} % 
+\definecolor{isabellelit4}{HTML}{6600CC} % 
+\definecolor{isabellemarkup}{HTML}{0000FF} % 
+\definecolor{isabelleoperator}{HTML}{000000} %
+
+% Keywords taken from https://github.com/pygments/pygments/blob/master/pygments/lexers/theorem.py
+\lstdefinelanguage{isabelle}{
+  %alsoletter={\&,^,\_,-},
+  columns=flexible,
+  basewidth={0.5em,0.5em},
+  morekeywords={also,apply,apply_end,apply_trace,back,by,
+    corollary,defer,definition,done,finally,from,
+    have,hence,include,including,interpret,interpretation,
+    lemma,lemmas,locale,let,moreover,next,note,
+    oops,prefer,proof,qed,sorry,txt,txt_raw,then,theorem,theory,
+    typedef,ultimately,unfolding,using,value,with,write},
+    keywordstyle=\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont,
+  morekeywords=[2]{and,assumes,begin,binder,checking,
+    class_instance,class_relation,code_module,
+    constant,constrains,datatypes,defines,end,file,fixes,
+    for,functions,if,imports,in,
+    includes,infix,infixl,infixr,is,keywords
+    module_name,monos,morphisms,notes,
+    obtains,open,output,overloaded,parametric,
+    pervasive,shows,structure,type_class,
+    type_constructor,unchecked,where},
+    keywordstyle=[2]{\rm\ttfamily\fontseries{b}\color{isabellekw2}\selectfont},
+  morekeywords=[3]{assume, case, fix, obtain, presume, show, thus},
+  keywordstyle=[3]{\rm\ttfamily\fontseries{b}\color{isabellekw3}\selectfont},
+  morekeywords=[4]{ML_command,ML_val,class_deps,code_deps,code_thms,
+find_consts,find_theorems,find_unused_assms,
+full_prf,help,locale_deps,nitpick,prf,
+print_abbrevs,print_antiquotations,print_attributes,
+print_bnfs,print_bundles,
+print_case_translations,print_cases,print_claset,
+print_classes,print_codeproc,print_codesetup,
+print_coercions,print_commands,print_context,
+print_defn_rules,print_facts,
+print_induct_rules,print_inductives,print_interps,
+print_locale,print_locales,print_methods,print_options,
+print_orders,print_quot_maps,print_quotconsts,
+print_quotients,print_quotientsQ3,print_quotmapsQ3,
+print_rules,print_simpset,print_state,print_statement,
+print_syntax,print_theorems,print_theory,print_trans_rules,
+prop,quickcheck,sledgehammer,smt_status,
+solve_direct,term,thm,thm_deps,thy_deps,
+try,try0,typ,unused_thms,value,values,welcome,
+print_ML_antiquotations,print_term_bindings},
+    keywordstyle=[4]{\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont},
+    morekeywords=[5]{ML,ML_file,abbreviation,attribute_setup,axiomatization,bundle,
+class,codatatype,code_datatype,
+code_identifier,code_monad,code_printing,code_reflect,code_reserved,
+coinductive,coinductive_set,consts,context,
+datatype,declaration,declare,default_sort,definition
+export_code,extract,extract_type,fun,
+fun_cases,hide_class,hide_const,hide_fact,hide_type,,
+inductive,inductive_set,instantiation,judgment,lemmas,
+lifting_forget,lifting_update,local_setup,locale,
+method_setup,nitpick_params
+no_notation,no_syntax,no_translations,no_type_notation,
+nonterminal,notation,notepad,oracle
+overloading,parse_ast_translation,parse_translation,
+partial_function,primcorec,primrec,
+print_ast_translation,print_translation,quickcheck_generator,
+quickcheck_params,realizability,realizers,record,
+setup,setup_lifting,simproc_setup,
+sledgehammer_params,syntax,syntax_declaration,text,
+text_raw,translations,type_notation,
+type_synonym,typed_print_translation,typedecl,
+SML_export,SML_file,SML_import,datatype_compat,
+free_constructors,functor},
+    keywordstyle=[5]{\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont},
+    %  morekeywords=[3]{rec, return, bind, foreach, if, then, else, do, let, in, res, spec, fail, assert, while, case, of, check, get, set},
+%  morekeywords=[3]{length,mod,insert},
+%   morekeywords=[4]{simp,auto,intro,elim,rprems,refine_mono,refine_rcg},
+  sensitive=true,
+  morecomment=[n][\color{isabellecomment1}]{(*}{*)},
+  upquote=true,
+  showstringspaces=false,
+  literate=
+  {"}{}0
+  {'}{{${}^\prime\!$}}1
+  {\%}{{$\lambda$}}1
+  {\\\%}{{$\lambda$}}1
+  {\\\$}{{$\mathbin{\,\$\,}$}}1
+  {->}{{$\rightarrow$}}1
+  {<-}{{$\leftarrow$}}1
+  {<.}{{$\langle$}}1
+  {.>}{{$\rangle$}}1
+  {<=}{{$\le$}}1
+  {>=}{{$\ge$}}1
+  {<->}{{$\leftrightarrow$}}1
+  {-->}{{$\longrightarrow$}}2
+  {<-->}{{$\longleftrightarrow$}}1
+  {=>}{{$\Rightarrow$}}1
+  {==}{{$\equiv$}}2
+  {==>}{{$\implies$}}2
+  {<=>}{{$\Leftrightarrow$}}1
+  {~=}{{$\ne$}}1
+  {|}{{$\mid$}}1
+  {-`}{{$\rightharpoonup$}}1
+  {|`}{{$\restriction$}}1
+  {!!}{{$\bigwedge$}}1
+  %% {(}{{$($}}1 % these interfere with comments
+  %% {)}{{$)$}}1
+  {\{}{{$\{$}}1
+  {\}}{{$\}$}}1
+  {[}{{$[$}}1
+  {]}{{$]$}}1
+  {[|}{{$\llbracket$}}1
+  {|]}{{$\rrbracket$}}1
+  {\\<lbrakk>}{{$\lsem$}}1
+  {\\<rbrakk>}{{$\rsem$}}1
+  {|-}{{$\vdash$}}1
+  {|=}{{$\models$}}1
+  {|->}{{$\mapsto$}}1
+  {|_|}{{$\bigsqcup$}}1
+  {...}{{$\dots$}}3
+  {\\x}{{$\times$}}1
+  {_0}{{${}_0$}}1
+  {_1}{{${}_1$}}1
+  {_2}{{${}_2$}}1
+  {_3}{{${}_3$}}1
+  {_4}{{${}_4$}}1
+  {_5}{{${}_5$}}1
+  {_6}{{${}_6$}}1
+  {_7}{{${}_7$}}1
+  {_8}{{${}_8$}}1
+  {_9}{{${}_9$}}1
+  {_L}{{${}_L$}}1
+  {\\_n}{{${}_n$}}1
+  {\\_i}{{${}_i$}}1
+  {\\_j}{{${}_j$}}1
+  {\\_x}{{${}_x$}}1
+  {\\_y}{{${}_y$}}1
+  {\\impl}{{${}_\dagger$}}1
+  {^*}{{$^*$}}1
+  {^k}{{$^k$}}1
+  {^d}{{$^d$}}1
+  {\\<^sup>*}{{$^*$}}1
+  {\\<^sub>*}{{$_*$}}1
+  {\\<^sub>A}{{$_A$}}1
+  {\\<^sub>L}{{$_L$}}1
+  {\\<^sub>r}{{$_r$}}1
+  {\\<^sub>a}{{$_a$}}1
+  {:_i}{{$:_i$}}1
+  {\\<A>}{{$\mathcal{A}$}}1
+  {\\<O>}{{\sf o}}1
+  {\\<cdot>}{{$\cdot$}}1
+  {\\<in>}{{$\in$}}1
+  {\\<le>}{{$\le$}}1
+  {\\<noteq>}{{$\ne$}}1
+  {\\<lambda>}{{$\lambda$}}1
+  {\\<longrightarrow>}{{$\longrightarrow$}}1
+  {\\<longleftrightarrow>}{{$\longleftrightarrow$}}1
+  {\\<Rightarrow>}{{$\Rightarrow$}}2
+  {\\<Longrightarrow>}{{$\Longrightarrow$}}3
+  {\\<rightarrow>}{{$\rightarrow$}}2
+  {\\<leftarrow>}{{$\leftarrow$}}2
+  {\\<mapsto>}{{$\mapsto$}}2
+  {\\<equiv>}{{$\equiv$}}1
+  {\\<and>}{{$\land$}}1
+  {\\<or>}{{$\lor$}}1
+  {\\<And>}{{$\bigwedge$}}1
+  {\\<Up>}{{$\Uparrow$}}1
+  {\\<Down>}{{$\Downarrow$}}1
+  {\\<Union>}{{$\bigcup$}}1
+  {\\<up>}{{$\uparrow$}}1
+  {\\<down>}{{$\downarrow$}}1
+  {\\<times>}{{$\times$}}1
+  {\\<forall>}{{$\forall$}}1
+  {\\<exists>}{{$\exists$}}1
+  {\\<nexists>}{{$\nexists$}}1
+  {\\<union>}{{$\cup$}}1
+  {\\<inter>}{{$\cap$}}1
+  {\\<subset>}{{$\subset$}}1
+  {\\<subseteq>}{{$\subseteq$}}1
+  {\\<supset>}{{$\supset$}}1
+  {\\<supseteq>}{{$\supseteq$}}1
+  {\\<alpha>}{{$\alpha$}}1
+  {\\<beta>}{{$\beta$}}1
+  {\\<gamma>}{{$\gamma$}}1
+  {\\alpha}{{$\alpha$}}1
+  {\\beta}{{$\beta$}}1
+  {\\gamma}{{$\gamma$}}1
+  {\\<sigma>}{{$\sigma$}}1
+  {\\<Phi>}{{$\Phi$}}1
+  {\\<Psi>}{{$\Psi$}}1
+  {\\<Gamma>}{{$\Gamma$}}1
+  {\\<langle>}{{$\langle$}}1
+  {\\<rangle>}{{$\rangle$}}1
+  {\\<not>}{{$\neg$}}1
+  {\\<box>}{{$\oblong$}}1
+  {\\<bot>}{{$\bot$}}1
+  {\\<top>}{{$\top$}}1
+  {\\<notin>}{{$\notin$}}1
+  {\\<guillemotright>}{{$\gg$}}1
+  {\\in}{$\in$}1
+  {\\and}{$\land$}1
+  {\\or}{$\lor$}1
+  {\\Phi}{{$\Phi$}}1
+  {\\Psi}{{$\Psi$}}1
+  {\\le}{{$\leq$}}1
+  {\\Up}{{$\Uparrow$}}1
+  {\\Down}{{$\Down$}}1
+  {>>}{{$\gg$}}1
+  {>>=}{{${\gg}{=}$}}1
+  {<*lex*>}{{$\times_{\sf lex}$}}1
+  {\\<open>}{{\rm\guilsinglleft}}1
+  {\\<close>}{{\rm\guilsinglright}}1
+  {\\<^context>}{{\ttfamily\slshape context}}{7}
+  {\\<^make_judgment>}{{\ttfamily\slshape make\_judgment}}{13}
+  {\\<^dest_judgment>}{{\ttfamily\slshape dest\_judgment}}{13}
+}
+\lstnewenvironment{Isabelle}[1][]%
+                  {
+                    \lstset{language=isabelle,
+                      basicstyle=\ttfamily,
+                      upquote=true,
+                      #1
+                      %xleftmargin=#1
+                    }%
+                  }
+                  {}
+
+\endinput
