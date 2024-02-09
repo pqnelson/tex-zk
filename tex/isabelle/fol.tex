@@ -1,4 +1,4 @@
-% 9
+% 10
 \section{First-order logic}
 
 \begin{node}\label{isabelle:fol-0000}%
@@ -126,6 +126,29 @@ axiomatization where  \<comment> \<open>Reflection, admissible\<close>
 
 abbreviation not_equal :: \<open>['a, 'a] \<Rightarrow> o\<close>  (infixl \<open>\<noteq>\<close> 50)
   where \<open>x \<noteq> y \<equiv> \<not> (x = y)\<close>
+\end{Isabelle}
+\end{node}
+
+\begin{node}\label{isabelle:fol-0009}%
+We have the ``\textbf{syntax}'' declaration be used to tell Isabelle to
+recognize free-form grammar productions (see Isar reference
+\S8.5.2). This generically looks like 
+``\textbf{syntax} $\langle$\textit{constant declarations\/}$\rangle$
+($\langle$\textit{mixfix-pattern\/}$\rangle$)
+\textbf{translations} $\langle$\textit{pattern\/}$\rangle$ $\langle$\textit{types of rules\/}$\rangle$ $\langle$\textit{pattern\/}$\rangle$''
+when $\langle$\textit{types of rules\/}$\rangle$ is rightleftharpoons it
+is both print and parse.
+
+We also have the ability to control how to print such terms using the
+``\textbf{print\_translation}'' function (see Isar reference \S8.5.3).
+\begin{Isabelle}
+(* IFOL.thy *)
+syntax "_Uniq" :: "pttrn \<Rightarrow> o \<Rightarrow> o"  ("(2\<exists>\<^sub>\<le>\<^sub>1 _./ _)" [0, 10] 10)
+translations "\<exists>\<^sub>\<le>\<^sub>1x. P" \<rightleftharpoons> "CONST Uniq (\<lambda>x. P)"
+
+print_translation \<open>
+ [Syntax_Trans.preserve_binder_abs_tr' \<^const_syntax>\<open>Uniq\<close> \<^syntax_const>\<open>_Uniq\<close>]
+\<close> \<comment> \<open>to avoid eta-contraction of body\<close>
 \end{Isabelle}
 \end{node}
 \end{node}

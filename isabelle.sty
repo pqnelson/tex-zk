@@ -1,5 +1,8 @@
 
 % Improving upon https://github.com/lammich/isabelle_llvm/blob/master/papers/2021_Enschede_Talk/lstisabelle.tex
+% There are about 500 symbols pretty printed in Isabelle, and the
+% literate code below is by no means complete.
+
 
 % This is basically what Isabelle2023's jedit default settings look like
 \definecolor{isabellecomment1}{HTML}{CC0000} % 
@@ -22,14 +25,17 @@
 
 
 % hack to handle \\<comment>
+% modified from https://tex.stackexchange.com/a/148886
+% and https://tex.stackexchange.com/a/149458
 \newif\ifcom\comfalse
 \def\isabellecommentstyle{\color{isabellecomment1}}
 \def\processDelimiter{%
     \ifcom%                     % In this case, we're already in a comment.
     \else                       % Otherwise, we just started a comment;
         \global\comtrue%        % set the switch to true and
+        \lst@CalcLostSpaceAndOutput% Typeset spaces here, to avoid infinite loops
         \isabellecommentstyle\textrm{\textemdash}%  
-    \fi
+    \fi%
     \isabellecommentstyle%          % In any case, apply the comment style.
 }
 \lst@AddToHook{EOL}{\global\comfalse}
@@ -102,6 +108,8 @@ type_synonym,typed_print_translation,typedecl,
 SML_export,SML_file,SML_import,datatype_compat,
 free_constructors,functor},
     keywordstyle=[5]{\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont},
+    morekeywords=[6]{CONST},
+    keywordstyle=[6]{\rm\ttfamily\color{isabellekw1}\selectfont},
     %  morekeywords=[3]{rec, return, bind, foreach, if, then, else, do, let, in, res, spec, fail, assert, while, case, of, check, get, set},
 %  morekeywords=[3]{length,mod,insert},
 %   morekeywords=[4]{simp,auto,intro,elim,rprems,refine_mono,refine_rcg},
@@ -138,8 +146,8 @@ free_constructors,functor},
   %% {)}{{$)$}}1
   {\{}{{$\{$}}1
   {\}}{{$\}$}}1
-  {[}{{$[$}}1
-  {]}{{$]$}}1
+  %% {[}{{$[$}}1
+  %% {]}{{$]$}}1
   {[|}{{$\llbracket$}}1
   {|]}{{$\rrbracket$}}1
   {\\<lbrakk>}{{$\llbracket$}}1
@@ -176,21 +184,21 @@ free_constructors,functor},
   {\\<^sub>L}{{$_L$}}1
   {\\<^sub>r}{{$_r$}}1
   {\\<^sub>a}{{$_a$}}1
+  {\\<^sub>1}{{$_1$}}1
+  {\\<^sub>\\<le>}{{$_{\leq}$}}1
   {:_i}{{$:_i$}}1
-  {\\<A>}{{$\mathcal{A}$}}1
-  {\\<O>}{{\sf o}}1
   {\\<cdot>}{{$\cdot$}}1
   %{\\<comment>}{\textrm{\textemdash}}2
   {\\<in>}{{$\in$}}1
   {\\<le>}{{$\le$}}1
   {\\<noteq>}{{$\ne$}}1
-  {\\<lambda>}{{$\lambda$}}1
   {\\<longrightarrow>}{{$\longrightarrow$}}3
   {\\<longleftrightarrow>}{{$\longleftrightarrow$}}3
   {\\<Rightarrow>}{{$\Rightarrow$}}2
   {\\<Longrightarrow>}{{$\Longrightarrow$}}3
   {\\<rightarrow>}{{$\rightarrow$}}2
   {\\<leftarrow>}{{$\leftarrow$}}2
+  {\\<rightleftharpoons>}{{$\rightleftharpoons$}}2
   {\\<mapsto>}{{$\mapsto$}}2
   {\\<equiv>}{{$\equiv$}}1
   {\\<and>}{{$\land$}}1
@@ -211,16 +219,6 @@ free_constructors,functor},
   {\\<subseteq>}{{$\subseteq$}}1
   {\\<supset>}{{$\supset$}}1
   {\\<supseteq>}{{$\supseteq$}}1
-  {\\<alpha>}{{$\alpha$}}1
-  {\\<beta>}{{$\beta$}}1
-  {\\<gamma>}{{$\gamma$}}1
-  {\\alpha}{{$\alpha$}}1
-  {\\beta}{{$\beta$}}1
-  {\\gamma}{{$\gamma$}}1
-  {\\<sigma>}{{$\sigma$}}1
-  {\\<Phi>}{{$\Phi$}}1
-  {\\<Psi>}{{$\Psi$}}1
-  {\\<Gamma>}{{$\Gamma$}}1
   {\\<langle>}{{$\langle$}}1
   {\\<rangle>}{{$\rangle$}}1
   {\\<not>}{{$\neg$}}1
@@ -232,8 +230,6 @@ free_constructors,functor},
   {\\in}{$\in$}1
   {\\and}{$\land$}1
   {\\or}{$\lor$}1
-  {\\Phi}{{$\Phi$}}1
-  {\\Psi}{{$\Psi$}}1
   {\\le}{{$\leq$}}1
   {\\Up}{{$\Uparrow$}}1
   {\\Down}{{$\Down$}}1
@@ -245,6 +241,30 @@ free_constructors,functor},
   {\\<^context>}{{\ttfamily\slshape context}}{7}
   {\\<^make_judgment>}{{\ttfamily\slshape make\_judgment}}{13}
   {\\<^dest_judgment>}{{\ttfamily\slshape dest\_judgment}}{13}
+  {\\<^const_syntax>}{{\ttfamily\slshape const\_syntax}}{12}
+  {\\<^syntax_const>}{{\ttfamily\slshape syntax\_const}}{12}
+  {\\<A>}{{$\mathcal{A}$}}1
+  {\\<O>}{{$\mathcal{O}$}}1
+  % GREEK ALPHABET
+  {\\<alpha>}{{$\alpha$}}1
+  {\\<beta>}{{$\beta$}}1
+  {\\<gamma>}{{$\gamma$}}1
+  {\\<delta>}{{$\delta$}}1
+  {\\<epsilon>}{{$\epsilon$}}1
+  {\\<zeta>}{{$\zeta$}}1
+  {\\<theta>}{{$\theta$}}1
+  {\\<iota>}{{$\iota$}}1
+  {\\<kappa>}{{$\kappa$}}1
+  {\\<lambda>}{{$\lambda$}}1
+  {\\alpha}{{$\alpha$}}1
+  {\\beta}{{$\beta$}}1
+  {\\gamma}{{$\gamma$}}1
+  {\\<sigma>}{{$\sigma$}}1
+  {\\<Phi>}{{$\Phi$}}1
+  {\\<Psi>}{{$\Psi$}}1
+  {\\<Gamma>}{{$\Gamma$}}1
+  {\\Phi}{{$\Phi$}}1
+  {\\Psi}{{$\Psi$}}1
 }
 \lstnewenvironment{Isabelle}[1][]%
                   {
@@ -252,7 +272,6 @@ free_constructors,functor},
                       basicstyle=\ttfamily,
                       upquote=true,
                       #1
-                      %xleftmargin=#1
                     }%
                   }
                   {}
