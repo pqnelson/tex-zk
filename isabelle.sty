@@ -20,6 +20,21 @@
 \definecolor{isabellemarkup}{HTML}{0000FF} % 
 \definecolor{isabelleoperator}{HTML}{000000} %
 
+
+% hack to handle \\<comment>
+\newif\ifcom\comfalse
+\def\isabellecommentstyle{\color{isabellecomment1}}
+\def\processDelimiter{%
+    \ifcom%                     % In this case, we're already in a comment.
+    \else                       % Otherwise, we just started a comment;
+        \global\comtrue%        % set the switch to true and
+        \isabellecommentstyle\textrm{\textemdash}%  
+    \fi
+    \isabellecommentstyle%          % In any case, apply the comment style.
+}
+\lst@AddToHook{EOL}{\global\comfalse}
+
+
 % Keywords taken from https://github.com/pygments/pygments/blob/master/pygments/lexers/theorem.py
 \lstdefinelanguage{isabelle}{
   %alsoletter={\&,^,\_,-},
@@ -92,30 +107,31 @@ free_constructors,functor},
 %   morekeywords=[4]{simp,auto,intro,elim,rprems,refine_mono,refine_rcg},
   sensitive=true,
   morecomment=[n][\color{isabellecomment1}]{(*}{*)},
+  moredelim=[il][\processDelimiter]{\\<comment>},
   upquote=true,
   showstringspaces=false,
   literate=
   {"}{}0
-  {'}{{${}^\prime\!$}}1
+  %{'}{{${}^\prime\!$}}1
   {\%}{{$\lambda$}}1
   {\\\%}{{$\lambda$}}1
   {\\\$}{{$\mathbin{\,\$\,}$}}1
-  {->}{{$\rightarrow$}}1
-  {<-}{{$\leftarrow$}}1
+  {->}{{$\rightarrow$}}2
+  {<-}{{$\leftarrow$}}2
   {<.}{{$\langle$}}1
   {.>}{{$\rangle$}}1
   {<=}{{$\le$}}1
   {>=}{{$\ge$}}1
-  {<->}{{$\leftrightarrow$}}1
-  {-->}{{$\longrightarrow$}}2
-  {<-->}{{$\longleftrightarrow$}}1
-  {=>}{{$\Rightarrow$}}1
+  {<->}{{$\leftrightarrow$}}2
+  {-->}{{$\longrightarrow$}}3
+  {<-->}{{$\longleftrightarrow$}}3
+  {=>}{{$\Rightarrow$}}2
   {==}{{$\equiv$}}2
-  {==>}{{$\implies$}}2
-  {<=>}{{$\Leftrightarrow$}}1
+  {==>}{{$\implies$}}3
+  {<=>}{{$\Leftrightarrow$}}3
   {~=}{{$\ne$}}1
   {|}{{$\mid$}}1
-  {-`}{{$\rightharpoonup$}}1
+  {-`}{{$\rightharpoonup$}}2
   {|`}{{$\restriction$}}1
   {!!}{{$\bigwedge$}}1
   %% {(}{{$($}}1 % these interfere with comments
@@ -126,11 +142,11 @@ free_constructors,functor},
   {]}{{$]$}}1
   {[|}{{$\llbracket$}}1
   {|]}{{$\rrbracket$}}1
-  {\\<lbrakk>}{{$\lsem$}}1
-  {\\<rbrakk>}{{$\rsem$}}1
+  {\\<lbrakk>}{{$\llbracket$}}1
+  {\\<rbrakk>}{{$\rrbracket$}}1
   {|-}{{$\vdash$}}1
   {|=}{{$\models$}}1
-  {|->}{{$\mapsto$}}1
+  {|->}{{$\mapsto$}}2
   {|_|}{{$\bigsqcup$}}1
   {...}{{$\dots$}}3
   {\\x}{{$\times$}}1
@@ -164,12 +180,13 @@ free_constructors,functor},
   {\\<A>}{{$\mathcal{A}$}}1
   {\\<O>}{{\sf o}}1
   {\\<cdot>}{{$\cdot$}}1
+  %{\\<comment>}{\textrm{\textemdash}}2
   {\\<in>}{{$\in$}}1
   {\\<le>}{{$\le$}}1
   {\\<noteq>}{{$\ne$}}1
   {\\<lambda>}{{$\lambda$}}1
-  {\\<longrightarrow>}{{$\longrightarrow$}}1
-  {\\<longleftrightarrow>}{{$\longleftrightarrow$}}1
+  {\\<longrightarrow>}{{$\longrightarrow$}}3
+  {\\<longleftrightarrow>}{{$\longleftrightarrow$}}3
   {\\<Rightarrow>}{{$\Rightarrow$}}2
   {\\<Longrightarrow>}{{$\Longrightarrow$}}3
   {\\<rightarrow>}{{$\rightarrow$}}2

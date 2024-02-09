@@ -1,4 +1,4 @@
-% 4
+% 9
 \section{First-order logic}
 
 \begin{node}\label{isabelle:fol-0000}%
@@ -14,29 +14,120 @@ as developed as \texttt{HOL}.
 Isabelle uses type classes for forming a hierarchy of classes, and
 \texttt{IFOL} defines a ``top type'' (base class) for the
 hierarchy: the \texttt{term} type class.
+\begin{Isabelle}
+(* IFOL.thy *)
+class "term"
+default_sort \<open>term\<close>
+\end{Isabelle}
 \end{node}
 
 \begin{node}[Formulas]\label{isabelle:fol-0001}%
 It appears to be idiomatic Isabelle to denote the type of formulas by
 ``\texttt{o}'' (I think this is following Church's practice as found in
 his article ``A Formulation of the Simple Theory of Types'' which uses
-omicron $o$ for the type of formulas). The BNF grammar for formulas is
-\begin{center}
-\begin{tabular}{rcl}
-$\langle$\textit{formula\/}$\rangle$ & $::=$ & $\langle$\textit{term\/}$\rangle$ \texttt{=} $\langle$\textit{term\/}$\rangle$\\
-  & $\mid$ & $\langle$\textit{term\/}$\rangle$ \verb|~=| $\langle$\textit{term\/}$\rangle$\\
-  & $\mid$ & \verb|~| $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#&# $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#|# $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#--># $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & $\langle$\textit{formula\/}$\rangle$ \verb#<-># $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & \texttt{ALL} $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$ \texttt{.} $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & \texttt{EX} $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$ \texttt{.} $\langle$\textit{formula\/}$\rangle$\\
-  & $\mid$ & \texttt{EX!} $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$ \texttt{.} $\langle$\textit{formula\/}$\rangle$\\*
-$\langle$\textit{id*\/}$\rangle$ & $::=$ & $\langle$\textit{blank\/}$\rangle$\\
-& $\mid$ & $\langle$\textit{id\/}$\rangle$ $\langle$\textit{id*\/}$\rangle$\\
-\end{tabular}
-\end{center}
+omicron $o$ for the type of formulas). 
+The other logical connectives are later introduced piecemeal.
+Initially it's just the type ``\texttt{o}'' and the encoding of the ``proven'' judgement as ``\texttt{Trueprop}'':
+\begin{Isabelle}
+(* IFOL.thy *)
+typedecl o
+
+judgment
+  Trueprop :: \<open>o \<Rightarrow> prop\<close>  (\<open>(_)\<close> 5)
+\end{Isabelle}
+
+\begin{node}[Equality]\label{isabelle:fol-0006}%
+We have the basic properties for equality of terms, namely its reflexive
+and obeys the substitution property:
+\begin{Isabelle}
+(* IFOL.thy *)
+axiomatization
+  eq :: \<open>['a, 'a] \<Rightarrow> o\<close>  (infixl \<open>=\<close> 50)
+where
+  refl: \<open>a = a\<close> and
+  subst: \<open>a = b \<Longrightarrow> P(a) \<Longrightarrow> P(b)\<close>
+\end{Isabelle}
+\end{node}
+
+\begin{node}[Connectives]\label{isabelle:fol-0004}%
+Initially, the logical connectives introduced are $\land$, $\lor$,
+$\longrightarrow$, and $\bot$. The other connectives are defined in
+terms of these primitive connectives.
+\begin{Isabelle}
+(* IFOL.thy *)
+axiomatization
+  False :: \<open>o\<close> and
+  conj :: \<open>[o, o] => o\<close>  (infixr \<open>\<and>\<close> 35) and
+  disj :: \<open>[o, o] => o\<close>  (infixr \<open>\<or>\<close> 30) and
+  imp :: \<open>[o, o] => o\<close>  (infixr \<open>\<longrightarrow>\<close> 25)
+where
+  conjI: \<open>\<lbrakk>P;  Q\<rbrakk> \<Longrightarrow> P \<and> Q\<close> and
+  conjunct1: \<open>P \<and> Q \<Longrightarrow> P\<close> and
+  conjunct2: \<open>P \<and> Q \<Longrightarrow> Q\<close> and
+
+  disjI1: \<open>P \<Longrightarrow> P \<or> Q\<close> and
+  disjI2: \<open>Q \<Longrightarrow> P \<or> Q\<close> and
+  disjE: \<open>\<lbrakk>P \<or> Q; P \<Longrightarrow> R; Q \<Longrightarrow> R\<rbrakk> \<Longrightarrow> R\<close> and
+
+  impI: \<open>(P \<Longrightarrow> Q) \<Longrightarrow> P \<longrightarrow> Q\<close> and
+  mp: \<open>\<lbrakk>P \<longrightarrow> Q; P\<rbrakk> \<Longrightarrow> Q\<close> and
+
+  FalseE: \<open>False \<Longrightarrow> P\<close>
+\end{Isabelle}
+\end{node}
+
+\begin{node}[Quantifiers]\label{isabelle:fol-0007}%
+The universal and existential quantifiers are formalized. We can define
+the ``exists unique'' quantifier ($\exists!$) in terms of these
+primitive quantifiers.
+\begin{Isabelle}
+(* IFOL.thy *)
+axiomatization
+  All :: \<open>('a \<Rightarrow> o) \<Rightarrow> o\<close>  (binder \<open>\<forall>\<close> 10) and
+  Ex :: \<open>('a \<Rightarrow> o) \<Rightarrow> o\<close>  (binder \<open>\<exists>\<close> 10)
+where
+  allI: \<open>(\<And>x. P(x)) \<Longrightarrow> (\<forall>x. P(x))\<close> and
+  spec: \<open>(\<forall>x. P(x)) \<Longrightarrow> P(x)\<close> and
+  exI: \<open>P(x) \<Longrightarrow> (\<exists>x. P(x))\<close> and
+  exE: \<open>\<lbrakk>\<exists>x. P(x); \<And>x. P(x) \<Longrightarrow> R\<rbrakk> \<Longrightarrow> R\<close>
+\end{Isabelle}
+\end{node}
+
+\begin{node}[Derived connectives]\label{isabelle:fol-0008}%
+The derived connectives include the verum constant ``\texttt{True}'',
+negation, biconditional, and the various uniqueness quantifiers.
+\begin{Isabelle}
+(* IFOL.thy *)
+definition \<open>True \<equiv> False \<longrightarrow> False\<close>
+
+definition Not (\<open>\<not> _\<close> [40] 40)
+  where not_def: \<open>\<not> P \<equiv> P \<longrightarrow> False\<close>
+
+definition iff  (infixr \<open>\<longleftrightarrow>\<close> 25)
+  where \<open>P \<longleftrightarrow> Q \<equiv> (P \<longrightarrow> Q) \<and> (Q \<longrightarrow> P)\<close>
+
+definition Uniq :: "('a \<Rightarrow> o) \<Rightarrow> o"
+  where \<open>Uniq(P) \<equiv> (\<forall>x y. P(x) \<longrightarrow> P(y) \<longrightarrow> y = x)\<close>
+
+definition Ex1 :: \<open>('a \<Rightarrow> o) \<Rightarrow> o\<close>  (binder \<open>\<exists>!\<close> 10)
+  where ex1_def: \<open>\<exists>!x. P(x) \<equiv> \<exists>x. P(x) \<and> (\<forall>y. P(y) \<longrightarrow> y = x)\<close>
+\end{Isabelle}
+\end{node}
+
+\begin{node}[More equality and inequality]\label{isabelle:fol-0005}%
+We are now in a position to relate the biconditional to meta-equality,
+and object equality implies meta-equality. We also can introduce the
+shortcut abbreviation of inequality as the negation of the equation.
+\begin{Isabelle}
+(* IFOL.thy *)
+axiomatization where  \<comment> \<open>Reflection, admissible\<close>
+  eq_reflection: \<open>(x = y) \<Longrightarrow> (x \<equiv> y)\<close> and
+  iff_reflection: \<open>(P \<longleftrightarrow> Q) \<Longrightarrow> (P \<equiv> Q)\<close>
+
+abbreviation not_equal :: \<open>['a, 'a] \<Rightarrow> o\<close>  (infixl \<open>\<noteq>\<close> 50)
+  where \<open>x \<noteq> y \<equiv> \<not> (x = y)\<close>
+\end{Isabelle}
+\end{node}
 \end{node}
 
 \begin{node}[References]\label{isabelle:fol-0002}%

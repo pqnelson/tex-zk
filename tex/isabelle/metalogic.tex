@@ -1,4 +1,4 @@
-% 8
+% 11
 \section{Pure: Isabelle's Metalogic}
 \begin{node}[Logical framework]\label{isabelle:metalogic-0000}%
 In a logical framework, we need some way to encode judgements and
@@ -67,6 +67,44 @@ $A\equiv B$. We also have the congruence rule,
 \[\infer[\mbox{comb}]{f~a\equiv g~b}{f\equiv g,&a\equiv b}.\]
 \end{node}
 \end{node}
+
+\begin{node}[Isar]\label{isabelle:metalogic-0008}%
+A lot of the ``language'' used by Isabelle, which ``intermediates'' the
+Pure language with the outside world, is implemented by Isar.
+
+\begin{definition}
+When declaring a constant term with its type signature, we use \define{consts}
+and separate each declaration by ``\texttt{and}''. The definition for
+the constants must be done by ``\texttt{defs}'', ``\texttt{primerec}'',
+``\texttt{recdef}'', or possibly ``\texttt{axiomatization}''.
+\end{definition}
+
+\begin{node}[Axiomatization]\label{isabelle:metalogic-0009}%
+When formalizing a new object logic, it is useful to introduce
+primitives and their axioms. Isar handles this by the
+\define{axiomatization} environment; for example, the formalization of
+equality in intuitionistic first-order logic:
+
+\begin{Isabelle}
+(* IFOL.thy *)
+axiomatization
+  eq :: \<open>['a, 'a] \<Rightarrow> o\<close>  (infixl \<open>=\<close> 50)
+where
+  refl: \<open>a = a\<close> and
+  subst: \<open>a = b \<Longrightarrow> P(a) \<Longrightarrow> P(b)\<close>
+\end{Isabelle}
+
+\begin{node}[Remark]\label{isabelle:metalogic-000A}%
+It seems that long ago, Isabelle used ``\textbf{consts} \dots
+\textbf{axioms} \dots'' but this was replaced by
+``\textbf{axiomatization} \dots \textbf{where} \dots''. I am guessing,
+because Bortin, Johnsen, and L\"{u}th~\cite{bortin2006structured} use
+the former, but it does not appear anywhere in Isabelle 2023.
+\end{node}
+\end{node}
+\end{node}
+
+
 \begin{node}[References]\label{isabelle:metalogic-0007}%
 Isabelle's metalogic seems to first be introduced in Paulson~\cite{paulson1988foundation}.
 Chen reviews Isabelle's metalogic in chapter 2 of his master's thesis~\cite{chen2019implementation}.

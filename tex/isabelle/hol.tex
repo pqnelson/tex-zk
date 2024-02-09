@@ -43,21 +43,28 @@ Wolff~\cite{brucker2013theorem}.
 
 In ``\texttt{HOL/List.thy}'', there is some code provided to check
 results:
-\begin{Isabelle}[xleftmargin=-6pc]
+\begin{Isabelle}
 ML_val \<open>   (* HOL/List.thy *)
   let
     val read = Syntax.read_term \<^context> o Syntax.implode_input;
     fun check s1 s2 =
       read s1 aconv read s2 orelse
         error ("Check failed: " ^
-          quote (#1 (Input.source_content s1)) ^ Position.here_list [Input.pos_of s1, Input.pos_of s2]);
+          quote (#1 (Input.source_content s1)) ^
+            Position.here_list [Input.pos_of s1, Input.pos_of s2]);
   in
-    check \<open>[(x,y,z). b]\<close> \<open>if b then [(x, y, z)] else []\<close>;
-    check \<open>[(x,y,z). (x,_,y)\<leftarrow>xs]\<close> \<open>map (\<lambda>(x,_,y). (x, y, z)) xs\<close>;
-    check \<open>[e x y. (x,_)\<leftarrow>xs, y\<leftarrow>ys]\<close> \<open>concat (map (\<lambda>(x,_). map (\<lambda>y. e x y) ys) xs)\<close>;
-    check \<open>[(x,y,z). x<a, x>b]\<close> \<open>if x < a then if b < x then [(x, y, z)] else [] else []\<close>;
-    check \<open>[(x,y,z). x\<leftarrow>xs, x>b]\<close> \<open>concat (map (\<lambda>x. if b < x then [(x, y, z)] else []) xs)\<close>;
-    check \<open>[(x,y,z). x<a, x\<leftarrow>xs]\<close> \<open>if x < a then map (\<lambda>x. (x, y, z)) xs else []\<close>;
+    check \<open>[(x,y,z). b]\<close>
+          \<open>if b then [(x, y, z)] else []\<close>;
+    check \<open>[(x,y,z). (x,_,y)\<leftarrow>xs]\<close> 
+          \<open>map (\<lambda>(x,_,y). (x, y, z)) xs\<close>;
+    check \<open>[e x y. (x,_)\<leftarrow>xs, y\<leftarrow>ys]\<close> 
+          \<open>concat (map (\<lambda>(x,_). map (\<lambda>y. e x y) ys) xs)\<close>;
+    check \<open>[(x,y,z). x<a, x>b]\<close> 
+          \<open>if x < a then if b < x then [(x, y, z)] else [] else []\<close>;
+    check \<open>[(x,y,z). x\<leftarrow>xs, x>b]\<close> 
+          \<open>concat (map (\<lambda>x. if b < x then [(x, y, z)] else []) xs)\<close>;
+    check \<open>[(x,y,z). x<a, x\<leftarrow>xs]\<close> 
+          \<open>if x < a then map (\<lambda>x. (x, y, z)) xs else []\<close>;
     (* ... *)
 \<close>;
 \end{Isabelle}
