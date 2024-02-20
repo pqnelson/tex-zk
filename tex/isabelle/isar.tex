@@ -21,13 +21,19 @@ qed
 \begin{node}\label{isabelle:isar-0002}%
 The justification (``\texttt{by ...}'') can also be a subproof. But
 usually we use ``by simp (add: $\langle$theorem names$\rangle$)'' or
-``using $\langle$theorem names$\rangle$ by auto'' suffice.
+``using $\langle$theorem names$\rangle$ by auto'' suffice. The
+justification can refer to one of several external theorem provers when
+supported by the object logic (Isabelle/HOL supports the largest
+diversity of theorem provers).
 
 \begin{node}[Metis]\label{isabelle:isar-0003}%
 Metis\index{Metis}%
 is an automated theorem prover based on
 paramodulation.\footnote{Available: \url{https://www.gilith.com/software/metis/}}
-It can be used as a justification in Isabelle for certain situations. 
+It can be used as a justification in Isabelle for certain
+situations. (Paramodulation generates all ``equal'' versions of clauses
+modulo some conditions.)
+Joe Hurd first implemented it for HOL4~\cite{hurd2003first}.
 For more about it, see F{\"{a}}rber and Kaliszyk~\cite{farber2015metis}.
 \end{node}
 \end{node}
