@@ -1,0 +1,34 @@
+% 4
+\section{Isar Proof Language}
+
+\begin{node}\label{isabelle:isar-0000}%
+Isar is a declarative proof language for Isabelle, heavily inspired by
+Mizar~\zref{chapter:mizar}.
+\end{node}
+
+\begin{node}\label{isabelle:isar-0001}%
+  The proof skeleton for a claim of the form $A\implies B$ looks like:
+\begin{Isabelle}
+proof
+  assume "A"
+  then have C1 by ...
+  (* ... *)
+  then have Cn by ...
+  then show B by ...
+qed
+\end{Isabelle}
+
+\begin{node}\label{isabelle:isar-0002}%
+The justification (``\texttt{by ...}'') can also be a subproof. But
+usually we use ``by simp (add: $\langle$theorem names$\rangle$)'' or
+``using $\langle$theorem names$\rangle$ by auto'' suffice.
+
+\begin{node}[Metis]\label{isabelle:isar-0003}%
+Metis\index{Metis}%
+is an automated theorem prover based on
+paramodulation.\footnote{Available: \url{https://www.gilith.com/software/metis/}}
+It can be used as a justification in Isabelle for certain situations. 
+For more about it, see F{\"{a}}rber and Kaliszyk~\cite{farber2015metis}.
+\end{node}
+\end{node}
+\end{node}
