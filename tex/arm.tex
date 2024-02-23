@@ -1,0 +1,51 @@
+% 4
+\chapter{ARM Hardware}
+
+
+\begin{node}\label{arm-0000}%
+These are just some reading notes as I work my way through the ARM
+specification. The ARMv8-M are for ``microcontroller profiles'', the
+ARMv8-A are for ``application profiles'' (i.e., the usual desktop
+computers), the ARMv8-R are for ``real-time profiles''. The Arm
+reference manual gives the specification for the behaviour of an
+abstract machine called the \define{Processing Element} (or PE for
+short).
+
+As far as formalization, Anthony Fox~\cite{fox2001arm} formalized the ARM6
+specification using HOL. Fox~\cite{fox2002arm} summarizes the
+formalization using techniques found in earlier reports~\cite{fox2001algebraic}.
+The trick was to use logical relations to
+encode circuits --- so the NAND gate is an ``atomic'' predicate
+$NAND[i_{1},i_{2},o]$ which satisfies
+$NAND[i_{1},i_{2},o]=(o\iff\neg(i_{1}\land i_{2}))$. We can feed the
+input of one circuit $C_{1}[i,o]$ as input into another $C_{2}[i,o]$ and
+this is the equation $C_{12}[i,o]=(\exists x)(C_{1}[i,x]\land C_{2}[x,o])$.
+\end{node}
+
+\begin{node}[Definitions]\label{arm-0001}%
+Regarding cold, warm, and hard boots.\footnote{From \url{https://www.lenovo.com/us/en/glossary/cold-boot/}}
+
+\begin{node}\label{arm-0002}%
+A \define{Cold Boot} involves starting the computer from a completely
+off state. The basic steps involved in a cold boot:
+\begin{enumerate}
+\item The computer's power supply turns on and supplies electricity to
+  the system;
+\item The CPU initializes the system's firmware UEFI (unified extensible
+  firmware interface) or for older machines BIOS (basic
+  input/output system) --- I refer to ``BIOS'' the same way I use
+  ``Kleenex'' instead of ``tissue paper'';
+\item BIOS performs the POST (power-on self-test) which checks the
+  hardware components, and ensures they are functioning correctly;
+\item\label{arm:last-step-of-cold-boot} BIOS then searches and loads the operating system from the
+  computer's storage.
+\end{enumerate}
+\end{node}
+
+\begin{node}\label{arm-0003}%
+A \define{Warm Boot} refers to restarting the computer without powering
+it completely off. During a warm boot, it skips to
+step~\ref{arm:last-step-of-cold-boot} of the cold boot process.
+\end{node}
+\end{node} % Definitions
+
