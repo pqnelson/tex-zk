@@ -1,4 +1,4 @@
-% 4
+% 6
 \section{Isar Proof Language}
 
 \begin{node}\label{isabelle:isar-0000}%
@@ -20,11 +20,16 @@ qed
 
 \begin{node}\label{isabelle:isar-0002}%
 The justification (``\texttt{by ...}'') can also be a subproof. But
-usually we use ``by simp (add: $\langle$theorem names$\rangle$)'' or
-``using $\langle$theorem names$\rangle$ by auto'' suffice. The
+usually we use ``by simp (add: $\langle$\textit{labels\/}$\rangle$)'' or
+``using $\langle$\textit{labels\/}$\rangle$ by $\langle$\textit{method\/}$\rangle$'' suffice. The
 justification can refer to one of several external theorem provers when
 supported by the object logic (Isabelle/HOL supports the largest
 diversity of theorem provers).
+
+\begin{node}\label{isabelle:isar-0004}%
+The ``\texttt{simp}'' tactic is the ``fastest'' way to solve a problem
+requiring rewriting.
+\end{node}
 
 \begin{node}[Metis]\label{isabelle:isar-0003}%
 Metis\index{Metis}%
@@ -36,5 +41,10 @@ modulo some conditions.)
 Joe Hurd first implemented it for HOL4~\cite{hurd2003first}.
 For more about it, see F{\"{a}}rber and Kaliszyk~\cite{farber2015metis}.
 \end{node}
+\end{node}
+
+\begin{node}[Qed methods]\label{isabelle:isar-0005}%
+We can optionally pass a method to ``\texttt{qed}'' which Isar will try
+to use to solve all remaining goals. No facts may be passed to this method.
 \end{node}
 \end{node}
