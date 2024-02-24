@@ -6,9 +6,9 @@ An \define{Interpretation} (or ``\textit{Model}\,'') $M$ specifies the
 interpretation of function and predicate symbols, consisting of:
 \begin{enumerate}
 \item A nonempty set $D$ called the \define{Domain} of the interpretation;
-\item An assignment taking each $n$-ary function symbol $f$ to a mapping
+\item An assignment sending each $n$-ary function symbol $f$ to a mapping
   $f_{M}\colon D^{n}\to D$;
-\item An assignment taking each $n$-ary relation symbol $P$ to a
+\item An assignment sending each $n$-ary relation symbol $P$ to a
   relation $P_{M}\subset D^{n}$.
 \end{enumerate}
 \begin{node}[Remark: Nonempty domain]\label{fol-000A}\index{Logic!Free}\index{Free Logic}%
@@ -108,7 +108,7 @@ v(y) & \mbox{otherwise}.
 \end{equation}
 Now $\mathtt{holds}~M~v~p$ may be given by the structure of the formula $p$ as:
 \begin{center}
-\begin{tabular}{rcp{0.45\linewidth}}
+\begin{tabular}{rcp{0.5\linewidth}}
 $\mathtt{holds}~M~v~\falsum$ & $=$ & false\\
 $\mathtt{holds}~M~v~\verum$ & $=$ & true\\
 $\mathtt{holds}~M~v~(R(t_{1},\dots,t_{n}))$ & $=$ & $R_{M}(\mathtt{termval}~M~v~t_{1},\dots,\mathtt{termval}~M~v~t_{n})$\\

@@ -1,12 +1,12 @@
 % 24
 \begin{node}[Normal forms]\label{prop-000P}%
-A common trick in logic is to take some sort of ``normal form'' of
-formulas. That is to say, we restrict attention to a sublanguage of
-propositional logic such that (a) it is constructed using an adequate
+A common trick in logic is transform formulas into some sort of
+``normal form''. That is to say, we restrict attention to a sublanguage
+of propositional logic such that (a) it is constructed using an adequate
 set of connectives~\zref{prop-000E}, and (b) it simplifies proving if a
 proposition is satisfiable or unsatisfiable. (This is far too applied a
-topic for Mendelson~\cite{mendelson2015mathematical}, and I am relying on
-Harrison~\cite{harrison2009handbook} for much of the material here.)
+topic for Mendelson~\cite{mendelson2015mathematical}, and I am relying
+on Harrison~\cite{harrison2009handbook} for much of the material here.)
 
 \begin{definition}\label{prop-000Q}%
 In propositional logic, we define a \define{Literal} to be a
@@ -374,7 +374,8 @@ fun simp_cnf False = Set.singleton (Set.Empty)
  |  simp_cnf True = Set.Empty
  |  simp_cnf A = let val cs = Set.filter (non trivial) (set_cnf A)
                  in Set.filter (fn c =>
-                                  not(Set.exists (fn c' => Set.isSubsetOf c' c)
+                                  not(Set.exists (fn c' =>
+                                                    Set.isSubsetOf c' c)
                                                  cs))
                                cs
                  end;
@@ -465,7 +466,8 @@ coined the terms ``disjunctive normal form'' and ``conjunctive normal form''~\zr
 \begin{node}[History of terms CNF and DNF]\label{prop-normal-form-0004}%
 Carnap's ``Testability and Meaning'' (\textit{Philosophy of Science}
 \textbf{3} no.4 (1936) 419--471) cites Hilbert (\textit{Logik} [?],
-p.63) and separately Carnap's earlier book \textit{Logical Syntax of Language}
+p.63 --- I believe this refers to the 1928 book by Hilbert and
+Ackermann, but it is unclear to me) and separately Carnap's earlier book \textit{Logical Syntax of Language}
 (calling it  ``conjunctive standard form'') as the source of conjunctive
 normal form. Coincidentally, ``Testability and Meaning'' appears to coin
 the term ``disjunctive normal form'' on page 437, citing page 13 of some work by Hilbert (there is no bibliography for ``Testability and Meaning'').

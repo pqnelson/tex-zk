@@ -28,7 +28,9 @@
 % modified from https://tex.stackexchange.com/a/148886
 % and https://tex.stackexchange.com/a/149458
 \newif\ifcom\comfalse
-\def\isabellecommentstyle{\color{isabellecomment1}}
+
+\def\isabellecommentstyle{\ttfamily\color{isabellecomment1}\fontseries{l}\selectfont}
+
 \def\processDelimiter{%
     \ifcom%                     % In this case, we're already in a comment.
     \else                       % Otherwise, we just started a comment;
@@ -40,6 +42,14 @@
 }
 \lst@AddToHook{EOL}{\global\comfalse}
 
+%\renewcommand{\ttdefault}{lmtt}
+
+\newcommand\Isabelle@kwOne{\ttfamily\fontseries{b}\color{isabellekw1}\selectfont}
+\newcommand\Isabelle@kwTwo{\ttfamily\fontseries{b}\color{isabellekw2}\selectfont}
+\newcommand\Isabelle@kwThree{\ttfamily\fontseries{b}\color{isabellekw3}\selectfont}
+\newcommand\Isabelle@kwFour{\Isabelle@kwOne}
+\newcommand\Isabelle@kwFive{\Isabelle@kwOne}
+\newcommand\Isabelle@kwSix{\ttfamily\color{isabellekw1}\fontseries{l}\selectfont}
 
 % Keywords taken from https://github.com/pygments/pygments/blob/master/pygments/lexers/theorem.py
 \lstdefinelanguage{isabelle}{
@@ -52,7 +62,7 @@
     lemma,lemmas,locale,let,moreover,next,note,
     oops,prefer,proof,qed,sorry,txt,txt_raw,then,theorem,theory,
     typedef,ultimately,unfolding,using,value,with,write},
-    keywordstyle=\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont,
+  keywordstyle=\Isabelle@kwOne,
   morekeywords=[2]{and,assumes,begin,binder,checking,
     class_instance,class_relation,code_module,
     constant,constrains,datatypes,defines,end,file,fixes,
@@ -62,9 +72,9 @@
     obtains,open,output,overloaded,parametric,
     pervasive,shows,structure,type_class,
     type_constructor,unchecked,where},
-    keywordstyle=[2]{\rm\ttfamily\fontseries{b}\color{isabellekw2}\selectfont},
+    keywordstyle=[2]\Isabelle@kwTwo,
   morekeywords=[3]{assume, case, fix, obtain, presume, show, thus},
-  keywordstyle=[3]{\rm\ttfamily\fontseries{b}\color{isabellekw3}\selectfont},
+  keywordstyle=[3]\Isabelle@kwThree,
   morekeywords=[4]{ML_command,ML_val,class_deps,code_deps,code_thms,
 find_consts,find_theorems,find_unused_assms,
 full_prf,help,locale_deps,nitpick,prf,
@@ -84,7 +94,7 @@ prop,quickcheck,sledgehammer,smt_status,
 solve_direct,term,thm,thm_deps,thy_deps,
 try,try0,typ,unused_thms,value,values,welcome,
 print_ML_antiquotations,print_term_bindings},
-    keywordstyle=[4]{\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont},
+    keywordstyle=[4]{\Isabelle@kwFour},
     morekeywords=[5]{ML,ML_file,abbreviation,attribute_setup,axiomatization,bundle,
 class,codatatype,code_datatype,
 code_identifier,code_monad,code_printing,code_reflect,code_reserved,
@@ -107,9 +117,9 @@ text_raw,translations,type_notation,
 type_synonym,typed_print_translation,typedecl,
 SML_export,SML_file,SML_import,datatype_compat,
 free_constructors,functor},
-    keywordstyle=[5]{\rm\ttfamily\fontseries{b}\color{isabellekw1}\selectfont},
+    keywordstyle=[5]{\Isabelle@kwFive},
     morekeywords=[6]{CONST},
-    keywordstyle=[6]{\rm\ttfamily\color{isabellekw1}\selectfont},
+    keywordstyle=[6]{\Isabelle@kwSix},
     %  morekeywords=[3]{rec, return, bind, foreach, if, then, else, do, let, in, res, spec, fail, assert, while, case, of, check, get, set},
 %  morekeywords=[3]{length,mod,insert},
 %   morekeywords=[4]{simp,auto,intro,elim,rprems,refine_mono,refine_rcg},
@@ -266,10 +276,12 @@ free_constructors,functor},
   {\\Phi}{{$\Phi$}}1
   {\\Psi}{{$\Psi$}}1
 }
+
+%\newcommand*{\ttfamilywithbold}{\fontfamily{lmtt}\selectfont}
 \lstnewenvironment{Isabelle}[1][]%
                   {
                     \lstset{language=isabelle,
-                      basicstyle=\ttfamily,
+                      basicstyle=\ttfamily\fontseries{l},
                       upquote=true,
                       #1
                     }%
