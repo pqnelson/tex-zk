@@ -1,0 +1,155 @@
+
+
+\begin{node}[Semantics]\label{fol-0005}%
+\begin{definition}\label{fol-0006}%
+An \define{Interpretation} (or ``\textit{Model}\,'') $M$ specifies the
+interpretation of function and predicate symbols, consisting of:
+\begin{enumerate}
+\item A nonempty set $D$ called the \define{Domain} of the interpretation;
+\item An assignment taking each $n$-ary function symbol $f$ to a mapping
+  $f_{M}\colon D^{n}\to D$;
+\item An assignment taking each $n$-ary relation symbol $P$ to a
+  relation $P_{M}\subset D^{n}$.
+\end{enumerate}
+\begin{node}[Remark: Nonempty domain]\label{fol-000A}\index{Logic!Free}\index{Free Logic}%
+Note this definition precludes empty domains $D\neq\emptyset$. Classical
+logic \emph{requires} nonempty domains of discourse. If we allow empty
+domains, we end up with something called ``free logic''. Within free
+logic, the tautology $(\forall x,P[x])\implies P[y]$ fails to hold.
+More serious of a problem, for us, is that the existence of prenex
+normal forms fail when empty domains are allowed.
+\end{node}
+
+\begin{node}[Remark: finite mechanization]\label{fol-000B}%
+We will implement this in \SML\ using finite domains of discourse.
+Pulgar\'{\i}n and Uribe-Zapata~\cite{pulgarin2023came} wrote a paper
+trying to formalize a finitistic intuitionistic metatheory, which is
+what Kunen~\cite{kunen2009foundations} advocates.
+
+When $D$ is infinite (logicians allow $D$ to be uncountable), our
+strategy we take in \zref{fol-0009} will fail and we cannot realize
+\texttt{holds} as a \SML\ function.
+\end{node}
+
+\begin{node}[Remark: On semantics]\label{fol-000C}%
+Other foundations do not concern themselves too much with
+[model theoretic] semantics. In fact, the only other family of
+foundations which has a notion of models appears to be higher-order
+logic (HOL). This is because Type Theory focuses on more proof theoretic
+concerns.
+
+\begin{node}[Cynical perspective]\label{fol-000H}%
+After thinking about this further, I think what is happening ``really''
+(from a cynic's perspective) is that we have a theory of sets $S$
+(presumably one which generalizes the \ZF\ axioms suitably), and then we
+take our theory $\mathfrak{T}=(D,\mathfrak{R},\mathfrak{F})$ and form an ``interpretation''
+$\iota$ which consists of an assignment of $D$ to a ``set'' $\iota(D)$,
+and each relation $R\in\mathfrak{R}$ of arity $n$ to a ``set''
+$\iota(R)\subset\iota(D)^{n}$, and each function $f\in\mathfrak{F}$ of
+arity $k$ to the ``function'' $\iota(f)\colon\iota(D)^{k}\to\iota(D)$.
+As a cynic, these are all working at the level of syntax.
+
+If we stipulate this cynical perspective is ``true enough'', then
+semantics of a theory (first-order or otherwise) in a type theory is a
+similar assignment at the level of syntax. There are no ``real models'':
+it's symbol manipulation all the way down. We just pick some foundations
+for being ``real'', then assert ``mathematical objects exist if they can
+be encoded in our foundations''.
+\end{node}
+\begin{node}\label{fol-000I}%
+After thinking about this cynical perspective, I think it more or less
+works provided the choice of foundations forms a topos (or could encode
+a topos). This is why set theory works as a choice of foundations,
+because $\Set$ forms a topos.
+
+The overall cynical perspective (``Pick one theory as a foundations,
+then interpret other theories in terms of our foundational theory'') is
+not unique. It appears Farmer, Guttman, and
+Javier~\cite{farmer1992little} discusses a similar perspective, calling
+such a perspective ``small
+theories''. Enderton~\cite[\S2.7]{enderton2001mathematical} is the only book I
+have found discussing ``interpretation of theories in other theories''. John
+Harrison~\cite[\S1.4]{harrison1996formalized} argues Bourbaki worked
+\emph{contra} this perspective, using a ``big theory'' rather than a
+constellation of ``small theories''.
+\end{node}
+\end{node}
+\end{definition}
+
+\begin{definition}\label{fol-0007}%
+Let $M$ be an interpretation with domain $D$. A \define{Valuation} in
+first-order logic is a mapping from the set of variables to $D$.
+This is consistent with our usage of the term in propositional logic
+\zref{prop-0004} which maps our set of propositional variables to the
+set of truth values.
+\end{definition}
+
+\begin{definition}\label{fol-0008}%
+We define the value of a term in a particular interpretation $M$ and
+valuation $v$ by the mapping $\mathtt{termval}~M~v~t$ by induction on
+the structure of $t$ as:
+\begin{center}
+\begin{tabular}{rcl}
+$\mathtt{termval}~M~v~x$ & $=$ & $v(x)$\\
+$\mathtt{termval}~M~v~(f(t_{1},\dots,t_{n}))$ & $=$ & $f_{M}(\mathtt{termval}~M~v~t_{1},\dots,\mathtt{termval}~M~v~t_{n})$\\
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{definition}\label{fol-0009}%
+The main question for semantics is whether a formula holds (i.e., has
+its value be ``true'' $\verum$) in a particular interpretation $M$ and
+valuation $v$ is defined inductively as the function $\mathtt{holds}~M~v~p$.
+We use the notation
+\begin{equation}
+((x\mapsto c)v)(y) = \begin{cases}c & \mbox{if }x=y\\
+v(y) & \mbox{otherwise}.
+  \end{cases}
+\end{equation}
+Now $\mathtt{holds}~M~v~p$ may be given by the structure of the formula $p$ as:
+\begin{center}
+\begin{tabular}{rcp{0.45\linewidth}}
+$\mathtt{holds}~M~v~\falsum$ & $=$ & false\\
+$\mathtt{holds}~M~v~\verum$ & $=$ & true\\
+$\mathtt{holds}~M~v~(R(t_{1},\dots,t_{n}))$ & $=$ & $R_{M}(\mathtt{termval}~M~v~t_{1},\dots,\mathtt{termval}~M~v~t_{n})$\\
+$\mathtt{holds}~M~v~(\neg p)$ & $=$ & not $(\mathtt{holds}~M~v~p)$\\
+$\mathtt{holds}~M~v~(p\land q)$ & $=$ & $(\mathtt{holds}~M~v~p)$ and $(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(p\lor q)$ & $=$ & $(\mathtt{holds}~M~v~p)$ or $(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(p\implies q)$ & $=$ & either not $(\mathtt{holds}~M~v~p)$ or $(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(p\iff q)$ & $=$ & $(\mathtt{holds}~M~v~p)=(\mathtt{holds}~M~v~q)$\\
+$\mathtt{holds}~M~v~(\forall x.p)$ & $=$ & for all $c\in D$,
+  $\mathtt{holds}~M~((x\mapsto c)v)~p$\\
+$\mathtt{holds}~M~v~(\exists x.p)$ & $=$ & there is at least one $c\in D$ such that
+  $\mathtt{holds}~M~((x\mapsto c)v)~p$\\
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{definition}\label{fol-000D}%
+We call a first-order formula \define{(Logically) Valid} if it holds in all
+interpretations and all valuations. If $\varphi\iff\psi$ is logically
+valid, then we say $\varphi$ and $\psi$ are \define{Logically Equivalent}.
+Valid formulas are the first-order counterparts to
+tautologies~\zref{prop-000L} in propositional logic.
+\end{definition}
+
+\begin{definition}\label{fol-000E}%
+We say that an interpretation $M$ \define{Satisfies} a first-order
+formula $\varphi$ (or simply that $\varphi$ \textit{holds in} $M$) if
+\textbf{for all valuations} $v$ we have $\mathtt{holds}~M~v~\varphi$
+be true.
+
+We can extend this notion for a set of first-order formulas $S$, saying
+an interpretation $M$ satisfies $S$ if for each $\varphi\in S$ we have
+$M$ satisfy $\varphi$.
+\end{definition}
+
+\begin{definition}\label{fol-000F}%
+We say a first-order formula $\varphi$ (or set of formulas) is
+\define{Satisfiable} if there exists some interpretation which satisfies it.
+That is, there exists an interpretation $M$ such that for all valuations
+$v$ we have $\mathtt{holds}~M~v~\varphi$ evaluate to true.
+
+The valuation plays a role only if there are free variables in $\varphi$.
+\end{definition}
+\end{node}
